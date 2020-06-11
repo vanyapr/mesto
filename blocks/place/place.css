@@ -9,4 +9,5 @@
   grid-template-areas: 'image image'
                        'heading like';
   grid-template-columns: auto 56px;
+  grid-template-rows: auto 80px;
 }

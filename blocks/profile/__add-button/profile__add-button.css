@@ -11,7 +11,7 @@
   background-size: 22px 22px;
   background-position: center;
   align-self: center;
-  transition: opacity ease-in-out .32s;
+  transition: opacity ease-in-out .4s;
   cursor: pointer;
 
   /*Скрываем название кнопки*/

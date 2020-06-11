@@ -10,4 +10,5 @@
   /*Переопределим стили страницы цвет фона и цвет шрифта */
   background-color: #000;
   color: #fff;
+  position: relative;
 }
