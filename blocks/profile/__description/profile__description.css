@@ -1,0 +1,13 @@
+.profile__description {
+  font-family: 'Inter', "Helvetica Neue", Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 22px;
+  margin: 0;
+  grid-area: description;
+  align-self: start;
+
+  /* Защита от переполнения*/
+  max-width: calc(880px - 120px - 150px - 17px - 24px - 30px * 2);
+}

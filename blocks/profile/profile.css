@@ -1,0 +1,15 @@
+@import url(./__avatar/profile__avatar.css);
+@import url(./__info/profile__info.css);
+@import url(./__title/profile__title.css);
+@import url(./__description/profile__description.css);
+@import url(./__edit-button/profile__edit-button.css);
+@import url(./__add-button/profile__add-button.css);
+
+.profile {
+  margin: auto;
+  max-width: 882px;
+  padding: 40px 0 51px;
+  display: grid;
+  grid-template-columns: 120px  auto 150px;
+  grid-column-gap: 30px;
+}
