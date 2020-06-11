@@ -10,7 +10,6 @@ const popup = document.querySelector('.popup');
 function togglePopup () {
   //Если у поп-апа нет класса "popup_opened", мы его добавляем по клику, иначе убираем этот класс
   popup.classList.toggle('popup_opened');
-  console.log('form close');
 }
 
 // Открываем профиль по клику на кнопку редактирования профиля
