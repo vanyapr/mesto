@@ -5,9 +5,16 @@
 
 .form {
   background: #fff;
-  width: 430px;
+  /*max-width: 430px;*/
   padding: 34px 36px 36px;
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
   border-radius: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
 
+@media screen and (max-width: 500px){
+  .form {
+    padding: 25px 20px 20px;
+  }
 }

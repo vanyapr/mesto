@@ -6,3 +6,9 @@
   grid-column-gap: 17px;
   grid-row-gap: 16px;
 }
+
+@media screen and (max-width: 520px){
+  .profile__info {
+    justify-self: center;
+  }
+}

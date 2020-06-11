@@ -24,3 +24,10 @@
   /*background-image: url("../../../images/close__gray.svg");*/
   opacity: .6;
 }
+
+@media screen and (max-width: 500px){
+  .form__close {
+    top: -35px;
+    right: -35px;
+  }
+}

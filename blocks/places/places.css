@@ -7,3 +7,10 @@
   grid-row-gap: 20px;
   padding: 0 19px;
 }
+
+@media screen and (max-width: 520px){
+  .places {
+    justify-self: center;
+    margin: 36px auto 0;
+  }
+}
