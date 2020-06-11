@@ -13,6 +13,7 @@
   align-self: center;
   transition: opacity ease-in-out .4s;
   cursor: pointer;
+  padding: 0;
 
   /*Скрываем название кнопки*/
   text-indent: -9000px;
