@@ -1,10 +1,10 @@
 // РАБОТА С ПОП-АПОМ
 // Кнопка редактирования профиля
-let editProfile = document.querySelector('.profile__edit-button');
+const editProfile = document.querySelector('.profile__edit-button');
 // Кнопка закрытия поп-апа
-let closePopup = document.querySelector('.form__close');
+const closePopup = document.querySelector('.form__close');
 // Сам поп-ап
-let popup = document.querySelector('.popup');
+const popup = document.querySelector('.popup');
 
 // Функция открытия и закрытия поп-апа
 function togglePopup () {
@@ -21,15 +21,15 @@ closePopup.addEventListener('click', togglePopup);
 
 // РЕДАКТИРОВАНИЕ ПРОФИЛЯ
 // Имя в профиле
-let name = document.querySelector('.profile__title');
+const name = document.querySelector('.profile__title');
 // Род деятельности в профиле
-let description = document.querySelector('.profile__description');
+const description = document.querySelector('.profile__description');
 // Форма с полями
-let form = document.querySelector('.form');
+const form = document.querySelector('.form');
 // Имя в форме
-let formName = document.querySelector('.form__input_value_name');
+const formName = document.querySelector('.form__input_value_name');
 // Род деятельности в форме
-let formDescription = document.querySelector('.form__input_value_description');
+const formDescription = document.querySelector('.form__input_value_description');
 
 // Записываем значения из профиля в поля формы при открытии страницы
 formName.value = name.textContent;
@@ -37,13 +37,13 @@ formDescription.value = description.textContent;
 
 
 // Если форма была отправлена, перезаписываем значения в профиле
-
 function formSubmitHandler (event) {
   event.preventDefault();
 
   name.textContent = formName.value;
   description.textContent = formDescription.value;
-  togglePopup ();
+  //Не забываем закрыть форму
+  togglePopup();
 }
 
 form.addEventListener('submit', formSubmitHandler);
