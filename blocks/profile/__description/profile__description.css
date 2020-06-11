@@ -11,4 +11,7 @@
 
   /* Защита от переполнения*/
   max-width: calc(880px - 120px - 150px - 17px - 24px - 30px * 2);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
