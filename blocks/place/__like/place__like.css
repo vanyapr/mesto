@@ -1,0 +1,21 @@
+.place__like {
+  width: 20.76px;
+  height: 18.13px;
+  background-color: transparent;
+  background-image: url("../../../images/heart.svg");
+  background-repeat: no-repeat;
+  -webkit-background-size: 20.76px 18.13px;
+  background-size: 20.76px 18.13px;
+  background-position: center;
+  /*Скрываем название кнопки*/
+  text-indent: -9000px;
+  border: none;
+  grid-area: like;
+  align-self: center;
+  cursor: pointer;
+  justify-self: center;
+}
+
+.place__like:hover {
+  opacity: .6;
+}

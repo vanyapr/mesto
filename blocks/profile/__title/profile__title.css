@@ -7,6 +7,7 @@
   margin: 0;
   grid-area: title;
   align-self: end;
+  color: #fff;
 
   /* Защита от переполнения*/
   max-width: calc(880px - 120px - 150px - 17px - 24px - 30px * 2);
