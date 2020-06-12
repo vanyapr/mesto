@@ -22,3 +22,13 @@
 .profile__edit-button:hover {
   opacity: .6;
 }
+
+@media screen and (max-width: 375px){
+  .profile__edit-button {
+    align-self: center;
+    margin-bottom: 0;
+    width: 18px;
+    height: 18px;
+  }
+}
+

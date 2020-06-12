@@ -8,6 +8,10 @@ const popup = document.querySelector('.popup');
 
 // Функция открытия и закрытия поп-апа
 function togglePopup () {
+  // Записываем значения из профиля в поля формы при открытии страницы
+  formName.value = name.textContent;
+  formDescription.value = description.textContent;
+
   //Если у поп-апа нет класса "popup_opened", мы его добавляем по клику, иначе убираем этот класс
   popup.classList.toggle('popup_opened');
 }
@@ -30,9 +34,7 @@ const formName = document.querySelector('.form__input_value_name');
 // Род деятельности в форме
 const formDescription = document.querySelector('.form__input_value_description');
 
-// Записываем значения из профиля в поля формы при открытии страницы
-formName.value = name.textContent;
-formDescription.value = description.textContent;
+
 
 
 // Если форма была отправлена, перезаписываем значения в профиле

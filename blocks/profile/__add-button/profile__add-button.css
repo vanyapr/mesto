@@ -36,3 +36,9 @@
     grid-column: 1/2;
   }
 }
+
+@media screen and (max-width: 320px){
+  .profile__add-button {
+    margin-top: 13px;
+  }
+}

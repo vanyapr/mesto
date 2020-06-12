@@ -23,70 +23,96 @@
 
     <!-- Профиль пользователя -->
     <section class="profile">
-      <img src="./images/profile__avatar.jpg" srcset="./images/profile__avatar@2x.jpg 2x" alt="" class="profile__avatar">
+      <img src="./images/profile__avatar.jpg" srcset="./images/profile__avatar@2x.jpg 2x" alt="Жак-Ив Кусто" class="profile__avatar">
 
       <div class="profile__info">
         <h1 class="profile__title">Жак-Ив Кусто</h1>
         <p class="profile__description">Исследователь океана</p>
-        <button class="profile__edit-button" title="Редактировать профиль">Редактировать профиль</button>
+        <button class="profile__edit-button" title="Редактировать профиль">
+          <!-- Редактировать профиль-->
+        </button>
       </div>
 
-      <button class="profile__add-button" title="Добавить место">Добавить место</button>
+      <button class="profile__add-button" title="Добавить место">
+        <!-- Добавить место-->
+      </button>
     </section>
     <!-- Профиль пользователя -->
 
     <!-- Список мест  -->
-    <article class="places" aria-label="Места">
+    <section class="places" aria-label="Места">
+      <!--
+      Сомнительное решение по семантике:
+      в элементах списка не принято размещать кнопки и заголовки,
+      но раз код-ревьюер попросил...
+      -->
+      <ul class="places__list">
 
-      <!-- Одно место  -->
-      <section class="place">
-        <img src="./images/karachaevsk.jpg" srcset="./images/karachaevsk@2x.jpg 2x"  alt="Карачаевск" class="place__image">
-        <h2 class="place__title">Карачаевск</h2>
-        <button class="place__like" title="Добавить место в избранное">Добавить место в избранное</button>
-      </section>
-      <!--// Одно место  -->
+      <!--
+      >А вот тут наоборот, так как это завершенный, независимый элемент, можно использовать тег <article>.
+      НЕТ, ТУТ НЕЛЬЗЯ ТАК ДЕЛАТЬ: статью можно делить на логические блоки (секции), секции делить на статьи - быть наркоманом без трафика.
+      Об это явно написано вот тут: https://css-tricks.com/how-to-section-your-html/
+      ЕЩЁ раз: статья это материал со списком источников. Секция - блок документа. Статья может состоять из секций. Секция может состоять из статей,
+      но секция состоит из статей, в которых есть заголовок и текст, иначе смысл от такой статьи для экранной читалки? Статья же, разбитая на секции
+      позволит быстрее перемещаться по ней экранной читалкой.
+      Буду считать что исправлено, потому что в брифе написано не порождать лишние элементы, и это политический вопрос. Сделал списком.
+       -->
 
-      <!-- Одно место  -->
-      <section class="place">
-        <img src="./images/elbrus.jpg" srcset="./images/elbrus@2x.png 2x"  alt="Эльбрус" class="place__image">
-        <h2 class="place__title">Эльбрус</h2>
-        <button class="place__like" title="Добавить место в избранное">Добавить место в избранное</button>
-      </section>
-      <!--// Одно место  -->
+        <!-- Одно место  -->
+        <li class="place">
+          <img src="./images/karachaevsk.jpg" srcset="./images/karachaevsk@2x.jpg 2x"  alt="Карачаевск" class="place__image">
+          <!--
+          Так не правильно, нельзя порождать заголовки 3 уровня там, где нет ни одного заголовка 2 уровня.
+          Это не декоративный элемент, а элемент семантики.
+          -->
+          <h3 class="place__title">Карачаевск</h3>
+          <button class="place__like" title="Добавить место в избранное">Добавить место в избранное</button>
+        </li>
+        <!--// Одно место  -->
 
-      <!-- Одно место  -->
-      <section class="place">
-        <img src="./images/dombay.jpg" srcset="./images/dombay@2x.jpg 2x"  alt="Домбай" class="place__image">
-        <h2 class="place__title">Домбай</h2>
-        <button class="place__like" title="Добавить место в избранное">Добавить место в избранное</button>
-      </section>
-      <!--// Одно место  -->
+        <!-- Одно место  -->
+        <li class="place">
+          <img src="./images/elbrus.jpg" srcset="./images/elbrus@2x.png 2x"  alt="Эльбрус" class="place__image">
+          <h3 class="place__title">Эльбрус</h3>
+          <button class="place__like" title="Добавить место в избранное">Добавить место в избранное</button>
+        </li>
+        <!--// Одно место  -->
 
-      <!-- Одно место  -->
-      <section class="place">
-        <img src="./images/baikal.jpeg" srcset="./images/baikal@2x.jpeg 2x"  alt="Байкал" class="place__image">
-        <h2 class="place__title">Байкал</h2>
-        <button class="place__like" title="Добавить место в избранное">Добавить место в избранное</button>
-      </section>
-      <!--// Одно место  -->
+        <!-- Одно место  -->
+        <li class="place">
+          <img src="./images/dombay.jpg" srcset="./images/dombay@2x.jpg 2x"  alt="Домбай" class="place__image">
+          <h3 class="place__title">Домбай</h3>
+          <button class="place__like" title="Добавить место в избранное">Добавить место в избранное</button>
+        </li>
+        <!--// Одно место  -->
 
-      <!-- Одно место  -->
-      <section class="place">
-        <img src="./images/novosibirsk.jpeg" srcset="./images/novosibirsk@2x.jpeg 2x"  alt="Новосибирск" class="place__image">
-        <h2 class="place__title">Новосибирск</h2>
-        <button class="place__like" title="Добавить место в избранное">Добавить место в избранное</button>
-      </section>
-      <!--// Одно место  -->
+        <!-- Одно место  -->
+        <li class="place">
+          <img src="./images/baikal.jpeg" srcset="./images/baikal@2x.jpeg 2x"  alt="Байкал" class="place__image">
+          <h3 class="place__title">Байкал</h3>
+          <button class="place__like" title="Добавить место в избранное">Добавить место в избранное</button>
+        </li>
+        <!--// Одно место  -->
 
-      <!-- Одно место  -->
-      <section class="place">
-        <img src="./images/chukotka.jpeg" srcset="./images/chukotka@2x.jpeg 2x"  alt="Чукотка" class="place__image">
-        <h2 class="place__title">Чукотка</h2>
-        <button class="place__like" title="Добавить место в избранное">Добавить место в избранное</button>
-      </section>
-      <!--// Одно место  -->
+        <!-- Одно место  -->
+        <li class="place">
+          <img src="./images/novosibirsk.jpeg" srcset="./images/novosibirsk@2x.jpeg 2x"  alt="Новосибирск" class="place__image">
+          <h3 class="place__title">Новосибирск</h3>
+          <button class="place__like" title="Добавить место в избранное">Добавить место в избранное</button>
+        </li>
+        <!--// Одно место  -->
 
-    </article>
+        <!-- Одно место  -->
+        <li class="place">
+          <img src="./images/chukotka.jpeg" srcset="./images/chukotka@2x.jpeg 2x"  alt="Чукотка" class="place__image">
+          <h3 class="place__title">Чукотка</h3>
+          <button class="place__like" title="Добавить место в избранное">Добавить место в избранное</button>
+        </li>
+        <!--// Одно место  -->
+
+      </ul>
+
+    </section>
     <!-- Список мест  -->
 
   </main>
@@ -108,8 +134,8 @@
       <form class="form">
 
         <h2 class="form__title">Редактировать профиль</h2>
-        <input type="text" class="form__input form__input_value_name" value="" aria-label="Имя">
-        <input type="text" class="form__input form__input_value_description" value=""  aria-label="Род деятельности">
+        <input type="text" name="form__input_value_name" class="form__input form__input_value_name" value="" aria-label="Имя">
+        <input type="text" name="form__input_value_description" class="form__input form__input_value_description" value=""  aria-label="Род деятельности">
         <input type="submit" class="form__submit" value="Сохранить">
       </form>
     </div>
