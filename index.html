@@ -63,23 +63,42 @@
   <!--// Подвал -->
 
 
-  <div class="popup">
-    <!-- Всплывающая форма -->
+  <!-- Не очевидно: необходимо ли рендерить эти попапы при помощи темплейтов?
+  Предположу, что правильно использовать отдельную верстку для каждого попапа,
+  потому что во втором есть плейсхолдеры и значит это разные блоки.
+  При этом я могу использовать блоки повторно -->
+
+  <!-- Всплывающая форма редактирования профиля-->
+  <div class="popup popup-profile">
     <div class="popup__container">
       <button class="form__close">Закрыть форму</button>
-      <form class="form">
-
+      <form class="form form-profile">
         <h2 class="form__title">Редактировать профиль</h2>
         <input type="text" name="form__input_value_name" class="form__input form__input_value_name" value="" aria-label="Имя">
         <input type="text" name="form__input_value_description" class="form__input form__input_value_description" value=""  aria-label="Род деятельности">
         <input type="submit" class="form__submit" value="Сохранить">
       </form>
     </div>
-    <!-- Всплывающая форма -->
   </div>
+  <!-- // Всплывающая форма редактирования профиля -->
+
+  <!-- Всплывающая форма добавления места-->
+  <div class="popup popup-place">
+    <div class="popup__container">
+      <button class="form__close">Закрыть форму</button>
+      <form class="form form-place">
+        <h2 class="form__title">Новое место</h2>
+        <input type="text" name="form__input_value_place-name" class="form__input form__input_value_name" value="" placeholder="Название" aria-label="Название места">
+        <input type="text" name="form__input_value_image" class="form__input form__input_value_description" value=""  placeholder="Ссылка на картинку" aria-label="Ссылка на картинку">
+        <input type="submit" class="form__submit" value="Сохранить">
+      </form>
+    </div>
+  </div>
+  <!-- // Всплывающая форма добавления места -->
+
+
 
   <!-- Темплейты -->
-
   <!-- Одно место  -->
   <template id="place-template">
     <li class="place">
