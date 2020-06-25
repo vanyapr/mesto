@@ -111,17 +111,35 @@ const addPlaceButton = document.querySelector('.profile__add-button'); //Кно�
 const addPlacePopup = document.querySelector('.popup-place'); //Всплывающее окно
 const placeName = document.querySelector('.form__input_value_place-name'); //Название места в форме
 const placeImage = document.querySelector('.form__input_value_image'); //Ссылка на изображение в форме
-const formPlace = document.querySelector('.form-profile'); //Форма с данными о месте
+const formPlace = document.querySelector('.form-place'); //Форма с данными о месте
 
 //Когда нажимаем на кнопку добавления места
 addPlaceButton.addEventListener('click', () => {
-  //Обнуляем значения формы
-  // placeName.value = '';
-  // placeImage.value = '';
-  //Добавляем класс "открыто"
+  //Обнуляем значения формы при открытии
+  placeName.value = '';
+  placeImage.value = '';
 
+  //Добавляем класс "открыто"
   togglePopup(addPlacePopup);
 });
+
+//Когда юзер сабмитит форму
+const placeFormSubmitHandler = (event) => {
+  //Мы отменяем дефолтное действие формы
+  event.preventDefault();
+
+  //Создаем объект с параметрами, которые получили из формы
+  let formSubmitResult = {}; //Объявили пустой объект (через let потому что можем)
+  formSubmitResult.name = placeName.value; //Записали имя из формы
+  formSubmitResult.link = placeImage.value; //Записали ссылку на картинку из формы
+  console.log(formSubmitResult);
+
+  //Потом используем метод добавления события на страницу
+  placesContainer.append(renderPlace(formSubmitResult));
+  togglePopup(addPlacePopup);
+}
+
+formPlace.addEventListener('submit', placeFormSubmitHandler);
 
 
 
