@@ -8,7 +8,7 @@
   grid-row-gap: 20px;
 }
 
-@media screen and (max-width: 881px) {
+@media screen and (max-width: 919px) {
   .places__list {
     grid-template-columns: repeat(2, minmax(282px, 1fr));
   }
