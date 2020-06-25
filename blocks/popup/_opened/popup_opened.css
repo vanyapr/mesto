@@ -2,5 +2,5 @@
   /*display: block;*/
   visibility: visible;
   opacity: 1;
-  transition: opacity 1s ease 1s, visibility 1s ease 0s;
+  transition: opacity .1s ease .5s, visibility .1s ease .5s;
 }
