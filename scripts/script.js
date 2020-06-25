@@ -1,13 +1,10 @@
 // РАБОТА С ПОП-АПОМ ПРОФИЛЯ
-// Кнопка редактирования профиля
-const editProfile = document.querySelector('.profile__edit-button');
-// Кнопка закрытия поп-апа
-const closePopup = document.querySelectorAll('.form__close');
-// Сам поп-ап
-const profilePopup = document.querySelector('.popup');
+const editProfile = document.querySelector('.profile__edit-button');// Кнопка редактирования профиля
+const closePopup = document.querySelectorAll('.popup__close');// Кнопка закрытия поп-апа
+const profilePopup = document.querySelector('.popup-profile'); // Сам поп-ап
 
 // Функция открытия попапа (принимает объект - попап) переключает его класс
-const togglePopup = (target) => {
+const togglePopup = target => {
   //Если у поп-апа нет класса "popup_opened", мы его добавляем по клику, иначе убираем этот класс
   target.classList.toggle('popup_opened');
 }
@@ -39,7 +36,7 @@ const formName = document.querySelector('.form__input_value_name'); // Имя в
 const formDescription = document.querySelector('.form__input_value_description'); // Род деятельности в форме
 
 // Если форма была отправлена, перезаписываем значения в профиле
-const profileFormSubmitHandler = (event) => {
+const profileFormSubmitHandler = event => {
   //Отменяем действие формы по умолчанию
   event.preventDefault();
   //Записываем значения из формы в документ
@@ -57,8 +54,8 @@ formProfile.addEventListener('submit', profileFormSubmitHandler);
 //Список карточек
 const initialCards = [
   {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+    name: 'Москва',
+    link: 'https://kudamoscow.ru/uploads/e6e9e1d7c7ba9638527087eac4aa39b3.jpg'
   },
   {
     name: 'Челябинская область',
@@ -82,15 +79,39 @@ const initialCards = [
   }
 ];
 
-//Определяем теплейт и котейнер списка мест
+//Определяем теплейт и котейнер списка мест и попапа с картинками
 const placesTemplate = document.querySelector('#place-template').content;
 const placesContainer = document.querySelector('.places__list');
 
-//Функция формирования карточки места, принимает объект
+//Всплывающее окно с изображением
+const root = document.querySelector('.root'); //Мы будем рендерить окно с изображением в конце документа, поэтому нужно определить документ
+const imagePopup = document.querySelector('#image-popup-template').content; //Темплейт для реднера окна превью изображения
+
+//Возвращаем шаблон просмотра большого изображения
+const renderImagePopup = (imageUrl, imageName) => {
+  const renderTemplate = imagePopup.cloneNode(true);
+  renderTemplate.querySelector('.popup__image').src = imageUrl;
+  renderTemplate.querySelector('.popup__image').alt = imageName;
+  renderTemplate.querySelector('.popup__image-description').textContent = imageName;
+
+  //По закрытию окна просмотра удаляем объект окно
+  renderTemplate.querySelector('.popup__close').addEventListener('click', (event) => {
+    let popup = event.target.closest('.popup');
+    //После скрытия окна, удаляем элемент просмотра из DOM, даже хз как это сделать без пайпа
+    // Чтобы попап красиво пропадал, добавил анимацию
+    togglePopup(popup);
+    popup.remove();
+  })
+
+  return renderTemplate;
+}
+
+//Функция формирования карточки места, принимает объект, возвращает карточку места
 const renderPlace = object => {
   const renderTemplate = placesTemplate.cloneNode(true); //Клонируем темплейт
   renderTemplate.querySelector('.place__title').textContent = object.name; //Выставляем название
   renderTemplate.querySelector('.place__image').src = object.link; //Выставляем изображение
+  renderTemplate.querySelector('.place__image').alt = object.name; //Выставляем альтернативный текст
 
   //Добавить событие на лайк
   renderTemplate.querySelector('.place__like').addEventListener('click', event => {
@@ -99,6 +120,17 @@ const renderPlace = object => {
 
   //Добавить событие на удаление места
   renderTemplate.querySelector('.place__delete').addEventListener('click',  event => event.target.closest('.place').remove());
+
+  //Добавить событие на открытие попапа
+  renderTemplate.querySelector('.place__image').addEventListener('click', (event) => {
+    //Получаем шаблон для рендера
+    let popup = renderImagePopup(object.link, object.name);
+    //Добавляем рендер в документ
+    root.append(popup);
+    //Находим рендер в документе b и показываем
+    let renderComplete = document.querySelector('.image-popup');
+    togglePopup(renderComplete);
+  })
 
   return renderTemplate; //Возвращаем готовый темплейт
 }
@@ -124,25 +156,29 @@ addPlaceButton.addEventListener('click', () => {
 });
 
 //Когда юзер сабмитит форму
-const placeFormSubmitHandler = (event) => {
+const placeFormSubmitHandler = event => {
   //Мы отменяем дефолтное действие формы
   event.preventDefault();
 
-  //Создаем объект с параметрами, которые получили из формы
-  let formSubmitResult = {}; //Объявили пустой объект (через let потому что можем)
-  formSubmitResult.name = placeName.value; //Записали имя из формы
-  formSubmitResult.link = placeImage.value; //Записали ссылку на картинку из формы
-  console.log(formSubmitResult);
+  //Проверим поля на предмет ввода данных перед отправкой формы
+  if (placeName.value !== '' && placeImage.value !== '') {
+    //Создаем объект с параметрами, которые получили из формы
+    let formSubmitResult = {}; //Объявили пустой объект (через let потому что можем)
+    formSubmitResult.name = placeName.value; //Записали имя из формы
+    formSubmitResult.link = placeImage.value; //Записали ссылку на картинку из формы
+    console.log(formSubmitResult);
 
-  //Потом используем метод добавления события на страницу
-  placesContainer.append(renderPlace(formSubmitResult));
-  togglePopup(addPlacePopup);
+    //Потом используем метод добавления события на страницу
+    placesContainer.append(renderPlace(formSubmitResult));
+    togglePopup(addPlacePopup);
+  } else {
+    //Если поля пустые, выведем в консоль, ведь дизайнер не дал нам состояния инпутов
+    // при отсутствии данных, а пустой сабмит сломает верстку.
+    console.log('Данные заполнены не полностью!!!');
+  }
 }
 
 formPlace.addEventListener('submit', placeFormSubmitHandler);
 
 
 
-//const
-
-//Всплывающее окно с изображением

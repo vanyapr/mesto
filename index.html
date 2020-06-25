@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="ru">
 <head>
@@ -10,108 +11,122 @@
 </head>
 <body class="root">
 
-  <!-- Шапка -->
-  <header class="header">
-    <a href="./" title="Место" class="logo">
-      <img src="./images/logo.svg" alt="Место" class="logo__image">
-    </a>
-  </header>
-  <!--// Шапка -->
+<!-- Шапка -->
+<header class="header">
+  <a href="./" title="Место" class="logo">
+    <img src="./images/logo.svg" alt="Место" class="logo__image">
+  </a>
+</header>
+<!--// Шапка -->
 
-  <!-- Контент -->
-  <main class="main">
+<!-- Контент -->
+<main class="main">
 
-    <!-- Профиль пользователя -->
-    <section class="profile">
-      <img src="./images/profile__avatar.jpg" srcset="./images/profile__avatar@2x.jpg 2x" alt="Жак-Ив Кусто" class="profile__avatar">
+  <!-- Профиль пользователя -->
+  <section class="profile">
+    <img src="./images/profile__avatar.jpg" srcset="./images/profile__avatar@2x.jpg 2x" alt="Жак-Ив Кусто" class="profile__avatar">
 
-      <div class="profile__info">
-        <h1 class="profile__title">Жак-Ив Кусто</h1>
-        <p class="profile__description">Исследователь океана</p>
-        <button class="profile__edit-button" title="Редактировать профиль">
-          <!-- Редактировать профиль-->
-        </button>
-      </div>
-
-      <button class="profile__add-button" title="Добавить место">
-        <!-- Добавить место-->
+    <div class="profile__info">
+      <h1 class="profile__title">Жак-Ив Кусто</h1>
+      <p class="profile__description">Исследователь океана</p>
+      <button class="profile__edit-button" title="Редактировать профиль">
+        <!-- Редактировать профиль-->
       </button>
-    </section>
-    <!-- Профиль пользователя -->
-
-    <!-- Список мест  -->
-    <section class="places" aria-label="Места">
-
-      <!--  Контейнер для рендера списка мест  -->
-      <ul class="places__list">
-
-      </ul>
-      <!-- // Контейнер для рендера списка мест   -->
-
-    </section>
-    <!-- Список мест  -->
-
-  </main>
-  <!--// Контент -->
-
-  <!-- Подвал -->
-  <footer class="footer">
-    <p class="footer__copyright">
-      &copy; 2020 Mesto Russia
-    </p>
-  </footer>
-  <!--// Подвал -->
-
-
-  <!-- Не очевидно: необходимо ли рендерить эти попапы при помощи темплейтов?
-  Предположу, что правильно использовать отдельную верстку для каждого попапа,
-  потому что во втором есть плейсхолдеры и значит это разные блоки.
-  При этом я могу использовать блоки повторно -->
-
-  <!-- Всплывающая форма редактирования профиля-->
-  <div class="popup popup-profile">
-    <div class="popup__container">
-      <button class="form__close">Закрыть форму</button>
-      <form class="form form-profile">
-        <h2 class="form__title">Редактировать профиль</h2>
-        <input type="text" name="form__input_value_name" class="form__input form__input_value_name" value="" aria-label="Имя">
-        <input type="text" name="form__input_value_description" class="form__input form__input_value_description" value=""  aria-label="Род деятельности">
-        <input type="submit" class="form__submit" value="Сохранить">
-      </form>
     </div>
+
+    <button class="profile__add-button" title="Добавить место">
+      <!-- Добавить место-->
+    </button>
+  </section>
+  <!-- Профиль пользователя -->
+
+  <!-- Список мест  -->
+  <section class="places" aria-label="Места">
+
+    <!--  Контейнер для рендера списка мест  -->
+    <ul class="places__list">
+
+    </ul>
+    <!-- // Контейнер для рендера списка мест   -->
+
+  </section>
+  <!-- Список мест  -->
+
+</main>
+<!--// Контент -->
+
+<!-- Подвал -->
+<footer class="footer">
+  <p class="footer__copyright">
+    &copy; 2020 Mesto Russia
+  </p>
+</footer>
+<!--// Подвал -->
+
+
+<!-- Не очевидно: необходимо ли рендерить эти попапы при помощи темплейтов?
+Предположу, что правильно использовать отдельную верстку для каждого попапа,
+потому что во втором есть плейсхолдеры, и в целом значит это разные блоки.
+При этом я могу использовать блоки повторно, поэтому новый цсс писать не придется-->
+
+<!-- Всплывающая форма редактирования профиля-->
+<div class="popup popup-profile">
+  <div class="popup__container">
+    <button class="popup__close">Закрыть форму</button>
+    <form class="form form-profile">
+      <h2 class="form__title">Редактировать профиль</h2>
+      <input type="text" name="form__input_value_name" class="form__input form__input_value_name" value="" aria-label="Имя">
+      <input type="text" name="form__input_value_description" class="form__input form__input_value_description" value=""  aria-label="Род деятельности">
+      <input type="submit" class="form__submit" value="Сохранить">
+    </form>
   </div>
-  <!-- // Всплывающая форма редактирования профиля -->
+</div>
+<!-- // Всплывающая форма редактирования профиля -->
 
-  <!-- Всплывающая форма добавления места-->
-  <div class="popup popup-place">
-    <div class="popup__container">
-      <button class="form__close">Закрыть форму</button>
-      <form class="form form-place">
-        <h2 class="form__title">Новое место</h2>
-        <input type="text" name="form__input_value_place-name" class="form__input form__input_value_place-name" value="" placeholder="Название" aria-label="Название места">
-        <input type="text" name="form__input_value_image" class="form__input form__input_value_image" value=""  placeholder="Ссылка на картинку" aria-label="Ссылка на картинку">
-        <input type="submit" class="form__submit" value="Сохранить">
-      </form>
-    </div>
+<!-- Всплывающая форма добавления места-->
+<div class="popup popup-place">
+  <div class="popup__container">
+    <button class="popup__close">Закрыть форму</button>
+    <form class="form form-place">
+      <h2 class="form__title">Новое место</h2>
+      <input type="text" name="form__input_value_place-name" class="form__input form__input_value_place-name" value="" placeholder="Название" aria-label="Название места">
+      <input type="text" name="form__input_value_image" class="form__input form__input_value_image" value="" placeholder="Ссылка на картинку" aria-label="Ссылка на картинку">
+      <input type="submit" class="form__submit" value="Создать">
+    </form>
   </div>
-  <!-- // Всплывающая форма добавления места -->
+</div>
+<!-- // Всплывающая форма добавления места -->
 
+<!-- Темплейты -->
 
+<!-- Одно место  -->
+<template id="place-template">
+  <li class="place">
+    <img src="./images/karachaevsk.jpg" alt="Карачаевск" class="place__image">
+    <h2 class="place__title">Название места</h2>
+    <button class="place__like" title="Добавить место в избранное">Добавить место в избранное</button>
+    <button class="place__delete" title="Удалить место">Удалить место</button>
+  </li>
+</template>
+<!--// Одно место  -->
 
-  <!-- Темплейты -->
-  <!-- Одно место  -->
-  <template id="place-template">
-    <li class="place">
-      <img src="./images/karachaevsk.jpg" alt="Карачаевск" class="place__image">
-      <h2 class="place__title">Карачаевск</h2>
-      <button class="place__like" title="Добавить место в избранное">Добавить место в избранное</button>
-      <button class="place__delete" title="Удалить место">Удалить место</button>
-    </li>
-  </template>
-  <!--// Одно место  -->
+<!-- Окно просмотра изображения -->
+<template id="image-popup-template">
+  <div class="popup image-popup" style="/*display: block; opacity: 1; visibility: visible;">
+    <figure class="popup__image-container">
+      <button class="popup__close">Закрыть форму</button>
+      <img style="display:block ;" src="https://kudamoscow.ru/image/1450/1150/uploads/d057298d72b221594f4181ecb649c1c1.jpg" alt="Альтернативный текст" class="popup__image">
+      <img style="display: none;" src="https://kudamoscow.ru/uploads/e6e9e1d7c7ba9638527087eac4aa39b3.jpg" alt="Альтернативный текст" class="popup__image">
+      <figcaption class="popup__image-description">
+        Описание картинки
+      </figcaption>
+    </figure>
+  </div>
+</template>
+<!-- // Окно просмотра изображения -->
 
-  <!-- Javascripts -->
-  <script src="./scripts/script.js"></script>
+<!-- Javascripts -->
+<script src="./scripts/script.js"></script>
 
 </body>
 </html>
