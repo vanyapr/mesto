@@ -37,8 +37,8 @@ const formDescription = document.querySelector('.form__input_value_description')
 
 // Если форма была отправлена, перезаписываем значения в профиле
 const formSubmitHandler = (event) => {
+  //Отменяем действие формы по умолчанию
   event.preventDefault();
-
   name.textContent = formName.value;
   description.textContent = formDescription.value;
   //Не забываем закрыть форму
@@ -86,6 +86,17 @@ const renderPlace = object => {
   const renderTemplate = placesTemplate.cloneNode(true); //Клонируем темплейт
   renderTemplate.querySelector('.place__title').textContent = object.name; //Выставляем название
   renderTemplate.querySelector('.place__image').src = object.link; //Выставляем изображение
+
+  //Добавить событие на лайк
+  renderTemplate.querySelector('.place__like').addEventListener('click', event => {
+    event.target.classList.toggle('place__like_status_active');
+  });
+
+  //Добавить событие на удаление
+  renderTemplate.querySelector('.place__delete').addEventListener('click',  event => {
+    event.target.closest('.place').remove();
+  })
+
   return renderTemplate; //Возвращаем готовый темплейт
 }
 
