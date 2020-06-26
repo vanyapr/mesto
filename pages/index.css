@@ -12,6 +12,7 @@
 @import url(../blocks/place/__like/_status/place__like_status_active.css);
 @import url(../blocks/form/form.css);
 @import url(../blocks/popup/popup.css);
+@import url(../blocks/popup/_type/popup_type_image.css);
 @import url(../blocks/popup/_opened/popup_opened.css);
 
 @import url(../blocks/footer/footer.css);
