@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="ru">
 <head>
@@ -89,13 +88,27 @@
     <button class="popup__close">Закрыть форму</button>
     <form class="form form-place">
       <h2 class="form__title">Новое место</h2>
-      <input type="text" name="form__input_value_place-name" class="form__input form__input_value_place-name" value="" placeholder="Название" aria-label="Название места">
-      <input type="text" name="form__input_value_image" class="form__input form__input_value_image" value="" placeholder="Ссылка на картинку" aria-label="Ссылка на картинку">
+      <input type="text" name="form__input_value_place-name" class="form__input form__input_value_place-name" value="" placeholder="Название" aria-label="Название места" required>
+      <input type="text" name="form__input_value_image" class="form__input form__input_value_image" value="" placeholder="Ссылка на картинку" aria-label="Ссылка на картинку" required>
       <input type="submit" class="form__submit" value="Создать">
     </form>
   </div>
 </div>
 <!-- // Всплывающая форма добавления места -->
+
+<!-- Окно просмотра изображения -->
+<!-- Решено переделать просто дивом, в который будут перезаписываться значения поскольку темплейт
+порождает странные коллизии при работе с анимациями, да и в целом я уже поигрался с темплейтами -->
+<div class="popup image-popup popup_type_image">
+  <figure class="popup__image-container">
+    <button class="popup__close">Закрыть форму</button>
+    <img src="https://kudamoscow.ru/image/1450/1150/uploads/d057298d72b221594f4181ecb649c1c1.jpg" alt="Альтернативный текст" class="popup__image">
+    <figcaption class="popup__image-description">
+      Описание картинки
+    </figcaption>
+  </figure>
+</div>
+<!-- // Окно просмотра изображения -->
 
 <!-- Темплейты -->
 
@@ -105,24 +118,13 @@
     <img src="./images/karachaevsk.jpg" alt="Карачаевск" class="place__image">
     <h2 class="place__title">Название места</h2>
     <button class="place__like" title="Добавить место в избранное">Добавить место в избранное</button>
-    <button class="place__delete" title="Удалить место">Удалить место</button>
+    <button class="place__delete" title="Удалить место">
+      <!-- Под вопросом: я бы хотел оставить текст у кнопки:
+           Удалить место-->
+    </button>
   </li>
 </template>
 <!--// Одно место  -->
-
-<!-- Окно просмотра изображения -->
-<template id="image-popup-template">
-  <div class="popup image-popup popup_type_image">
-    <figure class="popup__image-container">
-      <button class="popup__close">Закрыть форму</button>
-      <img src="https://kudamoscow.ru/image/1450/1150/uploads/d057298d72b221594f4181ecb649c1c1.jpg" alt="Альтернативный текст" class="popup__image">
-      <figcaption class="popup__image-description">
-        Описание картинки
-      </figcaption>
-    </figure>
-  </div>
-</template>
-<!-- // Окно просмотра изображения -->
 
 <!-- Javascripts -->
 <script src="./scripts/script.js"></script>

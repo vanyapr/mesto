@@ -9,7 +9,6 @@
 @import url(../blocks/profile/profile.css);
 @import url(../blocks/places/places.css);
 @import url(../blocks/place/place.css);
-@import url(../blocks/place/__like/_status/place__like_status_active.css);
 @import url(../blocks/form/form.css);
 @import url(../blocks/popup/popup.css);
 @import url(../blocks/popup/_type/popup_type_image.css);
