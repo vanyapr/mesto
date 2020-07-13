@@ -1,7 +1,7 @@
 // ПЕРЕМЕННЫЕ
 // Редактирование профиля пользователя
 const editProfile = document.querySelector('.profile__edit-button');// Кнопка редактирования профиля
-const closePopup = document.querySelectorAll('.popup__close');// Кнопки закрытия поп-апа в документе (для всех попапов)
+const popupList = document.querySelectorAll('.popup');// Попапы
 const userTitle = document.querySelector('.profile__title'); // Имя в профиле на странице
 const userDescription = document.querySelector('.profile__description'); // Род деятельности в профиле на странице
 
@@ -55,19 +55,53 @@ const initialCards = [
   }
 ];
 
-
 // Функция открытия попапа (принимает объект - попап) переключает его класс (открыт/закрыт)
 const togglePopup = target => {
-  //Если у объекта нет класса "popup_opened", мы его добавляем по клику, иначе убираем класс "popup_opened"
+  // Если у объекта нет класса "popup_opened", мы его добавляем по клику, иначе убираем класс "popup_opened"
   target.classList.toggle('popup_opened');
 }
 
-//Закрываем попап по клику на кнопку закрытия (сработает для всех форм, которые будут добавляться на страницу в будущем)
-closePopup.forEach((item) => {
-  item.addEventListener('click', (event) => {
-    togglePopup(event.target.closest('.popup'));
+// ~~Закрываем попап по клику на кнопку закрытия (сработает для всех форм, которые будут добавляться на страницу в будущем)~~
+// Рефактор: событие теперь вешается не на кнопку закрытия попапа, а на весь попап, где вызывается для нужного элемента всплытием
+popupList.forEach((popup) => {
+  popup.addEventListener('click', (event) => {
+    // Проверяем, является ли целью клика нужный нам элемент
+    if (event.target.classList.contains('popup') || event.target.classList.contains('popup__close')) {
+      //Вызываем событие всплытием
+      togglePopup(event.target.closest('.popup'));
+    }
   });
+
+  //Закрытие попапа по кнопке эскейп
+  //Поскольку у нас попап занимает 100 процентов размера окна, мы можем повесить событие нажатия кнопки на него
+  // popup.addEventListener('keydown', event => {
+  //   //Отловить нажатие кнопки эскейп
+  //   if(event.key === 'Escape') {
+  //     togglePopup(event.target.closest('.popup'));
+  //     console.log(event.key);
+  //     //Закрыть попап
+  //   }
+  //
+  // });
 });
+
+//Клик в документе на эскейп закрытие попапа
+document.addEventListener('keydown', event => {
+  //Проверяем, есть ли открытый попап
+  const targetPopup = document.querySelector('.popup_opened');
+
+  //Если  открытый попап есть, закрываем его
+  if (targetPopup) {
+    //Отловить нажатие кнопки эскейп
+    if(event.key === 'Escape') {
+      //Закрыть попап
+      togglePopup(targetPopup);
+    }
+  }
+
+});
+
+
 
 //Открытие окна редактирования профиля: считываем значения из документа и вносим в поля формы
 const toggleProfilePopup = () => {

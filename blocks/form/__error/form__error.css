@@ -5,6 +5,7 @@
   font-size: 12px;
   line-height: 15px;
   position: absolute;
-  margin-top: 5px;
-  color: #FF0000;
+  top: calc(32.3px + 5px);
+  left: 0;
+  color: #F00;
 }

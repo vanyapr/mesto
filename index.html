@@ -72,13 +72,17 @@
 <div class="popup popup-profile">
   <div class="popup__container">
     <button class="popup__close">Закрыть форму</button>
-    <form class="form" name="formProfile">
+    <form class="form" name="formProfile" novalidate>
       <h2 class="form__title">Редактировать профиль</h2>
-      <input type="text" name="profileName" class="form__input form__input_value_name" id="profile-name" minlength="2" maxlength="40" value="" aria-label="Имя" required>
-      <span class="form__error" id="profile-name-error">Текст для верстки, удали</span>
-      <input type="text" name="profileDescription" class="form__input form__input_value_description" id="profile-description" minlength="2" maxlength="40" value="" aria-label="Род деятельности" required>
-      <span class="form__error" id="profile-description-error">Текст для верстки, удали</span>
-      <input type="submit" class="form__submit" value="Сохранить">
+      <div class="form__input-container">
+        <input type="text" name="profileName" class="form__input form__input_value_name" id="profile-name" minlength="2" maxlength="40" value="" aria-label="Имя" required>
+        <span class="form__error" id="profile-name-error">Текст для верстки, удали</span>
+      </div>
+      <div class="form__input-container">
+        <input type="text" name="profileDescription" class="form__input form__input_value_description" id="profile-description" minlength="2" maxlength="40" value="" aria-label="Род деятельности" required>
+        <span class="form__error" id="profile-description-error">Текст для верстки, удали</span>
+      </div>
+      <button type="submit" class="form__submit form__submit_inactive">Сохранить</button>
     </form>
   </div>
 </div>
@@ -88,13 +92,17 @@
 <div class="popup popup-place">
   <div class="popup__container">
     <button class="popup__close">Закрыть форму</button>
-    <form class="form" name="formPlace">
+    <form class="form" name="formPlace" novalidate>
       <h2 class="form__title">Новое место</h2>
-      <input type="text" name="placeName" class="form__input form__input_value_place-name" id="place-name" minlength="1" maxlength="30" value="" placeholder="Название" aria-label="Название места" required>
-      <span class="form__error" id="place-name-error">Текст для верстки, удали</span>
-      <input type="url" name="placeImage" class="form__input form__input_value_image" id="place-image"  value="" placeholder="Ссылка на картинку" aria-label="Ссылка на картинку" required>
-      <span class="form__error" id="place-image-error">Текст для верстки, удали</span>
-      <input type="submit" class="form__submit" value="Создать">
+      <div class="form__input-container">
+        <input type="text" name="placeName" class="form__input form__input_value_place-name" id="place-name" minlength="1" maxlength="30" value="" placeholder="Название" aria-label="Название места" required>
+        <span class="form__error" id="place-name-error">Текст для верстки, удали</span>
+      </div>
+      <div class="form__input-container">
+        <input type="url" name="placeImage" class="form__input form__input_value_image" id="place-image"  value="" placeholder="Ссылка на картинку" aria-label="Ссылка на картинку" required>
+        <span class="form__error" id="place-image-error">Текст для верстки, удали</span>
+      </div>
+      <button type="submit" class="form__submit">Создать</button>
     </form>
   </div>
 </div>
