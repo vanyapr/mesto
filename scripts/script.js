@@ -1,29 +1,33 @@
-//ПЕРЕМЕННЫЕ
-//Редактирование профиля пользователя
-const editProfile = document.querySelector('.profile__edit-button');//Кнопка редактирования профиля
-const closePopup = document.querySelectorAll('.popup__close');//Кнопка закрытия поп-апа
-const profilePopup = document.querySelector('.popup-profile'); //Всплывающее окно редактирования профиля юзера
+// ПЕРЕМЕННЫЕ
+// Редактирование профиля пользователя
+const editProfile = document.querySelector('.profile__edit-button');// Кнопка редактирования профиля
+const closePopup = document.querySelectorAll('.popup__close');// Кнопки закрытия поп-апа в документе (для всех попапов)
 const userTitle = document.querySelector('.profile__title'); // Имя в профиле на странице
 const userDescription = document.querySelector('.profile__description'); // Род деятельности в профиле на странице
-const formProfile = document.querySelector('.form-profile'); // Форма с полями
-const formTitle = document.querySelector('.form__input_value_name'); // Имя в форме
-const formDescription = document.querySelector('.form__input_value_description'); // Род деятельности в форме
 
-//Добавление нового места
-const addPlaceButton = document.querySelector('.profile__add-button'); //Кнопка добавления нового места
-const addPlacePopup = document.querySelector('.popup-place'); //Всплывающее окно добавления нового места
-const placeName = document.querySelector('.form__input_value_place-name'); //Название места в форме
-const placeImage = document.querySelector('.form__input_value_image'); //Ссылка на изображение в форме
-const formPlace = document.querySelector('.form-place'); //Форма с данными о месте
-const placeTemplate = document.querySelector('#place-template').content; //Определяем теплейт одного места в списке
-const placesListContainer = document.querySelector('.places__list'); //Определяем контейнер в котором будем рендерить список мест
+// Форма редактирования профиля пользователя
+const profilePopup = document.querySelector('.popup-profile'); // Всплывающее окно редактирования профиля юзера
+const formProfile = document.forms.formProfile; // Форма с полями
+const profileName = formProfile.profileName; // Имя в форме
+const profileDescription = formProfile.profileDescription; // Род деятельности в форме
 
-//Всплывающее окно с изображением
+// Добавление нового места
+const addPlaceButton = document.querySelector('.profile__add-button'); // Кнопка добавления нового места
+const placeTemplate = document.querySelector('#place-template').content; // Теплейт одного места в списке мест
+const placesListContainer = document.querySelector('.places__list'); // Контейнер, в котором будем рендерить список мест
+
+// Форма добавления нового места
+const addPlacePopup = document.querySelector('.popup-place'); // Всплывающее окно добавления нового места
+const formPlace = document.forms.formPlace; // Форма с данными о месте
+const placeName = formPlace.placeName; // Название места в форме
+const placeImage = formPlace.placeImage; // Ссылка на изображение в форме
+
+// Всплывающее окно с изображением
 const imagePopup = document.querySelector('.image-popup'); //Попап с изображением
 const popupImage = imagePopup.querySelector('.popup__image'); //Изображение в попапе
 const popupImageTitle = imagePopup.querySelector('.popup__image-description'); //Текст описания изображения в попапе
 
-//Данные для списка мест
+//Объект с данными для списка мест
 const initialCards = [
   {
     name: 'Москва',
@@ -54,7 +58,7 @@ const initialCards = [
 
 // Функция открытия попапа (принимает объект - попап) переключает его класс (открыт/закрыт)
 const togglePopup = target => {
-  //Если у поп-апа нет класса "popup_opened", мы его добавляем по клику, иначе убираем этот класс
+  //Если у объекта нет класса "popup_opened", мы его добавляем по клику, иначе убираем класс "popup_opened"
   target.classList.toggle('popup_opened');
 }
 
@@ -68,8 +72,8 @@ closePopup.forEach((item) => {
 //Открытие окна редактирования профиля: считываем значения из документа и вносим в поля формы
 const toggleProfilePopup = () => {
   // Считываем значения из документа и записываем их в поля формы при открытии формы
-  formTitle.value = userTitle.textContent;
-  formDescription.value = userDescription.textContent;
+  profileName.value = userTitle.textContent;
+  profileDescription.value = userDescription.textContent;
   togglePopup(profilePopup); //Открываем попап
 }
 
@@ -83,8 +87,8 @@ const profileFormSubmitHandler = event => {
   event.preventDefault();
 
   //Записываем значения из формы в элементы документа
-  userTitle.textContent = formTitle.value;
-  userDescription.textContent = formDescription.value;
+  userTitle.textContent = profileName.value;
+  userDescription.textContent = profileDescription.value;
 
   //Не забываем закрыть форму
   togglePopup(profilePopup);
