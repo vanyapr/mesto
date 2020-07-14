@@ -3,22 +3,21 @@ const isInputValid = (formElement, input, errorClass, inputErrorClass) => {
     const errorMessage = formElement.querySelector(`#${input.id}-error`) ;// Находим контейнер ошибки по идентификатору инпута
 
     // Проверяем валидность данных в инпуте
-    if (!input.validity.valid) { //Инпут невалиден
+    if (!input.validity.valid) { // Инпут невалиден
       // Добавляем класс невалидности инпуту
       input.classList.add(inputErrorClass);
       // Добавляем текст ошибки
       errorMessage.textContent = input.validationMessage;
       // Показываем ошибку
       errorMessage.classList.add('form__error_active');
-    } else { //Инпут валиден
+    } else { // Инпут валиден
       // Удаляем класс невалидности у инпута
       input.classList.remove(inputErrorClass);
-      //Скрываем ошибку
+      // Скрываем ошибку
       errorMessage.classList.remove('form__error_active');
-      //Очищаем сообщение об ошибке
+      // Очищаем сообщение об ошибке
       errorMessage.textContent = '';
     }
-
 };
 
 // Проверка валидности всех инпутов в форме, вовзратит true если форма валидна
@@ -38,44 +37,43 @@ const isFormValid = (formElement, inputSelector) => {
 // Включение и выключение кнопки сабмита в форме
 const toggleSubmitButton = (formElement, submitButtonSelector, inactiveButtonClass, inputSelector) => {
 
-  const button = formElement.querySelector(submitButtonSelector); //Находим кнопку в форме
+  const button = formElement.querySelector(submitButtonSelector); // Находим кнопку в форме
 
-  //Если кнопка находится в валидной форме
+  // Если кнопка находится в валидной форме
   if(isFormValid(formElement, inputSelector)) {
-    //Включаем кнопку
+    // Включаем кнопку
     button.classList.remove(inactiveButtonClass);
     button.disabled = false;
   } else {
-    //Иначе отключаем кнопку
+    // Иначе отключаем кнопку
     button.disabled = true;
     button.classList.add(inactiveButtonClass);
   }
 };
 
-//Добавление эвент листенеров на элементы формы
+// Добавление эвент листенеров на элементы формы
 const setEventListeners = (formSelector, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass) => {
   const formList = document.querySelectorAll(formSelector);
 
   // 1) Для каждой формы повесить листенеры
   formList.forEach(formElement => {
-    //Выключим кнопку по умолчанию при загрузке страницы, если поля пустые
+    // Выключим кнопку по умолчанию при загрузке страницы, если поля пустые
     toggleSubmitButton(formElement, submitButtonSelector, inactiveButtonClass, inputSelector);
 
-    const inputList = Array.from(formElement.querySelectorAll(inputSelector)); //Список инпутов в форме
+    const inputList = Array.from(formElement.querySelectorAll(inputSelector)); // Список инпутов в форме
 
     // Вешаем листенер на ввод данных в инпут
     inputList.forEach(input => {
       input.addEventListener('input', event => {
-        isInputValid(formElement, event.target, errorClass, inputErrorClass); //Валидируем поля
-        toggleSubmitButton(formElement, submitButtonSelector, inactiveButtonClass, inputSelector); //Управление кнопкой сабмита
+        isInputValid(formElement, event.target, errorClass, inputErrorClass); // Валидируем поля
+        toggleSubmitButton(formElement, submitButtonSelector, inactiveButtonClass, inputSelector); // Управление кнопкой сабмита
       });
     });
 
-    //Отменяем поведение формы по дефолту (по идее оно уже отменено в скрипте выше?
+    // Отменяем поведение формы по дефолту (по идее оно уже отменено в скрипте выше?)
     // formElement.addEventListener('submit', event => {
     //   event.preventDefault();
     // });
-
   })
 };
 
