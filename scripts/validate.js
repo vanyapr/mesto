@@ -12,11 +12,8 @@
 // 7) Если форма валидна, включать кнопку
 
 // Проверка валидности инпута, принимает форму и селектор инпута, проверяет валиден ли инпут и расставляет нужные классы
-const isInputValid = (form, inputSelector, errorClass, inputErrorClass) => {
-  const inputsList = form.querySelectorAll(inputSelector); // Находим все инпты в форме
-
-  Array.from(inputsList).forEach(input => {
-    const errorMessage = form.querySelector(`#${input.id}-error`) ;// Находим контейнер ошибки по идентификатору инпута
+const isInputValid = (formElement, input, errorClass, inputErrorClass) => {
+    const errorMessage = formElement.querySelector(`#${input.id}-error`) ;// Находим контейнер ошибки по идентификатору инпута
 
     // Проверяем валидность данных в инпуте
     if (!input.validity.valid) { //Инпут невалиден
@@ -34,12 +31,12 @@ const isInputValid = (form, inputSelector, errorClass, inputErrorClass) => {
       //Очищаем сообщение об ошибке
       errorMessage.textContent = '';
     }
-  });
+
 };
 
 // Проверка валидности всех инпутов в форме, вовзратит true если форма валидна
-const isFormValid = (form, inputSelector) => {
-  const inputsList = form.querySelectorAll(inputSelector); // Находим все инпты в форме
+const isFormValid = (formElement, inputSelector) => {
+  const inputsList = formElement.querySelectorAll(inputSelector); // Находим все инпты в форме
 
   //Проверяем, есть ли в форме невалидные инпуты
   const validState =  Array.from(inputsList).some(input => {
@@ -52,12 +49,12 @@ const isFormValid = (form, inputSelector) => {
 };
 
 // Включение и выключение кнопки сабмита в форме
-const toggleSubmitButton = (form, submitButtonSelector, inactiveButtonClass, inputSelector) => {
+const toggleSubmitButton = (formElement, submitButtonSelector, inactiveButtonClass, inputSelector) => {
 
-  const button = form.querySelector(submitButtonSelector); //Находим кнопку в форме
+  const button = formElement.querySelector(submitButtonSelector); //Находим кнопку в форме
 
   //Если кнопка находится в валидной форме
-  if(isFormValid(form, inputSelector)) {
+  if(isFormValid(formElement, inputSelector)) {
     //Включаем кнопку
     button.classList.remove(inactiveButtonClass);
     button.disabled = false;
@@ -81,8 +78,8 @@ const setEventListeners = (formSelector, inputSelector, submitButtonSelector, in
     // Вешаем листенер на ввод данных в инпут
     inputList.forEach(input => {
       input.addEventListener('input', event => {
-        isInputValid(formElement, inputSelector, errorClass, inputErrorClass); //Валидируем поля
-        toggleSubmitButton(formElement, submitButtonSelector, inactiveButtonClass, inputSelector); //
+        isInputValid(formElement, event.target, errorClass, inputErrorClass); //Валидируем поля
+        toggleSubmitButton(formElement, submitButtonSelector, inactiveButtonClass, inputSelector); //Управление кнопкой сабмита
       });
     });
 
