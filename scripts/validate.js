@@ -11,8 +11,8 @@
 // 6) Если одно поле валидно, убирать класс невалидности
 // 7) Если форма валидна, включать кнопку
 
-const displayInputError = input => {
-
+const showInputError = (input, inputErrorClass, errorMessage)  => {
+  input.classList.add(inputErrorClass);
 };
 
 // Проверка валидности инпута
@@ -72,38 +72,41 @@ const toggleSubmitButton = (form, submitButtonSelector, inactiveButtonClass, inp
   }
 };
 
+const setEventListeners = (formSelector, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass) => {
+  const formList = document.querySelectorAll(formSelector);
+
+  // 1) Для каждой формы повесить листенеры
+  formList.forEach(formElement => {
+    //Выключим кнопку по умолчанию при загрузке страницы, если поля путы
+    toggleSubmitButton(formElement, submitButtonSelector, inactiveButtonClass, inputSelector);
+
+    const inputList = Array.from(formElement.querySelectorAll(inputSelector)); //Список инпутов в форме
+
+    // Вешаем листенер на ввод данных в инпут
+    inputList.forEach(input => {
+      input.addEventListener('input', event => {
+        isInputValid(formElement, inputSelector, errorClass, inputErrorClass); //Валидируем поля
+        toggleSubmitButton(formElement, submitButtonSelector, inactiveButtonClass, inputSelector); //
+      });
+    });
+
+    formElement.addEventListener('submit', event => {
+      event.preventDefault();
+    });
+
+  })
+};
+
 const enableValidation = whatToValidate => {
-  const formList = document.querySelectorAll(whatToValidate.formSelector); // Cписок форм в документе
+  const formSelector = whatToValidate.formSelector; // Cписок форм в документе
   const inputSelector = whatToValidate.inputSelector; // Селектор инпута
   const submitButtonSelector = whatToValidate.submitButtonSelector; // Селектор кнопки
   const inactiveButtonClass = whatToValidate.inactiveButtonClass; // Класс для ОТКЛЮЧЕНИЯ кнопки
   const inputErrorClass = whatToValidate.inputErrorClass; // Класс инпута с ошибкой
   const errorClass = whatToValidate.errorClass; // Класс ошибки
 
-  // 1) Для каждой формы повесить листенеры
-  formList.forEach(form => {
-    //Выключим кнопку по умолчанию
-    toggleSubmitButton(form, submitButtonSelector, inactiveButtonClass, inputSelector);
-
-    // Вешаем листенер на ввод данных в форму
-    form.addEventListener('input', event => {
-
-      // Валидируем поля в форме
-      isInputValid(form, inputSelector, errorClass, inputErrorClass);
-
-      toggleSubmitButton(form, submitButtonSelector, inactiveButtonClass, inputSelector);
-    });
-
-    // Вешаем листенер на ввод данных в форму
-    form.addEventListener('input', event => {
-
-      // Валидируем поля в форме
-      isInputValid(form, inputSelector, errorClass, inputErrorClass);
-
-      toggleSubmitButton(form, submitButtonSelector, inactiveButtonClass, inputSelector);
-    });
-
-  })
+  // Подключаем эвент листенеры
+  setEventListeners(formSelector, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass);
 };
 
 // включение валидации вызовом enableValidation
