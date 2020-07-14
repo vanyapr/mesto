@@ -8,4 +8,5 @@
   top: calc(32.3px + 5px);
   left: 0;
   color: #F00;
+  display: none;
 }
