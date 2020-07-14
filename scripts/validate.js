@@ -11,11 +11,7 @@
 // 6) Если одно поле валидно, убирать класс невалидности
 // 7) Если форма валидна, включать кнопку
 
-const showInputError = (input, inputErrorClass, errorMessage)  => {
-  input.classList.add(inputErrorClass);
-};
-
-// Проверка валидности инпута
+// Проверка валидности инпута, принимает форму и селектор инпута, проверяет валиден ли инпут и расставляет нужные классы
 const isInputValid = (form, inputSelector, errorClass, inputErrorClass) => {
   const inputsList = form.querySelectorAll(inputSelector); // Находим все инпты в форме
 
@@ -41,7 +37,7 @@ const isInputValid = (form, inputSelector, errorClass, inputErrorClass) => {
   });
 };
 
-// Проверка валидности всех инпутов в форме
+// Проверка валидности всех инпутов в форме, вовзратит true если форма валидна
 const isFormValid = (form, inputSelector) => {
   const inputsList = form.querySelectorAll(inputSelector); // Находим все инпты в форме
 
@@ -62,11 +58,11 @@ const toggleSubmitButton = (form, submitButtonSelector, inactiveButtonClass, inp
 
   //Если кнопка находится в валидной форме
   if(isFormValid(form, inputSelector)) {
-    //Включаем её
+    //Включаем кнопку
     button.classList.remove(inactiveButtonClass);
     button.disabled = false;
   } else {
-    //Иначе отключаем
+    //Иначе отключаем кнопку
     button.disabled = true;
     button.classList.add(inactiveButtonClass);
   }
@@ -77,7 +73,7 @@ const setEventListeners = (formSelector, inputSelector, submitButtonSelector, in
 
   // 1) Для каждой формы повесить листенеры
   formList.forEach(formElement => {
-    //Выключим кнопку по умолчанию при загрузке страницы, если поля путы
+    //Выключим кнопку по умолчанию при загрузке страницы, если поля пустые
     toggleSubmitButton(formElement, submitButtonSelector, inactiveButtonClass, inputSelector);
 
     const inputList = Array.from(formElement.querySelectorAll(inputSelector)); //Список инпутов в форме
@@ -90,9 +86,10 @@ const setEventListeners = (formSelector, inputSelector, submitButtonSelector, in
       });
     });
 
-    formElement.addEventListener('submit', event => {
-      event.preventDefault();
-    });
+    //Отменяем поведение формы по дефолту (по идее оно уже отменено в скрипте выше?
+    // formElement.addEventListener('submit', event => {
+    //   event.preventDefault();
+    // });
 
   })
 };
