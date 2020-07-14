@@ -1,17 +1,4 @@
-// План
-// 1) Для каждой формы повесить листенер
-
-// Форма невалидна
-// 2) Если форма невалидна, выключать кнопку
-// 3) Если одно поле невалидно, отображать ошибку валидации
-// 4) Если одно поле невалидно, добавлять полю класс невалидности
-
-// Форма валидна
-// 5) Если одно поле валидно, убирать ошибку валидации
-// 6) Если одно поле валидно, убирать класс невалидности
-// 7) Если форма валидна, включать кнопку
-
-// Проверка валидности инпута, принимает форму и селектор инпута, проверяет валиден ли инпут и расставляет нужные классы
+// Проверка валидности инпута, принимает форму и инпут, проверяет валиден ли инпут и расставляет нужные классы
 const isInputValid = (formElement, input, errorClass, inputErrorClass) => {
     const errorMessage = formElement.querySelector(`#${input.id}-error`) ;// Находим контейнер ошибки по идентификатору инпута
 
@@ -65,6 +52,7 @@ const toggleSubmitButton = (formElement, submitButtonSelector, inactiveButtonCla
   }
 };
 
+//Добавление эвент листенеров на элементы формы
 const setEventListeners = (formSelector, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass) => {
   const formList = document.querySelectorAll(formSelector);
 
