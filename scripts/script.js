@@ -15,6 +15,7 @@ const profileDescription = formProfile.profileDescription; // Род деяте�
 const addPlaceButton = document.querySelector('.profile__add-button'); // Кнопка добавления нового места
 const placeTemplate = document.querySelector('#place-template').content; // Теплейт одного места в списке мест
 const placesListContainer = document.querySelector('.places__list'); // Контейнер, в котором будем рендерить список мест
+const placeForm = document.forms.formPlace; // Нашли форму в места, этот поиск придется выполнять потому что ревьюер просит явно определять поведение для формы в эвент листенере, а универсальная функция ему не нравится
 
 // Форма добавления нового места
 const addPlacePopup = document.querySelector('.popup-place'); // Всплывающее окно добавления нового места
@@ -186,7 +187,6 @@ addPlaceButton.addEventListener('click', () => {
   placeName.value = '';
   placeImage.value = '';
 
-  const placeForm = document.forms.formPlace; // Нашли форму в места, этот поиск придется выполнять потому что иначе никак
   //Ревьюер попросил перенести сюда?
   //Переиспользуем метод для отключения кнопки у формы если форма невалидна
   toggleSubmitButton(placeForm, validationSettings.submitButtonSelector, validationSettings.inactiveButtonClass, validationSettings.inputSelector);
