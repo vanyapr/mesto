@@ -73,6 +73,15 @@ const togglePopup = target => {
   // Если у объекта нет класса "popup_opened", мы его добавляем по клику, иначе убираем класс "popup_opened"
   target.classList.toggle('popup_opened');
 
+  //Нам придётся найти форму заново и мы не можем использовать
+  const targetForm = target.querySelector('.form'); // Нашли форму в попапе
+  const submitButtonSelector = '.form__submit'; // Нашли кнопку
+  const inactiveButtonClass = 'form__submit_inactive'; // Класс выключенной кнопки придется передавать строкой
+  const inputSelector = '.form__input'; // Нашли инпуты
+
+  //Переиспользуем метод для отключения кнопки у формы если форма невалидна
+  toggleSubmitButton(targetForm, submitButtonSelector, inactiveButtonClass, inputSelector);
+
   //Если объект открыт
   if (target.classList.contains('popup_opened')) {
     //добавляем листенер
@@ -124,6 +133,10 @@ const profileFormSubmitHandler = event => {
 //Отслиживаем форм сабмит для формы редактирования профиля пользователя
 formProfile.addEventListener('submit', profileFormSubmitHandler);
 
+//Листенер простановки лайка
+const toggleLikeButton = event => {
+  event.target.classList.toggle('place__like_status_active');
+}
 
 //Функция формирования карточки места, принимает объект, возвращает карточку места
 // {name: 'Название места', link: 'Ссылка на изображение места'}
@@ -134,36 +147,14 @@ const renderPlace = placeObject => {
   const placeLikeButton = renderTemplate.querySelector('.place__like'); //Кнопка лайка
   const placeDeleteButton = renderTemplate.querySelector('.place__delete'); //Кнопка удаления места
 
-  //Поскольку время есть, чо бы нам не проверить полученный объект на валидность, и если объект некорректен, рендерить фоллбек темплейт?
-  //Мало ли, там хаккермэн пытается взломать наш хтмл...
+  placeTitle.textContent = placeObject.name;
 
-  //Проверим, пришли ли корректные значения: урл и имя картинки
-  //Нагуглим регулярное выражение для проверки урлов и скормим один невалидный объект
-  const correctUrlRegExp = '^(?:http(s)?:\\/\\/)?[\\w.-]+(?:\\.[\\w\\.-]+)+[\\w\\-\\._~:/?#[\\]@!\\$&\'\\(\\)\\*\\+,;=.]+$';
-
-  if (placeObject.link !== '' && placeObject.name !== '' && placeObject.link.match(correctUrlRegExp)) {
-    //Перезаписываем название места
-    placeTitle.textContent = placeObject.name;
-
-    //Перезаписываем изображение
-    placeImage.src = placeObject.link; //Выставляем изображение
-    placeImage.alt =  placeObject.name;
-
-
-  } else {
-    //А если что-то сломалось, добавляем челоевечка с лопатой, чтобы было СОЛИДНО
-    //Перезаписываем название места
-    placeTitle.textContent = 'Ой';
-
-    //Перезаписываем изображение
-    placeImage.src = 'https://02f0a56ef46d93f03c90-22ac5f107621879d5667e0d7ed595bdb.ssl.cf2.rackcdn.com/sites/11792/photos/853893/under_construction_960x.JPG'; //Выставляем изображение
-    placeImage.alt =  'АЙ!';
-  }
+  //Перезаписываем изображение
+  placeImage.src = placeObject.link; //Выставляем изображение
+  placeImage.alt =  placeObject.name;
 
   //Добавляем событие на лайк
-  placeLikeButton.addEventListener('click', event => {
-    event.target.classList.toggle('place__like_status_active');
-  });
+  placeLikeButton.addEventListener('click', toggleLikeButton);
 
   //Добавить событие на удаление места из списка мест
   placeDeleteButton.addEventListener('click',  event => event.target.closest('.place').remove());
@@ -207,6 +198,7 @@ const placeFormSubmitHandler = event => {
 
     //Потом используем метод добавления события на страницу
     placesListContainer.append(renderPlace(formSubmitResult));
+    //И закрываем форму
     togglePopup(addPlacePopup);
   } else {
     //Если поля пустые, выведем в консоль, ведь дизайнер не дал нам состояния инпутов

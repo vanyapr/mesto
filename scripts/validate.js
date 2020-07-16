@@ -74,16 +74,11 @@ const setEventListeners = (formSelector, inputSelector, submitButtonSelector, in
     // formElement.addEventListener('submit', event => {
     //   event.preventDefault();
     // });
-  })
+  });
 };
 
-const enableValidation = whatToValidate => {
-  const formSelector = whatToValidate.formSelector; // Cписок форм в документе
-  const inputSelector = whatToValidate.inputSelector; // Селектор инпута
-  const submitButtonSelector = whatToValidate.submitButtonSelector; // Селектор кнопки
-  const inactiveButtonClass = whatToValidate.inactiveButtonClass; // Класс для ОТКЛЮЧЕНИЯ кнопки
-  const inputErrorClass = whatToValidate.inputErrorClass; // Класс инпута с ошибкой
-  const errorClass = whatToValidate.errorClass; // Класс ошибки
+const enableValidation = ({formSelector, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass}) => {
+  //Вот в этом моменте я так и не понял как использовать ...res, поигрался, отдаю на код ревью
 
   // Подключаем эвент листенеры
   setEventListeners(formSelector, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass);
