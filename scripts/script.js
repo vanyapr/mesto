@@ -73,7 +73,7 @@ const togglePopup = target => {
   // Если у объекта нет класса "popup_opened", мы его добавляем по клику, иначе убираем класс "popup_opened"
   target.classList.toggle('popup_opened');
 
-  //Нам придётся найти форму заново и мы не можем использовать
+  //Нам придётся найти форму заново и мы не можем использовать переменную переданную в объекте в соседнем файле
   const targetForm = target.querySelector('.form'); // Нашли форму в попапе, если она есть
 
   //Если попап открывает картинку, то нам не нужно производить каких-либо действий с формой
@@ -85,7 +85,6 @@ const togglePopup = target => {
     //Переиспользуем метод для отключения кнопки у формы если форма невалидна
     toggleSubmitButton(targetForm, submitButtonSelector, inactiveButtonClass, inputSelector);
   }
-
 
   //Если объект открыт
   if (target.classList.contains('popup_opened')) {
