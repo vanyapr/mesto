@@ -30,7 +30,6 @@ const isFormValid = (formElement, inputSelector) => {
   });
 
   // Возвращаем значение валидности формы
-  //console.log(!validState);
   return !validState;
 };
 
@@ -55,7 +54,7 @@ const toggleSubmitButton = (formElement, submitButtonSelector, inactiveButtonCla
 const setEventListeners = (formSelector, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass) => {
   const formList = document.querySelectorAll(formSelector);
 
-  // 1) Для каждой формы повесить листенеры
+  // Для каждой формы повесить листенеры
   formList.forEach(formElement => {
     // Выключим кнопку по умолчанию при загрузке страницы, если поля пустые
     toggleSubmitButton(formElement, submitButtonSelector, inactiveButtonClass, inputSelector);
@@ -70,15 +69,11 @@ const setEventListeners = (formSelector, inputSelector, submitButtonSelector, in
       });
     });
 
-    // Отменяем поведение формы по дефолту (по идее оно уже отменено в скрипте выше?)
-    // formElement.addEventListener('submit', event => {
-    //   event.preventDefault();
-    // });
   });
 };
 
 const enableValidation = ({formSelector, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass}) => {
-  //Вот в этом моменте я так и не понял как использовать ...res, поигрался, отдаю на код ревью
+  //Вот в этом моменте я так и не понял как использовать ...rest, поигрался, отдаю на код ревью
 
   // Подключаем эвент листенеры
   setEventListeners(formSelector, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass);
