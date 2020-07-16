@@ -74,13 +74,18 @@ const togglePopup = target => {
   target.classList.toggle('popup_opened');
 
   //Нам придётся найти форму заново и мы не можем использовать
-  const targetForm = target.querySelector('.form'); // Нашли форму в попапе
-  const submitButtonSelector = '.form__submit'; // Нашли кнопку
-  const inactiveButtonClass = 'form__submit_inactive'; // Класс выключенной кнопки придется передавать строкой
-  const inputSelector = '.form__input'; // Нашли инпуты
+  const targetForm = target.querySelector('.form'); // Нашли форму в попапе, если она есть
 
-  //Переиспользуем метод для отключения кнопки у формы если форма невалидна
-  toggleSubmitButton(targetForm, submitButtonSelector, inactiveButtonClass, inputSelector);
+  //Если попап открывает картинку, то нам не нужно производить каких-либо действий с формой
+  if (targetForm) {
+    const submitButtonSelector = '.form__submit'; // Нашли кнопку
+    const inactiveButtonClass = 'form__submit_inactive'; // Класс выключенной кнопки придется передавать строкой
+    const inputSelector = '.form__input'; // Нашли инпуты
+
+    //Переиспользуем метод для отключения кнопки у формы если форма невалидна
+    toggleSubmitButton(targetForm, submitButtonSelector, inactiveButtonClass, inputSelector);
+  }
+
 
   //Если объект открыт
   if (target.classList.contains('popup_opened')) {
@@ -138,6 +143,10 @@ const toggleLikeButton = event => {
   event.target.classList.toggle('place__like_status_active');
 }
 
+const removePlace = event => {
+  event.target.closest('.place').remove();
+}
+
 //Функция формирования карточки места, принимает объект, возвращает карточку места
 // {name: 'Название места', link: 'Ссылка на изображение места'}
 const renderPlace = placeObject => {
@@ -151,18 +160,17 @@ const renderPlace = placeObject => {
 
   //Перезаписываем изображение
   placeImage.src = placeObject.link; //Выставляем изображение
-  placeImage.alt =  placeObject.name;
+  placeImage.alt =  placeObject.name; //Выставляем альтернативный текст
 
   //Добавляем событие на лайк
   placeLikeButton.addEventListener('click', toggleLikeButton);
 
   //Добавить событие на удаление места из списка мест
-  placeDeleteButton.addEventListener('click',  event => event.target.closest('.place').remove());
+  placeDeleteButton.addEventListener('click',  removePlace);
 
   //Добавляем событие на открытие попапа с просмотром изображения
-  placeImage.addEventListener('click', (event) => {
+  placeImage.addEventListener('click', () => {
     //При клике на картинку в карточке места мы рендерим её в попапе с изображением
-    //Изза человечка с лопатой пришлось читать объекты, которые записывались ранее, если ревьюер попросит, уберу ))
     renderImagePopup(placeImage.src, placeTitle.textContent);
   })
 
