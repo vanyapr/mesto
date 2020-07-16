@@ -74,17 +74,17 @@ const togglePopup = target => {
   target.classList.toggle('popup_opened');
 
   //Нам придётся найти форму заново и мы не можем использовать переменную переданную в объекте в соседнем файле
-  const targetForm = target.querySelector('.form'); // Нашли форму в попапе, если она есть
-
-  //Если попап открывает картинку, то нам не нужно производить каких-либо действий с формой
-  if (targetForm) {
-    const submitButtonSelector = '.form__submit'; // Нашли кнопку
-    const inactiveButtonClass = 'form__submit_inactive'; // Класс выключенной кнопки придется передавать строкой
-    const inputSelector = '.form__input'; // Нашли инпуты
-
-    //Переиспользуем метод для отключения кнопки у формы если форма невалидна
-    toggleSubmitButton(targetForm, submitButtonSelector, inactiveButtonClass, inputSelector);
-  }
+  // const targetForm = target.querySelector('.form'); // Нашли форму в попапе, если она есть
+  //
+  // //Если попап открывает картинку, то нам не нужно производить каких-либо действий с формой
+  // if (targetForm) {
+  //   const submitButtonSelector = '.form__submit'; // Нашли кнопку
+  //   const inactiveButtonClass = 'form__submit_inactive'; // Класс выключенной кнопки придется передавать строкой
+  //   const inputSelector = '.form__input'; // Нашли инпуты
+  //
+  //   //Переиспользуем метод для отключения кнопки у формы если форма невалидна
+  //   toggleSubmitButton(targetForm, submitButtonSelector, inactiveButtonClass, inputSelector);
+  // }
 
   //Если объект открыт
   if (target.classList.contains('popup_opened')) {
@@ -185,6 +185,11 @@ addPlaceButton.addEventListener('click', () => {
   //Обнуляем значения формы перед её отображением
   placeName.value = '';
   placeImage.value = '';
+
+  const placeForm = document.forms.formPlace; // Нашли форму в места, этот поиск придется выполнять потому что иначе никак
+  //Ревьюер попросил перенести сюда?
+  //Переиспользуем метод для отключения кнопки у формы если форма невалидна
+  toggleSubmitButton(placeForm, validationSettings.submitButtonSelector, validationSettings.inactiveButtonClass, validationSettings.inputSelector);
 
   //Добавляем класс "открыто" форме добавления места
   togglePopup(addPlacePopup);

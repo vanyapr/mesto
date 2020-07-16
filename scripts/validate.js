@@ -79,13 +79,15 @@ const enableValidation = ({formSelector, inputSelector, submitButtonSelector, in
   setEventListeners(formSelector, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass);
 };
 
-// включение валидации вызовом enableValidation
-// все настройки передаются при вызове
-enableValidation({
+const validationSettings = {
   formSelector: '.form',
   inputSelector: '.form__input',
   submitButtonSelector: '.form__submit',
   inactiveButtonClass: 'form__submit_inactive',
   inputErrorClass: 'form__input_type_error',
   errorClass: 'form__error'
-});
+};
+
+// включение валидации вызовом enableValidation
+// все настройки передаются при вызове
+enableValidation(validationSettings);
