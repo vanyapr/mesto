@@ -56,6 +56,15 @@ const initialCards = [
   }
 ];
 
+import Card from './Card.js';
+
+//При загрузке страницы добавляем места внутрь списка мест по шаблону
+initialCards.forEach(item => {
+  const card = new Card(item.name, item.link, placeTemplate, '.place__image', '.place__title', '.place__like', 'place__like_status_active', '.place__delete', imagePopup, popupImage, popupImageTitle );
+  const place = card.render();
+  placesListContainer.append(place);
+});
+
 //Коллбэк листенера кнопки эскейп для вызова в функции открытия попапа
 const escapeListener = (event) => {
   //Поскольку листенер мы повесили на документ, надо дополнительно найти попап, который открыт
@@ -94,6 +103,8 @@ popupList.forEach((popup) => {
       togglePopup(event.target.closest('.popup'));
     }
   });
+
+
 });
 
 
@@ -126,13 +137,13 @@ const profileFormSubmitHandler = event => {
 formProfile.addEventListener('submit', profileFormSubmitHandler);
 
 //Листенер простановки лайка
-const toggleLikeButton = event => {
-  event.target.classList.toggle('place__like_status_active');
-}
-
-const removePlace = event => {
-  event.target.closest('.place').remove();
-}
+// const toggleLikeButton = event => {
+//   event.target.classList.toggle('place__like_status_active');
+// }
+//
+// const removePlace = event => {
+//   event.target.closest('.place').remove();
+// }
 
 //Функция формирования карточки места, принимает объект, возвращает карточку места
 // {name: 'Название места', link: 'Ссылка на изображение места'}
@@ -164,17 +175,7 @@ const removePlace = event => {
 //   return renderTemplate; //Возвращаем готовый темплейт
 // }
 
-import Card from './Card.js';
 
-
-
-
-//При загрузке страницы добавляем места внутрь списка мест по шаблону
-initialCards.forEach(item => {
-  const card = new Card(item.name, item.link, placeTemplate, '.place__image', '.place__title', '.place__like', 'place__like_status_active', '.place__delete', imagePopup, popupImage, popupImageTitle );
-  const place = card.render();
-  placesListContainer.append(place);
-});
 
 
 //Обработчик нажатия на кнопку добавления места, открывает форму добавления места

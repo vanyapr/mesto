@@ -2,7 +2,7 @@ class Card {
   //Получаем параметры в конструктор объекта
   //Нам понадобятся селекторы элементов темплейта, чтобы привязывать листенеры приватными методами
   //Может захардкодить селекторы?
-  constructor (cardTitle, imageUrl, templateElement, imageSelector, titleSelector, likeButtonSelector, likeActiveClass, deleteButtonSelector, imagePopupSelector, popupImage, popupTitle ) {
+  constructor (cardTitle, imageUrl, templateElement, imageSelector, titleSelector, likeButtonSelector, likeActiveClass, deleteButtonSelector, imagePopup, popupImage, popupTitle) {
     //Присваиваем внутренние переменные, они все будут приватными, потому что мы не используем их снаружи
     this._cardTitle = cardTitle;
     this._imageUrl = imageUrl;
@@ -12,6 +12,9 @@ class Card {
     this._likeButtonSelector = likeButtonSelector;
     this._deleteButtonSelector = deleteButtonSelector;
     this._likeActiveClass = likeActiveClass;
+    this._imagePopup = imagePopup;
+    this._popupImage = popupImage;
+    this._popupTitle = popupTitle;
   }
 
   //Получаем темплейт
@@ -22,9 +25,9 @@ class Card {
   //Заполняем темплейт значениями и возвращает заполненный темплейт
   _fillTemplate () {
     //Определили переменные для перезаписи значений
-    this._template = this._getTemplate();
-    this._image = this._template.querySelector(this._imageSelector);
-    this._title = this._template.querySelector(this._titleSelector);
+    this._template = this._getTemplate(); //Темплейт
+    this._image = this._template.querySelector(this._imageSelector); //Картинка
+    this._title = this._template.querySelector(this._titleSelector); //Текст
 
     //Перезаписали значения
     this._image.src = this._imageUrl;
@@ -48,9 +51,38 @@ class Card {
     event.target.closest('.place').remove();
   }
 
-  //Открытие попапа с картинкой
-  _toggleImagePopup (event) {
+  //Запись данных в попап с картинкой
+  _writeImagePopup () {
+    this._popupImage.src = this._imageUrl; //Ссылка на изображение
+    this._popupImage.alt = this._cardTitle; //Альтернативный текст картинки
+    this._popupTitle.textContent = this._cardTitle; //Название изображения
+  }
 
+  //Сброс данных в попапе
+  _resetImagePopup () {
+    this._popupImage.src = ''; //Ссылка на изображение
+    this._popupImage.alt = ''; //Альтернативный текст картинки
+    this._popupTitle.textContent = ''; //Название изображения
+  }
+
+  //Открытие попапа с картинкой
+  _openImagePopup () {
+    //TODO: Передавать переменную 'popup_opened' в класс
+    this._imagePopup.classList.add('popup_opened'); //Открываем попап
+
+    document.addEventListener('keydown', (event) => {
+      if(event.key === 'Escape') {
+        //Закрыть попап
+        this._closeImagePopup();
+      }
+    });
+  }
+
+  //Закрытие попапа с картинкой
+  _closeImagePopup () {
+    //TODO: Передавать переменную 'popup_opened' в класс
+    this._imagePopup.classList.remove('popup_opened');
+    this._resetImagePopup();
   }
 
   //Объявляем эвент листенеры
@@ -63,6 +95,12 @@ class Card {
     //Листенер на удаление карточки
     template.querySelector(this._deleteButtonSelector).addEventListener('click', (event) => {
       this._removeCard(event);
+    });
+
+    //Листенер на открытие окна просмотра изображения
+    template.querySelector(this._imageSelector).addEventListener('click', (event) => {
+      this._writeImagePopup();
+      this._openImagePopup ();
     });
   }
 
