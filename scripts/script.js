@@ -175,20 +175,11 @@ formProfile.addEventListener('submit', profileFormSubmitHandler);
 //   return renderTemplate; //Возвращаем готовый темплейт
 // }
 
-
-
-
 //Обработчик нажатия на кнопку добавления места, открывает форму добавления места
 addPlaceButton.addEventListener('click', () => {
   //Обнуляем значения формы перед её отображением
   placeName.value = '';
   placeImage.value = '';
-
-  //Ревьюер попросил перенести сюда. Мы всё равно не сможем использовать готовый объект, ведь нам надо проверять конкретную форму,
-  //которую мы определили в переменной placeForm, я не знаю способа передать функции и аргумент и объект в произвольном порядке, поэтому придется из объекта доставать значения через ключи,
-  //что ухудшит масштабируемость кода в будущем. Теперь код стал хуже. Я конечно могу задать в функции значения по умолчанию, НО
-  //здесь используются стрелочные функции, которые нельзя вызывать до объявления, соответственно и значения по умолчанию им до объявления объекта присвоить будет нельзя
-  //В прошлой версии я находил элементы формы при открытии формы перед отображением, и это работало для любой формы.
 
   //Переиспользуем метод для отключения кнопки у формы если форма невалидна
   toggleSubmitButton(placeForm, validationSettings.submitButtonSelector, validationSettings.inactiveButtonClass, validationSettings.inputSelector);
@@ -196,7 +187,6 @@ addPlaceButton.addEventListener('click', () => {
   //Добавляем класс "открыто" форме добавления места
   togglePopup(addPlacePopup);
 });
-
 
 //Функция обработчик события отправки формы добавления нового места
 const placeFormSubmitHandler = event => {
@@ -210,8 +200,12 @@ const placeFormSubmitHandler = event => {
     formSubmitResult.name = placeName.value; //Записали имя из формы
     formSubmitResult.link = placeImage.value; //Записали ссылку на картинку из формы
 
-    //Потом используем метод добавления события на страницу
-    placesListContainer.append(renderPlace(formSubmitResult));
+    //Потом создаем новый объект места
+    const card = new Card(placeName.value, placeImage.value, placeTemplate, '.place__image', '.place__title', '.place__like', 'place__like_status_active', '.place__delete', imagePopup, popupImage, popupImageTitle );
+    const place = card.render();
+    //Используем метод добавления события на страницу
+    placesListContainer.append(place);
+
     //И закрываем форму
     togglePopup(addPlacePopup);
   } else {
@@ -228,13 +222,13 @@ formPlace.addEventListener('submit', placeFormSubmitHandler);
 //Реворк: решено сразу иметь на странице один попап с изображениями вместо пиздотряски с удалением и созданием дом элементов,
 //потому что так тоже можно, и работает быстрее, и код читать легче, и куратор группы сказал так сделать, да и почему бы не сделать ещё и так, раз правлю код?
 //Я конечно могу рендерить попап, а потом в него уже записывать значения, но ЗАЧЕМ?
-const renderImagePopup = (imageUrl = '', imageTitle = '') => {
-  popupImage.src = imageUrl; //Ссылка на изображение
-  popupImage.alt = imageTitle; //Альтернативный текст картинки
-  popupImageTitle.textContent = imageTitle; //Название изображения
-
-  togglePopup(imagePopup); //После перезаписи значений показываем попап
-}
+// const renderImagePopup = (imageUrl = '', imageTitle = '') => {
+//   popupImage.src = imageUrl; //Ссылка на изображение
+//   popupImage.alt = imageTitle; //Альтернативный текст картинки
+//   popupImageTitle.textContent = imageTitle; //Название изображения
+//
+//   togglePopup(imagePopup); //После перезаписи значений показываем попап
+// }
 
 // import Card from './Card.js';
 //

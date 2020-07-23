@@ -4,6 +4,7 @@ class Card {
   //Может захардкодить селекторы?
   constructor (cardTitle, imageUrl, templateElement, imageSelector, titleSelector, likeButtonSelector, likeActiveClass, deleteButtonSelector, imagePopup, popupImage, popupTitle) {
     //Присваиваем внутренние переменные, они все будут приватными, потому что мы не используем их снаружи
+    //Напишу много переменных чтобы сделать код самодокументируемым
     this._cardTitle = cardTitle;
     this._imageUrl = imageUrl;
     this._templateElement = templateElement;
@@ -15,6 +16,15 @@ class Card {
     this._imagePopup = imagePopup;
     this._popupImage = popupImage;
     this._popupTitle = popupTitle;
+
+    //Коллбэк нажатия кнопки эскейп, запишем в переменную, чтобы вызывать в листенерах
+    this._escapePressHandler =  (event) => {
+      //Если нажали на эскейп
+      if(event.key === 'Escape') {
+        //Закрыть попап
+        this._closeImagePopup();
+      }
+    }
   }
 
   //Получаем темплейт
@@ -67,22 +77,20 @@ class Card {
 
   //Открытие попапа с картинкой
   _openImagePopup () {
+    this._writeImagePopup(); //Записываем данные
     //TODO: Передавать переменную 'popup_opened' в класс
     this._imagePopup.classList.add('popup_opened'); //Открываем попап
 
-    document.addEventListener('keydown', (event) => {
-      if(event.key === 'Escape') {
-        //Закрыть попап
-        this._closeImagePopup();
-      }
-    });
+    // Добавляем листенер на закрытие попапа по нажатию кнопки эскейп. Тут будет правильнее это сделать.
+    document.addEventListener('keydown', this._escapePressHandler);
   }
 
   //Закрытие попапа с картинкой
   _closeImagePopup () {
     //TODO: Передавать переменную 'popup_opened' в класс
-    this._imagePopup.classList.remove('popup_opened');
-    this._resetImagePopup();
+    this._imagePopup.classList.remove('popup_opened'); //Закрываем попап
+    this._resetImagePopup(); //Сбрасываем данные
+    document.removeEventListener('keydown', this._escapePressHandler); //Удаляем эвент листенер
   }
 
   //Объявляем эвент листенеры
@@ -99,7 +107,6 @@ class Card {
 
     //Листенер на открытие окна просмотра изображения
     template.querySelector(this._imageSelector).addEventListener('click', (event) => {
-      this._writeImagePopup();
       this._openImagePopup ();
     });
   }
