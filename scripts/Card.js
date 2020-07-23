@@ -1,83 +1,79 @@
 class Card {
   //Получаем параметры в конструктор объекта
   //Нам понадобятся селекторы элементов темплейта, чтобы привязывать листенеры приватными методами
-  constructor (title, image, templateElement, imageSelector, titleSelector, likeButtonSelector, likeActiveClass, deleteButtonSelector ) {
-    //Присваиваем внутренние переменные
-    this.title = title;
-    this.image = image;
-    this.templateElement = templateElement;
-    this.imageSelector = imageSelector;
-    this.titleSelector = titleSelector;
-    this.likeButtonSelector = likeButtonSelector;
-    this.deleteButtonSelector = deleteButtonSelector;
-    this.likeActiveClass = likeActiveClass;
+  //Может захардкодить селекторы?
+  constructor (cardTitle, imageUrl, templateElement, imageSelector, titleSelector, likeButtonSelector, likeActiveClass, deleteButtonSelector, imagePopupSelector, popupImage, popupTitle ) {
+    //Присваиваем внутренние переменные, они все будут приватными, потому что мы не используем их снаружи
+    this._cardTitle = cardTitle;
+    this._imageUrl = imageUrl;
+    this._templateElement = templateElement;
+    this._imageSelector = imageSelector;
+    this._titleSelector = titleSelector;
+    this._likeButtonSelector = likeButtonSelector;
+    this._deleteButtonSelector = deleteButtonSelector;
+    this._likeActiveClass = likeActiveClass;
   }
 
   //Получаем темплейт
   _getTemplate () {
-    const template = this.templateElement.cloneNode(true); //Склонировали темплейт и записали в переменную
-    return template; //Вернули темплейт
+    return this._templateElement.cloneNode(true); //Склонировали темплейт и вернули его
   }
 
   //Заполняем темплейт значениями и возвращает заполненный темплейт
   _fillTemplate () {
-    //Определили переменные для изменения
-    const template = this._getTemplate();
-    const image = template.querySelector(this.imageSelector);
-    const title = template.querySelector(this.titleSelector);
+    //Определили переменные для перезаписи значений
+    this._template = this._getTemplate();
+    this._image = this._template.querySelector(this._imageSelector);
+    this._title = this._template.querySelector(this._titleSelector);
 
-    //Заполнили значения
-    image.src = this.image;
-    image.alt = this.title;
-    title.textContent = this.title;
+    //Перезаписали значения
+    this._image.src = this._imageUrl;
+    this._image.alt = this._cardTitle;
+    this._title.textContent = this._cardTitle;
 
     //Вернули результат - заполненный темплейт
-    return template;
+    return this._template;
   }
 
   //Установка лайка
   _toggleLikeButton (event) {
     //По клику на кнопку устанавливаем ей соответствующий класс
-    event.target.classList.toggle(this.likeActiveClass);
+    event.target.classList.toggle(this._likeActiveClass);
   }
 
   //Удаление карточки
   _removeCard (event) {
-    //TODO: this.remove() ?
+    //Удаляем карточку по селектору
+    //TODO: Передавать переменную '.place' в класс
     event.target.closest('.place').remove();
   }
 
-  //Открытие попапа
+  //Открытие попапа с картинкой
   _toggleImagePopup (event) {
 
   }
 
   //Объявляем эвент листенеры
-  _setEventListeners () {
-    //Листенер на лайк
-    this.templateElement.querySelector(this.likeButtonSelector).addEventListener('click', () => {
-      this._toggleLikeButton();
+  _setEventListeners (template) {
+    //Листенер на лайк карточки
+    template.querySelector(this._likeButtonSelector).addEventListener('click', (event) => {
+      this._toggleLikeButton(event);
     });
-    //Листенер на удаление
-    this.templateElement.querySelector(this.deleteButtonSelector).addEventListener('click', () => {
-      this._removeCard();
+
+    //Листенер на удаление карточки
+    template.querySelector(this._deleteButtonSelector).addEventListener('click', (event) => {
+      this._removeCard(event);
     });
   }
-
-
-
-
-
-
-  //Устанавливаем эвент листенеры
-
 
   //Рендерим карту и возвращаем готовый объект (публичный метод)
   render () {
-    this._setEventListeners();
-    return this._fillTemplate();
-  }
+    const template = this._fillTemplate(); //Получаем заполненный темплейт
+    this._setEventListeners(template); //Добавляем эвент листенеры
 
+    //Возвращаем темплейт
+    return template;
+  }
 
 }
 

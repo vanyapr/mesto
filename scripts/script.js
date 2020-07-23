@@ -136,36 +136,45 @@ const removePlace = event => {
 
 //Функция формирования карточки места, принимает объект, возвращает карточку места
 // {name: 'Название места', link: 'Ссылка на изображение места'}
-const renderPlace = placeObject => {
-  const renderTemplate = placeTemplate.cloneNode(true); //Клонируем темплейт для дальнейшего использования
-  const placeTitle = renderTemplate.querySelector('.place__title'); //Название места
-  const placeImage = renderTemplate.querySelector('.place__image'); //Изображение места
-  const placeLikeButton = renderTemplate.querySelector('.place__like'); //Кнопка лайка
-  const placeDeleteButton = renderTemplate.querySelector('.place__delete'); //Кнопка удаления места
+// const renderPlace = placeObject => {
+//   const renderTemplate = placeTemplate.cloneNode(true); //Клонируем темплейт для дальнейшего использования
+//   const placeTitle = renderTemplate.querySelector('.place__title'); //Название места
+//   const placeImage = renderTemplate.querySelector('.place__image'); //Изображение места
+//   const placeLikeButton = renderTemplate.querySelector('.place__like'); //Кнопка лайка
+//   const placeDeleteButton = renderTemplate.querySelector('.place__delete'); //Кнопка удаления места
+//
+//   placeTitle.textContent = placeObject.name;
+//
+//   //Перезаписываем изображение
+//   placeImage.src = placeObject.link; //Выставляем изображение
+//   placeImage.alt =  placeObject.name; //Выставляем альтернативный текст
+//
+//   //Добавляем событие на лайк
+//   placeLikeButton.addEventListener('click', toggleLikeButton);
+//
+//   //Добавить событие на удаление места из списка мест
+//   placeDeleteButton.addEventListener('click',  removePlace);
+//
+//   //Добавляем событие на открытие попапа с просмотром изображения
+//   placeImage.addEventListener('click', () => {
+//     //При клике на картинку в карточке места мы рендерим её в попапе с изображением
+//     renderImagePopup(placeImage.src, placeTitle.textContent);
+//   })
+//
+//   return renderTemplate; //Возвращаем готовый темплейт
+// }
 
-  placeTitle.textContent = placeObject.name;
+import Card from './Card.js';
 
-  //Перезаписываем изображение
-  placeImage.src = placeObject.link; //Выставляем изображение
-  placeImage.alt =  placeObject.name; //Выставляем альтернативный текст
 
-  //Добавляем событие на лайк
-  placeLikeButton.addEventListener('click', toggleLikeButton);
 
-  //Добавить событие на удаление места из списка мест
-  placeDeleteButton.addEventListener('click',  removePlace);
-
-  //Добавляем событие на открытие попапа с просмотром изображения
-  placeImage.addEventListener('click', () => {
-    //При клике на картинку в карточке места мы рендерим её в попапе с изображением
-    renderImagePopup(placeImage.src, placeTitle.textContent);
-  })
-
-  return renderTemplate; //Возвращаем готовый темплейт
-}
 
 //При загрузке страницы добавляем места внутрь списка мест по шаблону
-initialCards.forEach(item => placesListContainer.append(renderPlace(item)));
+initialCards.forEach(item => {
+  const card = new Card(item.name, item.link, placeTemplate, '.place__image', '.place__title', '.place__like', 'place__like_status_active', '.place__delete', imagePopup, popupImage, popupImageTitle );
+  const place = card.render();
+  placesListContainer.append(place);
+});
 
 
 //Обработчик нажатия на кнопку добавления места, открывает форму добавления места
@@ -226,8 +235,8 @@ const renderImagePopup = (imageUrl = '', imageTitle = '') => {
   togglePopup(imagePopup); //После перезаписи значений показываем попап
 }
 
-import Card from './Card.js';
+// import Card from './Card.js';
+//
+// const card = new Card('Вася', 'imageurl', placeTemplate, '.place__image', '.place__title', '.place__like', 'place__like_status_active', '.place__delete', imagePopup, popupImage, popupImageTitle );
 
-const card = new Card('Вася', 'image', placeTemplate, '.place__image', '.place__title', '.place__like', 'place__like_status_active', '.place__delete' );
-
-console.log(card.render());
+// console.log(card.render());
