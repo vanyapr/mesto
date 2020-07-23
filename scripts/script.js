@@ -225,3 +225,9 @@ const renderImagePopup = (imageUrl = '', imageTitle = '') => {
 
   togglePopup(imagePopup); //После перезаписи значений показываем попап
 }
+
+import Card from './Card.js';
+
+const card = new Card('Вася', 'image', placeTemplate, '.place__image', '.place__title', '.place__like', 'place__like_status_active', '.place__delete' );
+
+console.log(card.render());
