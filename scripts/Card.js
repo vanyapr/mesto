@@ -1,7 +1,7 @@
 class Card {
   //Получаем параметры в конструктор объекта
   //Нам понадобятся селекторы элементов темплейта, чтобы привязывать листенеры приватными методами
-  //Может захардкодить селекторы?
+  //TODO: Больше абстракции, передать в класс недостающие переменные
   constructor (cardTitle, imageUrl, templateElement, imageSelector, titleSelector, likeButtonSelector, likeActiveClass, deleteButtonSelector, imagePopup, popupImage, popupTitle) {
     //Присваиваем внутренние переменные, они все будут приватными, потому что мы не используем их снаружи
     //Напишу много переменных чтобы сделать код самодокументируемым
@@ -17,7 +17,8 @@ class Card {
     this._popupImage = popupImage;
     this._popupTitle = popupTitle;
 
-    //Коллбэк нажатия кнопки эскейп, запишем в переменную, чтобы вызывать в листенерах
+    //Коллбэк нажатия кнопки эскейп, запишем в переменную при инициализации экземпляра класса,
+    //чтобы вызывать в листенерах
     this._escapePressHandler =  (event) => {
       //Если нажали на эскейп
       if(event.key === 'Escape') {
@@ -29,6 +30,7 @@ class Card {
 
   //Получаем темплейт
   _getTemplate () {
+    //Решил не присваивать переменную для удобочитаемости
     return this._templateElement.cloneNode(true); //Склонировали темплейт и вернули его
   }
 
