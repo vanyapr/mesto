@@ -1,6 +1,9 @@
 # Created by https://www.gitignore.io/api/macos,phpstorm
 # Edit at https://www.gitignore.io/?templates=macos,phpstorm
 
+##Hide some stuff in project
+./scripts/validate.js
+
 ### macOS ###
 # General
 .DS_Store
