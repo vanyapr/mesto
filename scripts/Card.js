@@ -1,10 +1,10 @@
 class Card {
   //Получаем параметры в конструктор объекта
   //Нам понадобятся селекторы элементов темплейта, чтобы привязывать листенеры приватными методами
-  //TODO: Больше абстракции, передать в класс недостающие переменные
-  constructor (cardTitle, imageUrl, templateElement, imageSelector, titleSelector, likeButtonSelector, likeActiveClass, deleteButtonSelector, imagePopup, popupImage, popupTitle) {
+  constructor (cardTitle, imageUrl, templateElement, cardSelector, imageSelector, titleSelector, likeButtonSelector, likeActiveClass, deleteButtonSelector, imagePopup, popupImage, popupTitle, popupOpenedClass) {
     //Присваиваем внутренние переменные, они все будут приватными, потому что мы не используем их снаружи
     //Напишу много переменных чтобы сделать код самодокументируемым
+
     this._cardTitle = cardTitle;
     this._imageUrl = imageUrl;
     this._templateElement = templateElement;
@@ -16,6 +16,8 @@ class Card {
     this._imagePopup = imagePopup;
     this._popupImage = popupImage;
     this._popupTitle = popupTitle;
+    this._cardSelector = cardSelector;
+    this._popupOpenedClass = popupOpenedClass;
   }
 
   //Коллбэк нажатия кнопки эскейп, стрелочной функцией
@@ -58,8 +60,7 @@ class Card {
   //Удаление карточки
   _removeCard (event) {
     //Удаляем карточку по селектору
-    //TODO: Передавать переменную '.place' в класс
-    event.target.closest('.place').remove();
+    event.target.closest(this._cardSelector).remove();
   }
 
   //Запись данных в попап с картинкой
@@ -79,8 +80,7 @@ class Card {
   //Открытие попапа с картинкой
   _openImagePopup () {
     this._writeImagePopup(); //Записываем данные
-    //TODO: Передавать переменную 'popup_opened' в класс
-    this._imagePopup.classList.add('popup_opened'); //Открываем попап
+    this._imagePopup.classList.add(this._popupOpenedClass); //Открываем попап
 
     // Добавляем листенер на закрытие попапа по нажатию кнопки эскейп. Тут будет правильнее это сделать.
     document.addEventListener('keydown', this._escapePressHandler);
@@ -88,8 +88,7 @@ class Card {
 
   //Закрытие попапа с картинкой
   _closeImagePopup () {
-    //TODO: Передавать переменную 'popup_opened' в класс
-    this._imagePopup.classList.remove('popup_opened'); //Закрываем попап
+    this._imagePopup.classList.remove(this._popupOpenedClass); //Закрываем попап
     this._resetImagePopup(); //Сбрасываем данные
     document.removeEventListener('keydown', this._escapePressHandler); //Удаляем эвент листенер
   }

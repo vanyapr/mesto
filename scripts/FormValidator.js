@@ -2,13 +2,17 @@ class FormValidator {
   //Передаем форму и объект с настройками в конструктор
   constructor ({formSelector, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClass}, formElement) {
     this._formElement = formElement;
-    this._formSelector = formSelector; //Зачем нам нужен здесь форм селектор?
+    this._formSelector = formSelector; //Зачем нам нужен здесь форм селектор, если мы его не используем? Для обратной совместимости?
     this._inputSelector = inputSelector;
     this._submitButtonSelector = submitButtonSelector;
     this._inactiveButtonClass = inactiveButtonClass;
     this._inputErrorClass = inputErrorClass;
     this._errorClass = errorClass;
+    //Определим нужные переменные прямо в конструкторе класса, почему бы и нет? Меньше присваиваний в методах.
+    this._submitButton = this._formElement.querySelector(this._submitButtonSelector);
+    this._inputList = Array.from(this._formElement.querySelectorAll(this._inputSelector));
   }
+
 
   //Проверка валидности инпута
   _isInputValid (input) {
@@ -35,53 +39,44 @@ class FormValidator {
 
   //Проверка валидности всей формы
   _isFormValid () {
-    const inputsList = this._formElement.querySelectorAll(this._inputSelector); // Находим все инпты в форме
-
-    //Проверяем, есть ли в форме невалидные инпуты
-    const validState =  Array.from(inputsList).some(input => {
+    //Проверяем, есть ли в форме невалидные инпуты, используем ранее объявленный список инпутов this._inputList
+    const validState = Array.from(this._inputList).some(input => {
       return !input.validity.valid;
     });
 
     // Возвращаем значение валидности формы
-    return !validState;
+    return !validState; //Если форма валидна, вернёт TRUE
   }
+
 
   //Включение кнопки сабмита
-  _enableSubmitButton (submitButton) {
-    submitButton.classList.remove(this._inactiveButtonClass);
-    submitButton.disabled = false;
+  _enableSubmitButton () {
+    this._submitButton.classList.remove(this._inactiveButtonClass);
+    this._submitButton.disabled = false;
   }
 
+
   //Отключение кнопки сабмита
-  _disableSubmitButton (submitButton) {
-    submitButton.classList.add(this._inactiveButtonClass);
-    submitButton.disabled = true;
+  _disableSubmitButton () {
+    this._submitButton.classList.add(this._inactiveButtonClass);
+    this._submitButton.disabled = true;
   }
+
 
   //Управление кнопкой сабмита
   _toggleSubmitButton () {
-    //Определяем кнопку сабмита
-    const submitButton = this._formElement.querySelector(this._submitButtonSelector);
-
-    if (this._isFormValid()) { //Если форма валидна, включаем
-      this._enableSubmitButton(submitButton);
-      console.log('Переключили состояние кнопки на ВКЛЮЧЕНА');
-    } else {  //Иначе выключаем
-      this._disableSubmitButton(submitButton);
-      console.log('Переключили состояние кнопки на ОТКЛЮЧЕНА');
+    if (this._isFormValid()) { //Если форма валидна, включаем кнопку
+      this._enableSubmitButton();
+    } else {  //Иначе выключаем кнопку
+      this._disableSubmitButton();
     }
-
-
-
   }
+
 
   //Установка эвент листенеров при инициализации объекта
   _setEventListeners () {
-
-    //Выключим кнопку по умолчанию при первой загрузке страницы (если поля пустые)
-    this._toggleSubmitButton();
-
-    this._inputList = Array.from(this._formElement.querySelectorAll(this._inputSelector)); // Список инпутов в форме
+    //Выключим кнопку по умолчанию при первой загрузке страницы (если поля не изменялись, а они не могли изменяться)
+    this._disableSubmitButton();
 
     // Вешаем листенер на ввод данных на каждый инпут в форме
     this._inputList.forEach(input => {
@@ -93,16 +88,18 @@ class FormValidator {
       });
     });
 
-
+    this._formElement.addEventListener('submit', () => {
+      //Деактивируем кнопку сабмита после сабмита формы
+      //Мы исходим из того, что в целом пользователь не должен отправлять не измененные данные,
+      //так сказал куратор группы
+      this._disableSubmitButton();
+    });
   }
 
 
   //Публичный метод включения валидации формы
   enableValidation () {
-    this._setEventListeners();
-
-    console.log(this._formElement);
-    console.log('Validation enabled for ' + this._formElement.name);
+    this._setEventListeners(); //Установили листенеры событий
   }
 }
 

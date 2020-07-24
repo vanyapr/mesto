@@ -1,3 +1,7 @@
+// ИМПОРТ
+import Card from './Card.js'; //Импортируем класс карточки
+import FormValidator from './FormValidator.js'; //Импортируем класс валидатора
+
 // ПЕРЕМЕННЫЕ
 // Редактирование профиля пользователя
 const editProfile = document.querySelector('.profile__edit-button'); // Кнопка редактирования профиля
@@ -26,6 +30,16 @@ const placeImage = formPlace.placeImage; // Ссылка на изображен
 const imagePopup = document.querySelector('.image-popup'); //Попап с изображением
 const popupImage = imagePopup.querySelector('.popup__image'); //Изображение в попапе
 const popupImageTitle = imagePopup.querySelector('.popup__image-description'); //Текст описания изображения в попапе
+const popupOpenedClass = 'popup_opened'; //Класс открытого попапа для передачи в функции
+
+//Селекторы и классы карточки места для использования в классе
+const cardSelector = '.place';
+const cardImageSelector = '.place__image';
+const cardTitleSelector = '.place__title';
+const cardLikeButtonSelector = '.place__like';
+const cardLikeActiveClass = 'place__like_status_active';
+const cardDeleteButtonSelector = '.place__delete';
+
 
 //Объект с данными для списка мест
 const initialCards = [
@@ -55,14 +69,34 @@ const initialCards = [
   }
 ];
 
-import Card from './Card.js';
+const validationSettings = {
+  formSelector: '.form', //Не используется, нужен ли он?
+  inputSelector: '.form__input',
+  submitButtonSelector: '.form__submit',
+  inactiveButtonClass: 'form__submit_inactive',
+  inputErrorClass: 'form__input_type_error',
+  // errorClass: 'form__error', //Поскольку класс нигде не используется, заменю его на полезный, чтобы добавить абстракции коду
+  errorClass: 'form__error_active'
+};
 
-//При загрузке страницы добавляем места внутрь списка мест по шаблону
+
+//ОСНОВНОЙ КОД
+//При загрузке страницы добавляем места внутрь списка мест с использованием темплейта
 initialCards.forEach(item => {
-  const card = new Card(item.name, item.link, placeTemplate, '.place__image', '.place__title', '.place__like', 'place__like_status_active', '.place__delete', imagePopup, popupImage, popupImageTitle );
+  const card = new Card(item.name, item.link, placeTemplate, cardSelector, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, imagePopup, popupImage, popupImageTitle, popupOpenedClass);
   const place = card.render();
   placesListContainer.append(place);
 });
+
+
+//Включаем валидацию для всех форм документа
+Array.from(document.forms).forEach(form => {
+  //Объявляем экземпляр класса
+  const validateForm = new FormValidator(validationSettings, form);
+  //Для каждой формы активируем валидацию
+  validateForm.enableValidation();
+});
+
 
 //Коллбэк листенера кнопки эскейп для вызова в функции открытия попапа
 const escapeListener = (event) => {
@@ -76,14 +110,15 @@ const escapeListener = (event) => {
   }
 };
 
+
 // Функция открытия попапа (принимает объект - попап) переключает его класс (открыт/закрыт)
 // Рефактор: также добавляет эвент листенеры при открытии и закрытии попапа
 const togglePopup = target => {
   // Если у объекта нет класса "popup_opened", мы его добавляем по клику, иначе убираем класс "popup_opened"
-  target.classList.toggle('popup_opened');
+  target.classList.toggle(popupOpenedClass);
 
   //Если объект открыт
-  if (target.classList.contains('popup_opened')) {
+  if (target.classList.contains(popupOpenedClass)) {
     //добавляем листенер
     document.addEventListener('keydown', escapeListener);
   } else {
@@ -91,6 +126,7 @@ const togglePopup = target => {
     document.removeEventListener('keydown', escapeListener);
   }
 };
+
 
 // ~~Закрываем попап по клику на кнопку закрытия (сработает для всех форм, которые будут добавляться на страницу в будущем)~~
 // Рефактор: событие теперь вешается не на кнопку закрытия попапа, а на весь попап, где вызывается для нужного элемента всплытием
@@ -133,44 +169,6 @@ const profileFormSubmitHandler = event => {
 //Отслиживаем форм сабмит для формы редактирования профиля пользователя
 formProfile.addEventListener('submit', profileFormSubmitHandler);
 
-//Листенер простановки лайка
-// const toggleLikeButton = event => {
-//   event.target.classList.toggle('place__like_status_active');
-// }
-//
-// const removePlace = event => {
-//   event.target.closest('.place').remove();
-// }
-
-//Функция формирования карточки места, принимает объект, возвращает карточку места
-// {name: 'Название места', link: 'Ссылка на изображение места'}
-// const renderPlace = placeObject => {
-//   const renderTemplate = placeTemplate.cloneNode(true); //Клонируем темплейт для дальнейшего использования
-//   const placeTitle = renderTemplate.querySelector('.place__title'); //Название места
-//   const placeImage = renderTemplate.querySelector('.place__image'); //Изображение места
-//   const placeLikeButton = renderTemplate.querySelector('.place__like'); //Кнопка лайка
-//   const placeDeleteButton = renderTemplate.querySelector('.place__delete'); //Кнопка удаления места
-//
-//   placeTitle.textContent = placeObject.name;
-//
-//   //Перезаписываем изображение
-//   placeImage.src = placeObject.link; //Выставляем изображение
-//   placeImage.alt =  placeObject.name; //Выставляем альтернативный текст
-//
-//   //Добавляем событие на лайк
-//   placeLikeButton.addEventListener('click', toggleLikeButton);
-//
-//   //Добавить событие на удаление места из списка мест
-//   placeDeleteButton.addEventListener('click',  removePlace);
-//
-//   //Добавляем событие на открытие попапа с просмотром изображения
-//   placeImage.addEventListener('click', () => {
-//     //При клике на картинку в карточке места мы рендерим её в попапе с изображением
-//     renderImagePopup(placeImage.src, placeTitle.textContent);
-//   })
-//
-//   return renderTemplate; //Возвращаем готовый темплейт
-// }
 
 //Обработчик нажатия на кнопку добавления места, открывает форму добавления места
 addPlaceButton.addEventListener('click', () => {
@@ -178,20 +176,17 @@ addPlaceButton.addEventListener('click', () => {
   placeName.value = '';
   placeImage.value = '';
 
-  // Переиспользуем метод для отключения кнопки у формы если форма невалидна
-  // Убрали проблему, порожденную на прошлом код-ревью ревьюером
-  // toggleSubmitButton(formPlace, validationSettings.submitButtonSelector, validationSettings.inactiveButtonClass, validationSettings.inputSelector);
-
   //Добавляем класс "открыто" форме добавления места
   togglePopup(addPlacePopup);
 });
+
 
 //Функция обработчик события отправки формы добавления нового места
 const placeFormSubmitHandler = event => {
   //Мы отменяем дефолтное действие формы (отправку гет запроса)
   event.preventDefault();
 
-  //Проверим поля на предмет ввода данных перед отправкой формы
+  //Проверим поля на предмет ввода данных перед отправкой формы, ну мало ли что
   if (placeName.value !== '' && placeImage.value !== '') {
     //Создаем объект с параметрами, которые получили из формы
     const formSubmitResult = {}; //Объявили пустой объект (через const потому что попросил ревьюер, никак не привыкну что у констант можно перезаписывать значения свойств)
@@ -215,51 +210,3 @@ const placeFormSubmitHandler = event => {
 
 //Инициализируем события при отправке формы добавления места
 formPlace.addEventListener('submit', placeFormSubmitHandler);
-
-//Попап с изображениями: принимает название изображение и урл адрес, перезаписывает значения в попапе с изображением и отображает попап
-//Реворк: решено сразу иметь на странице один попап с изображениями вместо пиздотряски с удалением и созданием дом элементов,
-//потому что так тоже можно, и работает быстрее, и код читать легче, и куратор группы сказал так сделать, да и почему бы не сделать ещё и так, раз правлю код?
-//Я конечно могу рендерить попап, а потом в него уже записывать значения, но ЗАЧЕМ?
-// const renderImagePopup = (imageUrl = '', imageTitle = '') => {
-//   popupImage.src = imageUrl; //Ссылка на изображение
-//   popupImage.alt = imageTitle; //Альтернативный текст картинки
-//   popupImageTitle.textContent = imageTitle; //Название изображения
-//
-//   togglePopup(imagePopup); //После перезаписи значений показываем попап
-// }
-
-// import Card from './Card.js';
-//
-// const card = new Card('Вася', 'imageurl', placeTemplate, '.place__image', '.place__title', '.place__like', 'place__like_status_active', '.place__delete', imagePopup, popupImage, popupImageTitle );
-
-// console.log(card.render());
-
-//Валидация форм
-
-//План:
-// 1 Для каждой формы в документе выполнить валидацию
-// 2 Проверить валидность всей формы, включить/выключить кнопку
-// 3
-// 4
-
-const validationSettings = {
-  formSelector: '.form',
-  inputSelector: '.form__input',
-  submitButtonSelector: '.form__submit',
-  inactiveButtonClass: 'form__submit_inactive',
-  inputErrorClass: 'form__input_type_error',
-  // errorClass: 'form__error', //Поскольку класс нигде не используется, заменю его на полезный, чтобы добавить уровень абстракции
-  errorClass: 'form__error_active'
-};
-
-//Импортируем класс
-import FormValidator from './FormValidator.js';
-
-//Объявляем экземпляр класса для всех форм документа
-Array.from(document.forms).forEach(form => {
-  const validateForm = new FormValidator(validationSettings, form);
-  //Для каждой формы активируем валидацию
-  validateForm.enableValidation();
-});
-
-
