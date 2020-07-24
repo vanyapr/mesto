@@ -101,7 +101,7 @@ Array.from(document.forms).forEach(form => {
 //Коллбэк листенера кнопки эскейп для вызова в функции открытия попапа
 const escapeListener = (event) => {
   //Поскольку листенер мы повесили на документ, надо дополнительно найти попап, который открыт
-  const targetPopup = document.querySelector('.popup_opened');
+  const targetPopup = document.querySelector(`.${popupOpenedClass}`);
 
   //Отловить нажатие кнопки эскейп
   if(event.key === 'Escape') {
