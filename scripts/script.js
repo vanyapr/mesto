@@ -6,8 +6,8 @@ const userTitle = document.querySelector('.profile__title'); // Имя в про
 const userDescription = document.querySelector('.profile__description'); // Род деятельности в профиле на странице
 
 // Форма редактирования профиля пользователя
-const profilePopup = document.querySelector('.popup-profile'); // Всплывающее окно редактирования профиля юзера
 const formProfile = document.forms.formProfile; // Форма с полями
+const profilePopup = document.querySelector('.popup-profile'); // Всплывающее окно редактирования профиля юзера
 const profileName = formProfile.profileName; // Имя в форме
 const profileDescription = formProfile.profileDescription; // Род деятельности в форме
 
@@ -15,11 +15,10 @@ const profileDescription = formProfile.profileDescription; // Род деяте�
 const addPlaceButton = document.querySelector('.profile__add-button'); // Кнопка добавления нового места
 const placeTemplate = document.querySelector('#place-template').content; // Теплейт одного места в списке мест
 const placesListContainer = document.querySelector('.places__list'); // Контейнер, в котором будем рендерить список мест
-const placeForm = document.forms.formPlace; // Нашли форму в места, этот поиск придется выполнять потому что ревьюер просит явно определять поведение для формы в эвент листенере, а универсальная функция ему не нравится
 
 // Форма добавления нового места
-const addPlacePopup = document.querySelector('.popup-place'); // Всплывающее окно добавления нового места
 const formPlace = document.forms.formPlace; // Форма с данными о месте
+const addPlacePopup = document.querySelector('.popup-place'); // Всплывающее окно добавления нового места
 const placeName = formPlace.placeName; // Название места в форме
 const placeImage = formPlace.placeImage; // Ссылка на изображение в форме
 
@@ -103,8 +102,6 @@ popupList.forEach((popup) => {
       togglePopup(event.target.closest('.popup'));
     }
   });
-
-
 });
 
 
@@ -181,8 +178,9 @@ addPlaceButton.addEventListener('click', () => {
   placeName.value = '';
   placeImage.value = '';
 
-  //Переиспользуем метод для отключения кнопки у формы если форма невалидна
-  toggleSubmitButton(placeForm, validationSettings.submitButtonSelector, validationSettings.inactiveButtonClass, validationSettings.inputSelector);
+  // Переиспользуем метод для отключения кнопки у формы если форма невалидна
+  // Убрали проблему, порожденную на прошлом код-ревью ревьюером
+  // toggleSubmitButton(formPlace, validationSettings.submitButtonSelector, validationSettings.inactiveButtonClass, validationSettings.inputSelector);
 
   //Добавляем класс "открыто" форме добавления места
   togglePopup(addPlacePopup);
@@ -235,3 +233,33 @@ formPlace.addEventListener('submit', placeFormSubmitHandler);
 // const card = new Card('Вася', 'imageurl', placeTemplate, '.place__image', '.place__title', '.place__like', 'place__like_status_active', '.place__delete', imagePopup, popupImage, popupImageTitle );
 
 // console.log(card.render());
+
+//Валидация форм
+
+//План:
+// 1 Для каждой формы в документе выполнить валидацию
+// 2 Проверить валидность всей формы, включить/выключить кнопку
+// 3
+// 4
+
+const validationSettings = {
+  formSelector: '.form',
+  inputSelector: '.form__input',
+  submitButtonSelector: '.form__submit',
+  inactiveButtonClass: 'form__submit_inactive',
+  inputErrorClass: 'form__input_type_error',
+  // errorClass: 'form__error', //Поскольку класс нигде не используется, заменю его на полезный, чтобы добавить уровень абстракции
+  errorClass: 'form__error_active'
+};
+
+//Импортируем класс
+import FormValidator from './FormValidator.js';
+
+//Объявляем экземпляр класса для всех форм документа
+Array.from(document.forms).forEach(form => {
+  const validateForm = new FormValidator(validationSettings, form);
+  //Для каждой формы активируем валидацию
+  validateForm.enableValidation();
+});
+
+

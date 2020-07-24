@@ -16,15 +16,14 @@ class Card {
     this._imagePopup = imagePopup;
     this._popupImage = popupImage;
     this._popupTitle = popupTitle;
+  }
 
-    //Коллбэк нажатия кнопки эскейп, запишем в переменную при инициализации экземпляра класса,
-    //чтобы вызывать в листенерах
-    this._escapePressHandler =  (event) => {
-      //Если нажали на эскейп
-      if(event.key === 'Escape') {
-        //Закрыть попап
-        this._closeImagePopup();
-      }
+  //Коллбэк нажатия кнопки эскейп, стрелочной функцией
+  _escapePressHandler = event => {
+    //Если нажали на эскейп
+    if(event.key === 'Escape') {
+      //Закрыть попап
+      this._closeImagePopup();
     }
   }
 
@@ -108,7 +107,7 @@ class Card {
     });
 
     //Листенер на открытие окна просмотра изображения
-    template.querySelector(this._imageSelector).addEventListener('click', (event) => {
+    template.querySelector(this._imageSelector).addEventListener('click', () => {
       this._openImagePopup ();
     });
   }
@@ -121,7 +120,6 @@ class Card {
     //Возвращаем темплейт
     return template;
   }
-
 }
 
 //Экспортируем класс карточки места
