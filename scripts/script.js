@@ -194,7 +194,7 @@ const placeFormSubmitHandler = event => {
     formSubmitResult.link = placeImage.value; //Записали ссылку на картинку из формы
 
     //Потом создаем новый объект места
-    const card = new Card(placeName.value, placeImage.value, placeTemplate, '.place__image', '.place__title', '.place__like', 'place__like_status_active', '.place__delete', imagePopup, popupImage, popupImageTitle );
+    const card = new Card(placeName.value, placeImage.value, placeTemplate, cardSelector, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, imagePopup, popupImage, popupImageTitle, popupOpenedClass);
     const place = card.render();
     //Используем метод добавления события на страницу
     placesListContainer.append(place);
