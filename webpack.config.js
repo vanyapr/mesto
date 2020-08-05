@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin'); //Плагин для 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin'); //Плагин для склейки цсс
 
 module.exports = {
-  entry: { main: './src/scripts/script.js' }, //Исходный файл
+  entry: { main: './src/pages/index.js' }, //Исходный файл
   output: {
     path: path.resolve(__dirname, 'dist'), //Директория назначения
     filename: 'main.js' //Имя файла в директории
@@ -15,9 +15,10 @@ module.exports = {
         loader: 'babel-loader', //Обработчик яваскриптов
         options: { //Пришлось добавить эту часть в сборщик, потому что иначе сыпало ошибками о неподдерживаемом синтаксисе
           presets: [
-            {
-              'plugins': ['@babel/plugin-proposal-class-properties'] //включает поддержку продвинутого синтаксиса яваскрипта
-            }]
+              {
+                'plugins': ['@babel/plugin-proposal-class-properties'] //включает поддержку продвинутого синтаксиса яваскрипта
+              }
+            ]
         },
         exclude: path.resolve(__dirname, 'node_modules') //Исключенные директории
       },
@@ -26,7 +27,11 @@ module.exports = {
         loader: 'file-loader' // при обработке этих файлов нужно использовать file-loader
       },
       {
-        test: /\.(woff|woff2|ttf|eot)$/,
+        test: /\.(woff|woff2|ttf|eot)$/, //Отдельный загрузчик для шрифтов, потому что предыдущий вариант сыпал ошибки
+        use: 'file-loader'
+      },
+      {
+        test: /\.(nojekyll)$/, //Отдельный загрузчик для файла .nojekyll
         use: 'file-loader'
       },
       {
@@ -41,7 +46,9 @@ module.exports = {
           MiniCssExtractPlugin.loader,
           {
           loader: 'css-loader',
-          options: { importLoaders: 1 } //Настройка для импорта файлов
+          options: {
+            importLoaders: 1,
+            sourceMap: true} //Настройка для импорта файлов
           },
           'postcss-loader' //Лоадер для минификации файлов
         ]
