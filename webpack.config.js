@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin'); //Плагин для 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin'); //Плагин для склейки цсс
 
 module.exports = {
-  entry: { main: './src/index.js' }, //Исходный файл
+  entry: { main: './src/scripts/script.js' }, //Исходный файл
   output: {
     path: path.resolve(__dirname, 'dist'), //Директория назначения
     filename: 'main.js' //Имя файла в директории
@@ -13,11 +13,21 @@ module.exports = {
       {
         test: /\.js$/, //Регулярное выражение для поиска яваскриптов
         loader: 'babel-loader', //Обработчик яваскриптов
+        options: { //Пришлось добавить эту часть в сборщик, потому что иначе сыпало ошибками о неподдерживаемом синтаксисе
+          presets: [
+            {
+              'plugins': ['@babel/plugin-proposal-class-properties'] //включает поддержку продвинутого синтаксиса яваскрипта
+            }]
+        },
         exclude: path.resolve(__dirname, 'node_modules') //Исключенные директории
       },
       {
-        test: /\.(png|svg|jpg|gif|woff2)$/,// регулярное выражение, которое ищет все файлы с такими расширениями
+        test: /\.(png|svg|jpg|gif)$/,// регулярное выражение, которое ищет все файлы с такими расширениями
         loader: 'file-loader' // при обработке этих файлов нужно использовать file-loader
+      },
+      {
+        test: /\.(woff|woff2|ttf|eot)$/,
+        use: 'file-loader'
       },
       {
         test: /\.html$/,// регулярное выражение, которое ищет все файлы с такими расширениями

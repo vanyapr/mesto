@@ -1,3 +1,6 @@
+//Импортирование CSS
+import '../pages/index.css';
+
 // ИМПОРТ
 import Card from './Card.js'; //Импортируем класс карточки
 import FormValidator from './FormValidator.js'; //Импортируем класс валидатора
