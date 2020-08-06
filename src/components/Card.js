@@ -8,6 +8,7 @@ class Card {
     this._cardTitle = cardTitle;
     this._imageUrl = imageUrl;
     this._templateElement = templateElement;
+    this._cardSelector = cardSelector;
     this._imageSelector = imageSelector;
     this._titleSelector = titleSelector;
     this._likeButtonSelector = likeButtonSelector;
@@ -45,8 +46,7 @@ class Card {
   }
 
   //Удаление карточки
-  _removeCard (event) {
-    //Удаляем карточку по селектору
+  _removeCard = event => {
     event.target.closest(this._cardSelector).remove();
   }
 
@@ -64,9 +64,7 @@ class Card {
     });
 
     //Листенер на удаление карточки
-    template.querySelector(this._deleteButtonSelector).addEventListener('click', (event) => {
-      this._removeCard(event);
-    });
+    template.querySelector(this._deleteButtonSelector).addEventListener('click', this._removeCard);
 
     //Листенер на открытие окна просмотра изображения
     template.querySelector(this._imageSelector).addEventListener('click', () => {

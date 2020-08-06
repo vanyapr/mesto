@@ -27,7 +27,7 @@ class Popup {
     //Вешаем слушатель на кнопку эскейп
     document.addEventListener('keydown', this._handleEscClose);
     //Открываем попап
-     this._popup.classList.add('popup_opened');
+    this._popup.classList.add('popup_opened');
   }
 
   close() {

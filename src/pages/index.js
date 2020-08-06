@@ -1,12 +1,13 @@
-//Импортирование CSS
+//ИМПОРТ CSS (для сборки проекта)
 // import './index.css';
 
-// ИМПОРТ КЛАССОВ
+//ИМПОРТ КЛАССОВ
 import Card from '../components/Card.js'; //Импортируем класс карточки
 import FormValidator from '../components/FormValidator.js'; //Импортируем класс валидатора
 import Section from '../components/Section.js'; //Импортируем класс рендера элементов
 import Popup from '../components/Popup.js'; //Импортируем класс попапа
 import PopupWithImage from '../components/PopupWithImage.js'; //Импортируем класс попапа c изображением
+import PopupWithForm from '../components/PopupWithForm.js'; //Импортируем класс попапа c формами
 
 //TODO:
 // 0) Удалить неиспользуемые переменные
@@ -20,7 +21,7 @@ const userDescription = document.querySelector('.profile__description'); // Ро
 
 // Форма редактирования профиля пользователя
 const formProfile = document.forms.formProfile; // Форма с полями
-const profilePopup = document.querySelector('.popup-profile'); // Всплывающее окно редактирования профиля юзера
+const profilePopupSelector = '.popup-profile'; // Всплывающее окно редактирования профиля юзера
 const profileName = formProfile.profileName; // Имя в форме
 const profileDescription = formProfile.profileDescription; // Род деятельности в форме
 
@@ -31,15 +32,15 @@ const placesListContainerSelector = '.places__list'; // Селектор кон�
 
 // Форма добавления нового места
 const formPlace = document.forms.formPlace; // Форма с данными о месте
-const addPlacePopup = document.querySelector('.popup-place'); // Всплывающее окно добавления нового места
+const addPlacePopupSelector = '.popup-place'; // Всплывающее окно добавления нового места
 const placeName = formPlace.placeName; // Название места в форме
 const placeImage = formPlace.placeImage; // Ссылка на изображение в форме
 
 // Всплывающее окно с изображением
-// const imagePopup = document.querySelector('.image-popup'); //Попап с изображением
+const imagePopupSelector = '.image-popup'; //Попап с изображением
 //const popupImage = imagePopup.querySelector('.popup__image'); //Изображение в попапе
 //const popupImageTitle = imagePopup.querySelector('.popup__image-description'); //Текст описания изображения в попапе
-const popupOpenedClass = 'popup_opened'; //Класс открытого попапа для передачи в функции
+//const popupOpenedClass = 'popup_opened'; //Класс открытого попапа для передачи в функции
 
 //Селекторы и классы карточки места для использования в классе
 const cardSelector = '.place';
@@ -89,25 +90,18 @@ const validationSettings = {
 
 
 //ОСНОВНОЙ КОД
-//Инициализация попапов
-//Инициализация попапов на странице
-const imagePopup = new PopupWithImage('.popup_type_image');
-//console.log(imagePopup);
-//imagePopup.open('https://yandex.ru/images/search?pos=0&from=tabbar&img_url=https%3A%2F%2Fyt3.ggpht.com%2Fa%2FAATXAJyCu8iRYl_bLGCOiob3G8R_FZ8iBANSuiR9laVe%3Ds900-c-k-c0xffffffff-no-rj-mo&text=favicon+ico+generator+online&rpt=simage', 'vasya');
+//Попап с картинкой
+const imagePopup = new PopupWithImage(imagePopupSelector);
 
 //Коллбэк открытия попапа кликом на изображение в карточке
 const handleCardClick = (imageUrl, imageText) =>  {
-  imagePopup.setEventListeners();
-  imagePopup.open(imageUrl, imageText);
+  imagePopup.setEventListeners(); //Инициализируем эвент листенеры
+  imagePopup.open(imageUrl, imageText);//Заполняем данные попапа
 };
 
-//Попап с информацией профиля
-const editProfilePopup = new Popup('.popup-profile');
-editProfilePopup.setEventListeners(); //Включение листенеров
-//editProfilePopup.open(); //Открытие попапа с картинкой
 
 //При загрузке страницы добавляем места внутрь списка мест с использованием темплейта
-//Функция обратного вызова, возвращает DOM элемент рендера карточки места
+//Функция обратного вызова, возвращает DOM элемент рендера карточки места, должна быть ниже коллбэка, чтобы корректно работала карточка места
 const renderer = (item) => {
   const card = new Card(item.name, item.link, placeTemplate, cardSelector, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, handleCardClick);
   const renderedCard = card.render(); //Хочу оставить переменную для читаемости кода
@@ -125,6 +119,29 @@ const placeContainer = new Section(
 //Рендер всех карточек на странице
 placeContainer.renderElements();
 
+
+//Коллбэк сабмита данных в попапе с формой
+const formSubmitHandler = formValues => {
+  //Если поля формы содержать данные профиля пользователя
+  if (formValues.profileName && formValues.profileDescription) {
+    //Мы записываем их в профиль пользователя
+  }  else { //Если поля формы содержат данные картинки,
+    //Мы создаем и рендерим новую карточку места
+    const placeName = formValues.placeName;
+    const placeImage = formValues.placeImage;
+    const newPlace = new Card(placeName, placeImage, placeTemplate, cardSelector, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, handleCardClick);
+    const renderedPlace = newPlace.render(); //Рендерим новую карточку
+    placeContainer.addItem(renderedPlace); //Добавляем на страницу
+  }
+}
+
+//Попап редактирования профиля
+const editProfilePopup = new PopupWithForm(profilePopupSelector, formSubmitHandler);
+editProfilePopup.setEventListeners(); //Включение листенеров
+
+//Попап добавления нового места
+const newPlacePopup = new PopupWithForm(addPlacePopupSelector, formSubmitHandler);
+newPlacePopup.setEventListeners();
 
 
 

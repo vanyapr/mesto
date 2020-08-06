@@ -4,12 +4,12 @@ class PopupWithImage extends Popup {
   constructor(popupSelector) {
     super(popupSelector);
     this._popup = document.querySelector(popupSelector);
-    this._image = document.querySelector('.popup__image'); //Определяем значения в конструкторе
-    this._text = document.querySelector('.popup__image-description'); //Потому что так будет меньше повторения кода в методах
+    this._image = this._popup.querySelector('.popup__image'); //Определяем значения в конструкторе
+    this._text = this._popup.querySelector('.popup__image-description'); //Потому что так будет меньше повторения кода в методах
   }
 
   open (imageUrl, imageText) {
-    super.open();
+    super.open(); //Вызываем родительский метод открытия попапа
 
     //При открытии попапа записываем данные в поля
     this._image.src = imageUrl; //Ссылка на картинку
