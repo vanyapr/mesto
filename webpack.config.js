@@ -1,6 +1,7 @@
 const path = require('path'); //Получаем абсолютный путь, он нужен для указания абсолютного пути до файла вывода
 const HtmlWebpackPlugin = require('html-webpack-plugin'); //Плагин для работы с хтмл в вебпаке
 const MiniCssExtractPlugin = require('mini-css-extract-plugin'); //Плагин для склейки цсс
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin'); //Плагин для генерации фавиконов
 
 module.exports = {
   entry: { main: './src/pages/index.js' }, //Исходный файл
@@ -59,6 +60,24 @@ module.exports = {
     new HtmlWebpackPlugin({
       // title: 'test string', //Кастомный тайтл у хтмл файла
       template: './src/index.html' // путь к файлу index.html
+    }),
+
+    new FaviconsWebpackPlugin({ //Плагин для генерации фавиконок, потому что фавикон нужен и он порождает ошибки в консоли
+      logo: './src/images/logo.svg', // svg works too!
+      mode: 'webapp', // optional can be 'webapp' or 'light' - 'webapp' by default
+      devMode: 'webapp', // optional can be 'webapp' or 'light' - 'light' by default
+      favicons: {
+        appName: 'Mesto',
+        appDescription: 'Mesto in Yandex.Praktikum',
+        developerName: 'vanyapr.github.com',
+        developerURL: null, // prevent retrieving from the nearest package.json
+        background: '#333',
+        theme_color: '#333',
+        icons: {
+          coast: false,
+          yandex: false
+        }
+      }
     }),
 
     new MiniCssExtractPlugin() // подключение плагина для объединения файлов

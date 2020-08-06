@@ -1,10 +1,12 @@
 //Импортирование CSS
-import './index.css';
+// import './index.css';
 
-// ИМПОРТ
+// ИМПОРТ КЛАССОВ
 import Card from '../components/Card.js'; //Импортируем класс карточки
 import FormValidator from '../components/FormValidator.js'; //Импортируем класс валидатора
+import Section from '../components/Section.js'; //Импортируем класс рендера элементов
 
+//TODO: перенести переменные в файл constants.js в папке utils.
 // ПЕРЕМЕННЫЕ
 // Редактирование профиля пользователя
 const editProfile = document.querySelector('.profile__edit-button'); // Кнопка редактирования профиля
@@ -21,7 +23,7 @@ const profileDescription = formProfile.profileDescription; // Род деяте�
 // Добавление нового места
 const addPlaceButton = document.querySelector('.profile__add-button'); // Кнопка добавления нового места
 const placeTemplate = document.querySelector('#place-template').content; // Теплейт одного места в списке мест
-const placesListContainer = document.querySelector('.places__list'); // Контейнер, в котором будем рендерить список мест
+const placesListContainerSelector = '.places__list'; // Селектор контейнера, в котором будем рендерить список мест
 
 // Форма добавления нового места
 const formPlace = document.forms.formPlace; // Форма с данными о месте
@@ -85,11 +87,23 @@ const validationSettings = {
 
 //ОСНОВНОЙ КОД
 //При загрузке страницы добавляем места внутрь списка мест с использованием темплейта
-initialCards.forEach(item => {
+//Функция обратного вызова, возвращает DOM элемент рендера карточки места
+const renderer = (item) => {
   const card = new Card(item.name, item.link, placeTemplate, cardSelector, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, imagePopup, popupImage, popupImageTitle, popupOpenedClass);
-  const place = card.render();
-  placesListContainer.append(place);
-});
+  const renderedCard = card.render(); //Хочу оставить переменную для читаемости кода
+  return renderedCard;
+}
+
+//Объявление экземпляра класса Section
+const placeContainer = new Section(
+  {
+    items: initialCards, //Список карточек для рендера
+    renderer //Функция обратного вызова
+  }, placesListContainerSelector //Селектор списка мест (контейнера)
+);
+
+//Рендер всех карточек на странице
+placeContainer.renderElements();
 
 
 //Включаем валидацию для всех форм документа
