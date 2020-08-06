@@ -10,31 +10,38 @@ class PopupWithForm extends Popup {
   }
 
   _getInputValues () {
-    const inputsValues = {}; //Создадим пустой объект
+    this._inputsValues = {}; //Создадим пустой объект (или обнулим предыдущий)
 
     this._inputsList.forEach(item => {
-      inputsValues[item.name] = item.value; //Соберём в него список значений формы, чтобы позже определить, что за форму мы обрабатываем
+      this._inputsValues[item.name] = item.value; //Соберём в него список значений формы, чтобы позже определить, что за форму мы обрабатываем
     });
 
-    return inputsValues; //Возвратим список значений
+    return this._inputsValues; //Возвратим объект со значениями формы
+  }
+
+  _resetInputValues () {
+    this._inputsList.forEach(item => {
+      item.value = ''; //Сбрасываем значения при сабмите или закрытии формы
+    });
   }
 
   setEventListeners () {
-    super.setEventListeners();
+    super.setEventListeners(); //Вешаем листенеры по умолчанию
 
     //Устанавливаем хэндлер сабмита формы
     this._formElement.addEventListener('submit', event => {
       event.preventDefault();
-      this._formSubmitHandler(this._getInputValues());
-      super.close();
+      this._submitValues = this._getInputValues(); //Получаем объект со значениями полей
+      this._formSubmitHandler(this._submitValues); //Передаем функции обратного вызова
+      this._resetInputValues(); //Сбрасываем значения полей в форме
+      super.close(); //Закрываем форму
     })
-
-    //this._formSubmitHandler ()
   }
 
   close() {
-    //Очищаем формы при закрытии
-    this._getInputValues();
+    //Очищаем форму при закрытии
+    this._resetInputValues();
+    //И закрываем
     super.close();
   }
 }

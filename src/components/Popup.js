@@ -6,11 +6,12 @@ class Popup {
 
   //Слушатель на закрытие по кнопке эскейп
   _handleEscClose = event => {
-    if (event.key === 'Escape') { //Если
+    if (event.key === 'Escape') { //Если нажат эскейп
       this.close();
     }
   }
 
+  //Слушатель попыток закрытия попапа кликом по кнопке или фону
   _handleCloseActions = event => {
     if (event.target.classList.contains('popup') || event.target.classList.contains('popup__close')) {
       this.close();
