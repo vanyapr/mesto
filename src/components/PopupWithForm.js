@@ -1,7 +1,6 @@
 class PopupWithForm extends Popup {
   constructor(popupSelector, formSubmitHandler) {
     super(popupSelector);
-    //this._popupSelector = popupSelector;
     this._formSubmitHandler = formSubmitHandler;
   }
 
@@ -10,10 +9,10 @@ class PopupWithForm extends Popup {
   }
 
   setEventListeners () {
-
+    //Устанавливаем валидацию форм
   }
 
   close() {
-
+    //Очищаем формы при закрытии
   }
 }

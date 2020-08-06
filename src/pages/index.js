@@ -6,8 +6,11 @@ import Card from '../components/Card.js'; //Импортируем класс к
 import FormValidator from '../components/FormValidator.js'; //Импортируем класс валидатора
 import Section from '../components/Section.js'; //Импортируем класс рендера элементов
 import Popup from '../components/Popup.js'; //Импортируем класс попапа
+import PopupWithImage from '../components/PopupWithImage.js'; //Импортируем класс попапа c изображением
 
-//TODO: перенести переменные в файл constants.js в папке utils.
+//TODO:
+// 0) Удалить неиспользуемые переменные
+// 1) Перенести переменные в файл constants.js в папке utils.
 // ПЕРЕМЕННЫЕ
 // Редактирование профиля пользователя
 const editProfile = document.querySelector('.profile__edit-button'); // Кнопка редактирования профиля
@@ -33,9 +36,9 @@ const placeName = formPlace.placeName; // Название места в фор�
 const placeImage = formPlace.placeImage; // Ссылка на изображение в форме
 
 // Всплывающее окно с изображением
-const imagePopup = document.querySelector('.image-popup'); //Попап с изображением
-const popupImage = imagePopup.querySelector('.popup__image'); //Изображение в попапе
-const popupImageTitle = imagePopup.querySelector('.popup__image-description'); //Текст описания изображения в попапе
+// const imagePopup = document.querySelector('.image-popup'); //Попап с изображением
+//const popupImage = imagePopup.querySelector('.popup__image'); //Изображение в попапе
+//const popupImageTitle = imagePopup.querySelector('.popup__image-description'); //Текст описания изображения в попапе
 const popupOpenedClass = 'popup_opened'; //Класс открытого попапа для передачи в функции
 
 //Селекторы и классы карточки места для использования в классе
@@ -81,17 +84,32 @@ const validationSettings = {
   submitButtonSelector: '.form__submit',
   inactiveButtonClass: 'form__submit_inactive',
   inputErrorClass: 'form__input_type_error',
-  // errorClass: 'form__error', //Поскольку класс нигде не используется, заменю его на полезный, чтобы добавить абстракции коду
   errorClass: 'form__error_active'
 };
 
 
 //ОСНОВНОЙ КОД
-//При загрузке страницы добавляем места внутрь списка мест с использованием темплейта
+//Инициализация попапов
+//Инициализация попапов на странице
+const imagePopup = new PopupWithImage('.popup_type_image');
+//console.log(imagePopup);
+//imagePopup.open('https://yandex.ru/images/search?pos=0&from=tabbar&img_url=https%3A%2F%2Fyt3.ggpht.com%2Fa%2FAATXAJyCu8iRYl_bLGCOiob3G8R_FZ8iBANSuiR9laVe%3Ds900-c-k-c0xffffffff-no-rj-mo&text=favicon+ico+generator+online&rpt=simage', 'vasya');
 
+//Коллбэк открытия попапа кликом на изображение в карточке
+const handleCardClick = (imageUrl, imageText) =>  {
+  imagePopup.setEventListeners();
+  imagePopup.open(imageUrl, imageText);
+};
+
+//Попап с информацией профиля
+const editProfilePopup = new Popup('.popup-profile');
+editProfilePopup.setEventListeners(); //Включение листенеров
+//editProfilePopup.open(); //Открытие попапа с картинкой
+
+//При загрузке страницы добавляем места внутрь списка мест с использованием темплейта
 //Функция обратного вызова, возвращает DOM элемент рендера карточки места
 const renderer = (item) => {
-  const card = new Card(item.name, item.link, placeTemplate, cardSelector, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, imagePopup, popupImage, popupImageTitle, popupOpenedClass);
+  const card = new Card(item.name, item.link, placeTemplate, cardSelector, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, handleCardClick);
   const renderedCard = card.render(); //Хочу оставить переменную для читаемости кода
   return renderedCard;
 }
@@ -108,10 +126,9 @@ const placeContainer = new Section(
 placeContainer.renderElements();
 
 
-//Инициализация попапов на странице
-const editProfilePopup = new Popup('.popup-profile');
-editProfilePopup.setEventListeners();
-editProfilePopup.open();
+
+
+
 
 //Включаем валидацию для всех форм документа
 Array.from(document.forms).forEach(form => {

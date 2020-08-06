@@ -1,7 +1,7 @@
 class Card {
   //Получаем параметры в конструктор объекта
   //Нам понадобятся селекторы элементов темплейта, чтобы привязывать листенеры приватными методами
-  constructor (cardTitle, imageUrl, templateElement, cardSelector, imageSelector, titleSelector, likeButtonSelector, likeActiveClass, deleteButtonSelector, imagePopup, popupImage, popupTitle, popupOpenedClass) {
+  constructor (cardTitle, imageUrl, templateElement, cardSelector, imageSelector, titleSelector, likeButtonSelector, likeActiveClass, deleteButtonSelector, handleCardClick) {
     //Присваиваем внутренние переменные, они все будут приватными, потому что мы не используем их снаружи
     //Напишу много переменных чтобы сделать код самодокументируемым
 
@@ -13,20 +13,7 @@ class Card {
     this._likeButtonSelector = likeButtonSelector;
     this._deleteButtonSelector = deleteButtonSelector;
     this._likeActiveClass = likeActiveClass;
-    this._imagePopup = imagePopup;
-    this._popupImage = popupImage;
-    this._popupTitle = popupTitle;
-    this._cardSelector = cardSelector;
-    this._popupOpenedClass = popupOpenedClass;
-  }
-
-  //Коллбэк нажатия кнопки эскейп, стрелочной функцией
-  _escapePressHandler = event => {
-    //Если нажали на эскейп
-    if(event.key === 'Escape') {
-      //Закрыть попап
-      this._closeImagePopup();
-    }
+    this._handleCardClick = handleCardClick; //Функция обратного вызова для обработки клика на карточку
   }
 
   //Получаем темплейт
@@ -63,35 +50,11 @@ class Card {
     event.target.closest(this._cardSelector).remove();
   }
 
-  //Запись данных в попап с картинкой
-  _writeImagePopup () {
-    this._popupImage.src = this._imageUrl; //Ссылка на изображение
-    this._popupImage.alt = this._cardTitle; //Альтернативный текст картинки
-    this._popupTitle.textContent = this._cardTitle; //Название изображения
-  }
-
-  //Сброс данных в попапе
-  _resetImagePopup () {
-    this._popupImage.src = ''; //Ссылка на изображение
-    this._popupImage.alt = ''; //Альтернативный текст картинки
-    this._popupTitle.textContent = ''; //Название изображения
-  }
-
   //Открытие попапа с картинкой
   _openImagePopup () {
-    this._writeImagePopup(); //Записываем данные
-    this._imagePopup.classList.add(this._popupOpenedClass); //Открываем попап
-
-    // Добавляем листенер на закрытие попапа по нажатию кнопки эскейп. Тут будет правильнее это сделать.
-    document.addEventListener('keydown', this._escapePressHandler);
+    this._handleCardClick(this._imageUrl, this._cardTitle); //Передаем данные во внешний коллбэк
   }
 
-  //Закрытие попапа с картинкой
-  _closeImagePopup () {
-    this._imagePopup.classList.remove(this._popupOpenedClass); //Закрываем попап
-    this._resetImagePopup(); //Сбрасываем данные
-    document.removeEventListener('keydown', this._escapePressHandler); //Удаляем эвент листенер
-  }
 
   //Объявляем эвент листенеры
   _setEventListeners (template) {
