@@ -5,12 +5,13 @@
 import Card from '../components/Card.js'; //Импортируем класс карточки
 import FormValidator from '../components/FormValidator.js'; //Импортируем класс валидатора
 import Section from '../components/Section.js'; //Импортируем класс рендера элементов
+import Popup from '../components/Popup.js'; //Импортируем класс попапа
 
 //TODO: перенести переменные в файл constants.js в папке utils.
 // ПЕРЕМЕННЫЕ
 // Редактирование профиля пользователя
 const editProfile = document.querySelector('.profile__edit-button'); // Кнопка редактирования профиля
-const popupList = document.querySelectorAll('.popup'); // Попапы
+const popupList = document.querySelectorAll('.popup'); // Список попапов в документе
 const userTitle = document.querySelector('.profile__title'); // Имя в профиле на странице
 const userDescription = document.querySelector('.profile__description'); // Род деятельности в профиле на странице
 
@@ -87,6 +88,7 @@ const validationSettings = {
 
 //ОСНОВНОЙ КОД
 //При загрузке страницы добавляем места внутрь списка мест с использованием темплейта
+
 //Функция обратного вызова, возвращает DOM элемент рендера карточки места
 const renderer = (item) => {
   const card = new Card(item.name, item.link, placeTemplate, cardSelector, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, imagePopup, popupImage, popupImageTitle, popupOpenedClass);
@@ -106,6 +108,11 @@ const placeContainer = new Section(
 placeContainer.renderElements();
 
 
+//Инициализация попапов на странице
+const editProfilePopup = new Popup('.popup-profile');
+editProfilePopup.setEventListeners();
+editProfilePopup.open();
+
 //Включаем валидацию для всех форм документа
 Array.from(document.forms).forEach(form => {
   //Объявляем экземпляр класса
@@ -116,114 +123,114 @@ Array.from(document.forms).forEach(form => {
 
 
 //Коллбэк листенера кнопки эскейп для вызова в функции открытия попапа
-const escapeListener = (event) => {
-  //Поскольку листенер мы повесили на документ, надо дополнительно найти попап, который открыт
-  const targetPopup = document.querySelector(`.${popupOpenedClass}`);
-
-  //Отловить нажатие кнопки эскейп
-  if(event.key === 'Escape') {
-    //Закрыть попап
-    togglePopup(targetPopup);
-  }
-};
+// const escapeListener = (event) => {
+//   //Поскольку листенер мы повесили на документ, надо дополнительно найти попап, который открыт
+//   const targetPopup = document.querySelector(`.${popupOpenedClass}`);
+//
+//   //Отловить нажатие кнопки эскейп
+//   if(event.key === 'Escape') {
+//     //Закрыть попап
+//     togglePopup(targetPopup);
+//   }
+// };
 
 
 // Функция открытия попапа (принимает объект - попап) переключает его класс (открыт/закрыт)
 // Рефактор: также добавляет эвент листенеры при открытии и закрытии попапа
-const togglePopup = target => {
-  // Если у объекта нет класса "popup_opened", мы его добавляем по клику, иначе убираем класс "popup_opened"
-  target.classList.toggle(popupOpenedClass);
-
-  //Если объект открыт
-  if (target.classList.contains(popupOpenedClass)) {
-    //добавляем листенер
-    document.addEventListener('keydown', escapeListener);
-  } else {
-    //иначе удаляем листенер
-    document.removeEventListener('keydown', escapeListener);
-  }
-};
+// const togglePopup = target => {
+//   // Если у объекта нет класса "popup_opened", мы его добавляем по клику, иначе убираем класс "popup_opened"
+//   target.classList.toggle(popupOpenedClass);
+//
+//   //Если объект открыт
+//   if (target.classList.contains(popupOpenedClass)) {
+//     //добавляем листенер
+//     document.addEventListener('keydown', escapeListener);
+//   } else {
+//     //иначе удаляем листенер
+//     document.removeEventListener('keydown', escapeListener);
+//   }
+// };
 
 
 // ~~Закрываем попап по клику на кнопку закрытия (сработает для всех форм, которые будут добавляться на страницу в будущем)~~
 // Рефактор: событие теперь вешается не на кнопку закрытия попапа, а на весь попап, где вызывается для нужного элемента всплытием
-popupList.forEach((popup) => {
-  popup.addEventListener('click', (event) => {
-    // Проверяем, является ли целью клика нужный нам элемент
-    if (event.target.classList.contains('popup') || event.target.classList.contains('popup__close')) {
-      //Вызываем событие всплытием
-      togglePopup(event.target.closest('.popup'));
-    }
-  });
-});
+// popupList.forEach((popup) => {
+//   popup.addEventListener('click', (event) => {
+//     // Проверяем, является ли целью клика нужный нам элемент
+//     if (event.target.classList.contains('popup') || event.target.classList.contains('popup__close')) {
+//       //Вызываем событие всплытием
+//       togglePopup(event.target.closest('.popup'));
+//     }
+//   });
+// });
 
 
 //Открытие окна редактирования профиля: считываем значения из документа и вносим в поля формы
-const toggleProfilePopup = () => {
-  // Считываем значения из документа и записываем их в поля формы при открытии формы
-  profileName.value = userTitle.textContent;
-  profileDescription.value = userDescription.textContent;
-  togglePopup(profilePopup); //Открываем попап
-};
+// const toggleProfilePopup = () => {
+//   // Считываем значения из документа и записываем их в поля формы при открытии формы
+//   profileName.value = userTitle.textContent;
+//   profileDescription.value = userDescription.textContent;
+//   togglePopup(profilePopup); //Открываем попап
+// };
 
 // Добавляем событие на открытие формы редактирования профиля по клику на кнопку редактирования профиля
-editProfile.addEventListener('click', toggleProfilePopup);
+// editProfile.addEventListener('click', toggleProfilePopup);
 
 
 // Отправка формы редактирования профиля пользователя
-const profileFormSubmitHandler = event => {
-  //Отменяем действие формы по умолчанию
-  event.preventDefault();
-
-  //Записываем значения из формы в элементы документа
-  userTitle.textContent = profileName.value;
-  userDescription.textContent = profileDescription.value;
-
-  //Не забываем закрыть форму
-  togglePopup(profilePopup);
-}
-
-//Отслиживаем форм сабмит для формы редактирования профиля пользователя
-formProfile.addEventListener('submit', profileFormSubmitHandler);
+// const profileFormSubmitHandler = event => {
+//   //Отменяем действие формы по умолчанию
+//   event.preventDefault();
+//
+//   //Записываем значения из формы в элементы документа
+//   userTitle.textContent = profileName.value;
+//   userDescription.textContent = profileDescription.value;
+//
+//   //Не забываем закрыть форму
+//   togglePopup(profilePopup);
+// }
+//
+// //Отслиживаем форм сабмит для формы редактирования профиля пользователя
+// formProfile.addEventListener('submit', profileFormSubmitHandler);
 
 
 //Обработчик нажатия на кнопку добавления места, открывает форму добавления места
-addPlaceButton.addEventListener('click', () => {
-  //Обнуляем значения формы перед её отображением
-  placeName.value = '';
-  placeImage.value = '';
-
-  //Добавляем класс "открыто" форме добавления места
-  togglePopup(addPlacePopup);
-});
+// addPlaceButton.addEventListener('click', () => {
+//   //Обнуляем значения формы перед её отображением
+//   placeName.value = '';
+//   placeImage.value = '';
+//
+//   //Добавляем класс "открыто" форме добавления места
+//   togglePopup(addPlacePopup);
+// });
 
 
 //Функция обработчик события отправки формы добавления нового места
-const placeFormSubmitHandler = event => {
-  //Мы отменяем дефолтное действие формы (отправку гет запроса)
-  event.preventDefault();
-
-  //Проверим поля на предмет ввода данных перед отправкой формы, ну мало ли что
-  if (placeName.value !== '' && placeImage.value !== '') {
-    //Создаем объект с параметрами, которые получили из формы
-    const formSubmitResult = {}; //Объявили пустой объект (через const потому что попросил ревьюер, никак не привыкну что у констант можно перезаписывать значения свойств)
-    formSubmitResult.name = placeName.value; //Записали имя из формы
-    formSubmitResult.link = placeImage.value; //Записали ссылку на картинку из формы
-
-    //Потом создаем новый объект места
-    const card = new Card(placeName.value, placeImage.value, placeTemplate, cardSelector, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, imagePopup, popupImage, popupImageTitle, popupOpenedClass);
-    const place = card.render();
-    //Используем метод добавления события на страницу
-    placesListContainer.append(place);
-
-    //И закрываем форму
-    togglePopup(addPlacePopup);
-  } else {
-    //Если поля пустые, выведем в консоль, ведь дизайнер не дал нам состояния инпутов
-    // при отсутствии данных, а пустой сабмит сломает верстку.
-    // console.log('Данные заполнены не полностью!!!');
-  }
-}
-
-//Инициализируем события при отправке формы добавления места
-formPlace.addEventListener('submit', placeFormSubmitHandler);
+// const placeFormSubmitHandler = event => {
+//   //Мы отменяем дефолтное действие формы (отправку гет запроса)
+//   event.preventDefault();
+//
+//   //Проверим поля на предмет ввода данных перед отправкой формы, ну мало ли что
+//   if (placeName.value !== '' && placeImage.value !== '') {
+//     //Создаем объект с параметрами, которые получили из формы
+//     const formSubmitResult = {}; //Объявили пустой объект (через const потому что попросил ревьюер, никак не привыкну что у констант можно перезаписывать значения свойств)
+//     formSubmitResult.name = placeName.value; //Записали имя из формы
+//     formSubmitResult.link = placeImage.value; //Записали ссылку на картинку из формы
+//
+//     //Потом создаем новый объект места
+//     const card = new Card(placeName.value, placeImage.value, placeTemplate, cardSelector, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, imagePopup, popupImage, popupImageTitle, popupOpenedClass);
+//     const place = card.render();
+//     //Используем метод добавления события на страницу
+//     placesListContainer.append(place);
+//
+//     //И закрываем форму
+//     togglePopup(addPlacePopup);
+//   } else {
+//     //Если поля пустые, выведем в консоль, ведь дизайнер не дал нам состояния инпутов
+//     // при отсутствии данных, а пустой сабмит сломает верстку.
+//     // console.log('Данные заполнены не полностью!!!');
+//   }
+// }
+//
+// //Инициализируем события при отправке формы добавления места
+// formPlace.addEventListener('submit', placeFormSubmitHandler);
