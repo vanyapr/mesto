@@ -111,7 +111,7 @@ const newPlacePopup = new PopupWithForm(addPlacePopupSelector, formSubmitHandler
 newPlacePopup.setEventListeners();
 
 //Вешаем листенер на кнопку добавления нового места
-addPlaceButton.addEventListener('click', event => {
+addPlaceButton.addEventListener('click', () => {
   newPlacePopup.open(); //Открываем форму добавления места
 });
 
