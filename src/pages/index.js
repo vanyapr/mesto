@@ -64,10 +64,11 @@ const handleCardClick = (imageUrl, imageText) =>  {
 
 //При загрузке страницы добавляем места внутрь списка мест с использованием темплейта
 //Функция обратного вызова, возвращает DOM элемент рендера карточки места, должна быть ниже коллбэка, чтобы корректно работала карточка места
-const renderer = (item) => {
+const renderer = (item, containerSelector) => {
   const card = new Card(item.name, item.link, placeTemplate, cardSelector, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, handleCardClick);
   const renderedCard = card.render(); //Хочу оставить переменную для читаемости кода
-  return renderedCard;
+  const container = document.querySelector(containerSelector);
+  container.append(renderedCard);
 }
 
 //Объявление экземпляра класса Section
@@ -81,33 +82,29 @@ const placeContainer = new Section(
 //Рендер всех карточек на странице
 placeContainer.renderElements();
 
-//Коллбэк сабмита данных в попапе с формой
-const formSubmitHandler = formValues => {
-  //Если поля формы содержать данные профиля пользователя
-  if (formValues.profileName && formValues.profileDescription) {
-    //Мы записываем их в профиль пользователя
-    const profileName = formValues.profileName; //Достали имя из объекта
-    const profileDescription = formValues.profileDescription; //Достали описание из объекта
+//Коллбэк сабмита данных в попапе с данными профиля
+const profileFormSubmitHandler = formValues => {
+  //Мы записываем их в профиль пользователя
+  const profileName = formValues.profileName; //Достали имя из объекта
+  const profileDescription = formValues.profileDescription; //Достали описание из объекта
+  userInformation.setUserInfo(profileName, profileDescription); //Записали данные в профиль
+}
 
-    userInformation.setUserInfo(profileName, profileDescription); //Записали данные в профиль
-  } else if (formValues.placeName && formValues.placeImage){ //Если поля формы содержат данные картинки,
-    //Мы создаем и рендерим новую карточку места
+//Коллбэк сабмита данных в попапе с данными места
+const placeFormSubmitHandler = formValues => {
     const placeName = formValues.placeName;
     const placeImage = formValues.placeImage;
     const newPlace = new Card(placeName, placeImage, placeTemplate, cardSelector, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, handleCardClick);
     const renderedPlace = newPlace.render(); //Рендерим новую карточку
     placeContainer.addItem(renderedPlace); //Добавляем на страницу
-  } else {
-    //Либо мы ничего не делаем, если получен другой объект
-  }
 }
 
 //Попап редактирования профиля
-const editProfilePopup = new PopupWithForm(profilePopupSelector, formSubmitHandler);
+const editProfilePopup = new PopupWithForm(profilePopupSelector, profileFormSubmitHandler);
 editProfilePopup.setEventListeners(); //Включение листенеров
 
 //Попап добавления нового места
-const newPlacePopup = new PopupWithForm(addPlacePopupSelector, formSubmitHandler);
+const newPlacePopup = new PopupWithForm(addPlacePopupSelector, placeFormSubmitHandler);
 newPlacePopup.setEventListeners();
 
 //Вешаем листенер на кнопку добавления нового места

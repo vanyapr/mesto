@@ -10,8 +10,7 @@ class Section {
   renderElements () {
     //Каждый элемент рендерим на странице функцией обратного вызова, куда передаём элемент, а назад получаем рендер
     this._items.forEach(item => {
-      this._renderedItem = this._renderer(item); //Получаем разметку
-      this._container.append(this._renderedItem); //Добавляем  разметку на страницу
+      this._renderedItem = this._renderer(item, this._containerSelector); //Передаем карточки и селектор контейнера в коллбэк для добавления в разметку
     })
   }
 

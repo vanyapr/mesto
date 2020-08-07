@@ -10,8 +10,7 @@
   "author": "Ivan Proskuryakov",
   "license": "ISC",
   "dependencies": {
-    "core-js": "^3.6.5",
-    "jquery": "^3.5.1"
+    "core-js": "^3.6.5"
   },
   "devDependencies": {
     "@babel/core": "^7.11.0",
@@ -35,7 +34,7 @@
   },
   "git": {
     "scripts": {
-      "pre-push": "rm -rf dist && webpack && surge --project ./dist --domain http://yandex-praktikum-mesto-vanyapr.surge.sh"
+      "pre-push": "npm run build && surge --project ./dist --domain http://yandex-praktikum-mesto-vanyapr.surge.sh"
     }
   }
 }
