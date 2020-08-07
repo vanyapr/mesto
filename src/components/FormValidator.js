@@ -13,7 +13,6 @@ class FormValidator {
     this._inputList = Array.from(this._formElement.querySelectorAll(this._inputSelector));
   }
 
-
   //Проверка валидности инпута
   _isInputValid (input) {
     const errorMessage = this._formElement.querySelector(`#${input.id}-error`) ;// Находим контейнер ошибки по идентификатору инпута
@@ -36,7 +35,6 @@ class FormValidator {
     }
   }
 
-
   //Проверка валидности всей формы
   _isFormValid () {
     //Проверяем, есть ли в форме невалидные инпуты, используем ранее объявленный список инпутов this._inputList
@@ -48,20 +46,17 @@ class FormValidator {
     return !validState; //Если форма валидна, вернёт TRUE
   }
 
-
   //Включение кнопки сабмита
   _enableSubmitButton () {
     this._submitButton.classList.remove(this._inactiveButtonClass);
     this._submitButton.disabled = false;
   }
 
-
   //Отключение кнопки сабмита
   _disableSubmitButton () {
     this._submitButton.classList.add(this._inactiveButtonClass);
     this._submitButton.disabled = true;
   }
-
 
   //Управление кнопкой сабмита
   _toggleSubmitButton () {
@@ -71,7 +66,6 @@ class FormValidator {
       this._disableSubmitButton();
     }
   }
-
 
   //Установка эвент листенеров при инициализации объекта
   _setEventListeners () {
@@ -95,7 +89,6 @@ class FormValidator {
       this._disableSubmitButton();
     });
   }
-
 
   //Публичный метод включения валидации формы
   enableValidation () {

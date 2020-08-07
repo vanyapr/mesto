@@ -33,7 +33,6 @@
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"
   },
-
   "git": {
     "scripts": {
       "pre-push": "surge --project ./dist --domain http://yandex-praktikum-mesto-vanyapr.surge.sh"
