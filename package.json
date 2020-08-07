@@ -23,12 +23,20 @@
     "cssnano": "^4.1.10",
     "favicons-webpack-plugin": "^4.2.0",
     "file-loader": "^6.0.0",
+    "git-scripts": "^0.4.3",
     "html-loader": "^1.1.0",
     "html-webpack-plugin": "^4.3.0",
     "mini-css-extract-plugin": "^0.9.0",
     "postcss-loader": "^3.0.0",
+    "surge": "^0.21.6",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"
+  },
+
+  "git": {
+    "scripts": {
+      "pre-push": "surge --project ./dist --domain http://yandex-praktikum-mesto-vanyapr.surge.sh"
+    }
   }
 }
