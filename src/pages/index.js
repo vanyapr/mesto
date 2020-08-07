@@ -1,6 +1,29 @@
 //ИМПОРТ CSS (для сборки проекта)
 import './index.css';
 
+//ИМПОРТ ПЕРЕМЕННЫХ
+import {
+  editProfile,
+  userNameSelector,
+  userInformationSelector,
+  profilePopupSelector,
+  profileName,
+  profileDescription,
+  addPlaceButton,
+  placeTemplate,
+  placesListContainerSelector,
+  addPlacePopupSelector,
+  imagePopupSelector,
+  cardSelector,
+  cardImageSelector,
+  cardTitleSelector,
+  cardLikeButtonSelector,
+  cardLikeActiveClass,
+  cardDeleteButtonSelector,
+  initialCards,
+  validationSettings
+} from '../utils/constants.js';
+
 //ИМПОРТ КЛАССОВ
 import Card from '../components/Card.js'; //Импортируем класс карточки
 import FormValidator from '../components/FormValidator.js'; //Импортируем класс валидатора
@@ -9,77 +32,6 @@ import Popup from '../components/Popup.js'; //Импортируем класс 
 import PopupWithImage from '../components/PopupWithImage.js'; //Импортируем класс попапа c изображением
 import PopupWithForm from '../components/PopupWithForm.js'; //Импортируем класс попапа c формами
 import UserInfo from '../components/UserInfo.js'; //Импортируем класс данных пользователя
-
-//TODO:
-// 1) Перенести переменные в файл constants.js в папке utils.
-// ПЕРЕМЕННЫЕ
-// Редактирование профиля пользователя
-const editProfile = document.querySelector('.profile__edit-button'); // Кнопка редактирования профиля
-const userNameSelector = '.profile__title'; //Селектор имени в профиле
-const userInformationSelector = '.profile__description'; // Селектор рода деятельности в профиле
-
-// Форма редактирования профиля пользователя
-const formProfile = document.forms.formProfile; // Форма с полями
-const profilePopupSelector = '.popup-profile'; // Всплывающее окно редактирования профиля юзера
-const profileName = formProfile.profileName; // Имя в форме
-const profileDescription = formProfile.profileDescription; // Род деятельности в форме
-
-// Добавление нового места
-const addPlaceButton = document.querySelector('.profile__add-button'); // Кнопка добавления нового места
-const placeTemplate = document.querySelector('#place-template').content; // Теплейт одного места в списке мест
-const placesListContainerSelector = '.places__list'; // Селектор контейнера, в котором будем рендерить список мест
-
-// Форма добавления нового места
-const addPlacePopupSelector = '.popup-place'; // Всплывающее окно добавления нового места
-
-// Всплывающее окно с изображением
-const imagePopupSelector = '.image-popup'; //Попап с изображением
-
-//Селекторы и классы карточки места для использования в классе Card
-const cardSelector = '.place';
-const cardImageSelector = '.place__image';
-const cardTitleSelector = '.place__title';
-const cardLikeButtonSelector = '.place__like';
-const cardLikeActiveClass = 'place__like_status_active';
-const cardDeleteButtonSelector = '.place__delete';
-
-//Объект с данными для рендера списка мест
-const initialCards = [
-  {
-    name: 'Москва',
-    link: 'https://kudamoscow.ru/uploads/e6e9e1d7c7ba9638527087eac4aa39b3.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
-
-//Настройки валидации форм документа
-const validationSettings = {
-  formSelector: '.form', //Не используется, нужен ли он?
-  inputSelector: '.form__input',
-  submitButtonSelector: '.form__submit',
-  inactiveButtonClass: 'form__submit_inactive',
-  inputErrorClass: 'form__input_type_error',
-  errorClass: 'form__error_active'
-};
 
 
 //ОСНОВНОЙ КОД
