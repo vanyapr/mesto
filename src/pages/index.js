@@ -138,6 +138,11 @@ const profileFormSubmitHandler = formValues => {
 const placeFormSubmitHandler = formValues => {
     const placeName = formValues.placeName;
     const placeImage = formValues.placeImage;
+    const placeData = {
+      name: placeName,
+      link: placeImage
+    }
+    cards.addData(placeData);
     const newPlace = new Card(placeName, placeImage, placeTemplate, cardSelector, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, handleCardClick);
     const renderedPlace = newPlace.render(); //Рендерим новую карточку
     placeContainer.addItem(renderedPlace); //Добавляем на страницу
