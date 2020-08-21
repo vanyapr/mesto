@@ -60,9 +60,11 @@ const user = new Api(
   }
 );
 
+//Если айди юзера и айди юзера в карточке совпадают, показываем кно
 //Получаем данные пользователя по апи при загрузке страницы
 user.getData()
   .then(json => {
+    //FIXME console.log(json)
     //Распишу переменные чтобы код было проще читать:
     const userName = json.name;
     const about = json.about;
@@ -89,9 +91,7 @@ const handleCardClick = (imageUrl, imageText) =>  {
   imagePopup.open(imageUrl, imageText);//Заполняем данные попапа
 };
 
-
-
-//Хэндлеh подтверждения удаления карточки места
+//Коллбэк подтверждения удаления карточки места
 const handleCardDelete = item => {
   deleteConfirmation.open(); //Открываем попап
   //Вешаем листенер на нажатие кнопки "ок"
@@ -105,7 +105,7 @@ const handleCardDelete = item => {
 const deleteConfirmation = new Popup('.popup_type_confirm');
 
 //При загрузке страницы добавляем места внутрь списка мест с использованием темплейта
-//Функция обратного вызова, возвращает DOM элемент рендера карточки места, должна быть ниже коллбэка, чтобы корректно работала карточка места
+//Функция обратного вызова, возвращает DOM элемент рендера карточки места, должна быть в коде ниже коллбэка, чтобы корректно работала карточка места
 const renderer = (item, containerSelector) => {
   const card = new Card(item.name, item.link, placeTemplate, cardSelector, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, cardLikeCounterSelector, item.likes.length , handleCardClick, handleCardDelete);
   const renderedCard = card.render(); //Хочу оставить переменную для читаемости кода
@@ -113,7 +113,7 @@ const renderer = (item, containerSelector) => {
   container.append(renderedCard);
 }
 
-//Объявление экземпляра класса Section
+//Объявление экземпляра класса Section для рендера элементов на странице
 const placeContainer = new Section(
   renderer , //Функция обратного вызова
   placesListContainerSelector //Селектор списка мест (контейнера)
@@ -165,11 +165,9 @@ const placeFormSubmitHandler = formValues => {
 
 //Попап редактирования профиля
 const editProfilePopup = new PopupWithForm(profilePopupSelector, profileFormSubmitHandler);
-editProfilePopup.setEventListeners(); //Включение листенеров
 
 //Попап добавления нового места
 const newPlacePopup = new PopupWithForm(addPlacePopupSelector, placeFormSubmitHandler);
-newPlacePopup.setEventListeners();
 
 //Вешаем листенер на кнопку добавления нового места
 addPlaceButton.addEventListener('click', () => {
@@ -177,10 +175,15 @@ addPlaceButton.addEventListener('click', () => {
 });
 
 //Включаем валидацию для всех форм документа
-//FIXME: Имеет смысл выключить валидацию формы с подтверждением удаления карточки места
 Array.from(document.forms).forEach(form => {
   //Объявляем экземпляр класса
   const validateForm = new FormValidator(validationSettings, form);
   //Для каждой формы активируем валидацию
   validateForm.enableValidation();
 });
+
+
+// 1) Получаем айди пользователя
+// 2) Передаем айди пользователя в рендер карточки
+// 3) Передать айди пользователя из карточки
+// 4) Сравнить айди и в случае совпадения добавить кнопку удаления

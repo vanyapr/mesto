@@ -32,6 +32,7 @@ class Card {
     this._image = this._template.querySelector(this._imageSelector); //Картинка
     this._title = this._template.querySelector(this._titleSelector); //Текст
     this._likes = this._template.querySelector(this._cardLikeCounterSelector); //Лайки на карточке
+    console.log(this._cardLikesCount);
 
     //Перезаписали значения
     this._image.src = this._imageUrl;

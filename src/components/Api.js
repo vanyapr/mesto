@@ -22,7 +22,6 @@ class Api {
   }
 
   addData (body) { //Добавление данных
-    console.log(body);
     return fetch(this._baseUrl, {
       method: 'POST',
       headers: this._headers,

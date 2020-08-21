@@ -26,6 +26,11 @@ class Popup {
     document.addEventListener('keydown', this._handleEscClose);
   }
 
+  removeEventListeners () {
+    this._popup.removeEventListener('click', this._handleCloseActions);
+    document.removeEventListener('keydown', this._handleEscClose);
+  }
+
   open() {
     this.setEventListeners();
     //Открываем попап
@@ -34,7 +39,7 @@ class Popup {
 
   close() {
     //Убираем слушатель с кнопки эскейп
-    document.removeEventListener('keydown', this._handleEscClose);
+    this.removeEventListeners();
     //Закрываем попап
     this._popup.classList.remove('popup_opened');
   }
