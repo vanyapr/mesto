@@ -1,6 +1,4 @@
 .place__like {
-  /*width: 20.76px;*/
-  /*height: 18.13px;*/
   width: 30px;
   height: 30px;
   background-color: transparent;
@@ -12,10 +10,7 @@
   /*Скрываем название кнопки*/
   text-indent: -9000px;
   border: none;
-  grid-area: like;
-  align-self: center;
   cursor: pointer;
-  justify-self: center;
 }
 
 .place__like:hover {

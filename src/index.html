@@ -128,14 +128,13 @@
   <li class="place">
     <img src="./images/karachaevsk.jpg" alt="Карачаевск" class="place__image">
     <h2 class="place__title">Название места</h2>
-    <button class="place__like" title="Добавить место в избранное">
-      <!-- Под вопросом: я бы хотел оставить текст у кнопки:
-      Добавить место в избранное-->
-    </button>
-    <button class="place__delete" title="Удалить место">
-      <!-- Под вопросом: я бы хотел оставить текст у кнопки:
-      Удалить место-->
-    </button>
+
+    <div class="place__like-container">
+      <button class="place__like" title="Добавить место в избранное"></button>
+      <p class="place__likes-count" title="Лайков - 1">1</p>
+    </div>
+
+    <button class="place__delete" title="Удалить место"></button>
   </li>
 </template>
 <!--// Одно место  -->
