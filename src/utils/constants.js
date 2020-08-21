@@ -5,6 +5,7 @@ export const cohort = 'cohort-14'//  Идентификатор группы
 export const editProfile = document.querySelector('.profile__edit-button'); // Кнопка редактирования профиля
 export const userNameSelector = '.profile__title'; //Селектор имени в профиле
 export const userInformationSelector = '.profile__description'; // Селектор рода деятельности в профиле
+export const userAvatarSelector = '.profile__avatar'; // Селектор аватара в профиле
 
 // Форма редактирования профиля пользователя
 export const profilePopupSelector = '.popup-profile'; // Всплывающее окно редактирования профиля юзера

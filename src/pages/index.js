@@ -8,6 +8,7 @@ import {
   editProfile,
   userNameSelector,
   userInformationSelector,
+  userAvatarSelector,
   profilePopupSelector,
   profileName,
   profileDescription,
@@ -38,13 +39,37 @@ import Api from '../components/Api.js'; //Импортируем класс АП
 
 //ОСНОВНОЙ КОД
 //Объект с информацией о пользователе
-const user = {
+const userProfile = {
   userNameSelector, //Селектор имени пользователя
-  userInformationSelector //Селектор описания пользователя
+  userInformationSelector, //Селектор описания пользователя
+  userAvatarSelector //Селектор аватара пользователя
 }
 
 //Объявляем экземпляр передавая настойки объектом
-const userInformation = new UserInfo(user);
+const userInformation = new UserInfo(userProfile);
+
+//Загрузка данных пользователя с сервера
+const user = new Api(
+  {
+    baseUrl: `https://mesto.nomoreparties.co/v1/${cohort}/users/me`,
+    headers: {
+      authorization: token,
+      'Content-Type': 'application/json'
+    }
+  }
+);
+
+//Получаем данные пользователя по апи при загрузке страницы
+user.getData()
+  .then(json => {
+    //Распишу переменные чтобы код было проще читать:
+    const userName = json.name;
+    const about = json.about;
+    const avatar = json.avatar
+    userInformation.setUserInfo(userName, about, avatar); //Записали данные в профиль пользователя
+  }) //Присваиваем данные пользователя
+  .catch(error => console.log(error)) //Пока что выведем ошибки в консоль;
+
 
 //Вешаем листенер на кнопку редактирования профиля
 editProfile.addEventListener('click', () => {
@@ -75,20 +100,37 @@ const renderer = (item, containerSelector) => {
 
 //Объявление экземпляра класса Section
 const placeContainer = new Section(
-  {
-    items: initialCards, //Список карточек для рендера
-    renderer //Функция обратного вызова
-  }, placesListContainerSelector //Селектор списка мест (контейнера)
+  renderer , //Функция обратного вызова
+  placesListContainerSelector //Селектор списка мест (контейнера)
 );
 
-//Рендер всех карточек на странице
-placeContainer.renderElements();
+//Загрузка карточек с сервера
+const cards = new Api(
+  {
+    baseUrl: `https://mesto.nomoreparties.co/v1/${cohort}/cards`,
+    headers: {
+      authorization: token,
+      'Content-Type': 'application/json'
+    }
+  }
+);
+
+//Получаем данные карточек
+cards.getData().then(cardsList => {
+  //После чего каждую карточку отрендерим на странице
+  placeContainer.renderElements(cardsList);//Рендер всех карточек на странице
+}).catch(error => console.log(error)); //Отловим ошибки рендера в консоли
 
 //Коллбэк сабмита данных в попапе с данными профиля
 const profileFormSubmitHandler = formValues => {
   //Мы записываем их в профиль пользователя
   const profileName = formValues.profileName; //Достали имя из объекта
   const profileDescription = formValues.profileDescription; //Достали описание из объекта
+  const userData = {
+    name: profileName,
+    about: profileDescription
+  }
+  user.saveData(userData);
   userInformation.setUserInfo(profileName, profileDescription); //Записали данные в профиль
 }
 
@@ -121,26 +163,3 @@ Array.from(document.forms).forEach(form => {
   //Для каждой формы активируем валидацию
   validateForm.enableValidation();
 });
-
-//Объявляем экземпляр АПИ
-const usr = new Api(
-    {
-      baseUrl: `https://mesto.nomoreparties.co/v1/${cohort}/users/me`,
-      headers: {
-        authorization: token,
-        'Content-Type': 'application/json'
-      }
-    }
-  );
-
-usr.getData();
-
-// const cards = new Api(
-//   {
-//     baseUrl: `https://mesto.nomoreparties.co/v1/${cohort}/cards`,
-//     headers: {
-//       authorization: token,
-//       'Content-Type': 'application/json'
-//     }
-//   }
-// );
