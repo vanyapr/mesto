@@ -3,6 +3,8 @@ import './index.css';
 
 //ИМПОРТ ПЕРЕМЕННЫХ
 import {
+  token,
+  cohort,
   editProfile,
   userNameSelector,
   userInformationSelector,
@@ -32,7 +34,7 @@ import Popup from '../components/Popup.js'; //Импортируем класс 
 import PopupWithImage from '../components/PopupWithImage.js'; //Импортируем класс попапа c изображением
 import PopupWithForm from '../components/PopupWithForm.js'; //Импортируем класс попапа c формами
 import UserInfo from '../components/UserInfo.js'; //Импортируем класс данных пользователя
-
+import Api from '../components/Api.js'; //Импортируем класс АПИ
 
 //ОСНОВНОЙ КОД
 //Объект с информацией о пользователе
@@ -119,3 +121,26 @@ Array.from(document.forms).forEach(form => {
   //Для каждой формы активируем валидацию
   validateForm.enableValidation();
 });
+
+//Объявляем экземпляр АПИ
+const usr = new Api(
+    {
+      baseUrl: `https://mesto.nomoreparties.co/v1/${cohort}/users/me`,
+      headers: {
+        authorization: token,
+        'Content-Type': 'application/json'
+      }
+    }
+  );
+
+usr.getData();
+
+// const cards = new Api(
+//   {
+//     baseUrl: `https://mesto.nomoreparties.co/v1/${cohort}/cards`,
+//     headers: {
+//       authorization: token,
+//       'Content-Type': 'application/json'
+//     }
+//   }
+// );

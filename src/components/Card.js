@@ -4,7 +4,6 @@ class Card {
   constructor (cardTitle, imageUrl, templateElement, cardSelector, imageSelector, titleSelector, likeButtonSelector, likeActiveClass, deleteButtonSelector, handleCardClick) {
     //Присваиваем внутренние переменные, они все будут приватными, потому что мы не используем их снаружи
     //Напишу много переменных чтобы сделать код самодокументируемым
-
     this._cardTitle = cardTitle;
     this._imageUrl = imageUrl;
     this._templateElement = templateElement;
