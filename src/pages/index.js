@@ -22,8 +22,8 @@ import {
   cardTitleSelector,
   cardLikeButtonSelector,
   cardLikeActiveClass,
+  cardLikeCounterSelector,
   cardDeleteButtonSelector,
-  initialCards,
   validationSettings
 } from '../utils/constants.js';
 
@@ -92,7 +92,9 @@ const handleCardClick = (imageUrl, imageText) =>  {
 //При загрузке страницы добавляем места внутрь списка мест с использованием темплейта
 //Функция обратного вызова, возвращает DOM элемент рендера карточки места, должна быть ниже коллбэка, чтобы корректно работала карточка места
 const renderer = (item, containerSelector) => {
-  const card = new Card(item.name, item.link, placeTemplate, cardSelector, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, handleCardClick);
+  console.log(item);
+  //const likesCount = item.likes.length;
+  const card = new Card(item.name, item.link, placeTemplate, cardSelector, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, cardLikeCounterSelector, item.likes.length , handleCardClick);
   const renderedCard = card.render(); //Хочу оставить переменную для читаемости кода
   const container = document.querySelector(containerSelector);
   container.append(renderedCard);

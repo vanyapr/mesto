@@ -29,35 +29,8 @@ export const cardImageSelector = '.place__image';
 export const cardTitleSelector = '.place__title';
 export const cardLikeButtonSelector = '.place__like';
 export const cardLikeActiveClass = 'place__like_status_active';
+export const cardLikeCounterSelector = '.place__likes-count';
 export const cardDeleteButtonSelector = '.place__delete';
-
-//Объект с данными для рендера списка мест
-export const initialCards = [
-  {
-    name: 'Москва',
-    link: 'https://kudamoscow.ru/uploads/e6e9e1d7c7ba9638527087eac4aa39b3.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
 
 //Настройки валидации форм документа
 export const validationSettings = {

@@ -1,7 +1,9 @@
+import {cardLikeCounterSelector} from "../utils/constants";
+
 class Card {
   //Получаем параметры в конструктор объекта
   //Нам понадобятся селекторы элементов темплейта, чтобы привязывать листенеры приватными методами
-  constructor (cardTitle, imageUrl, templateElement, cardSelector, imageSelector, titleSelector, likeButtonSelector, likeActiveClass, deleteButtonSelector, handleCardClick) {
+  constructor (cardTitle, imageUrl, templateElement, cardSelector, imageSelector, titleSelector, likeButtonSelector, likeActiveClass, deleteButtonSelector, cardLikeCounterSelector, cardLikesCount, handleCardClick) {
     //Присваиваем внутренние переменные, они все будут приватными, потому что мы не используем их снаружи
     //Напишу много переменных чтобы сделать код самодокументируемым
     this._cardTitle = cardTitle;
@@ -13,6 +15,8 @@ class Card {
     this._likeButtonSelector = likeButtonSelector;
     this._deleteButtonSelector = deleteButtonSelector;
     this._likeActiveClass = likeActiveClass;
+    this._cardLikeCounterSelector = cardLikeCounterSelector; //Добавил селектор лайка для записи числа лайков в карточку
+    this._cardLikesCount = cardLikesCount; //Число лайков в карточку
     this._handleCardClick = handleCardClick; //Функция обратного вызова для обработки клика на карточку
   }
 
@@ -28,11 +32,13 @@ class Card {
     this._template = this._getTemplate(); //Темплейт
     this._image = this._template.querySelector(this._imageSelector); //Картинка
     this._title = this._template.querySelector(this._titleSelector); //Текст
+    this._likes = this._template.querySelector(this._cardLikeCounterSelector); //Лайки на карточке
 
     //Перезаписали значения
     this._image.src = this._imageUrl;
     this._image.alt = this._cardTitle;
     this._title.textContent = this._cardTitle;
+    this._likes.textContent = this._cardLikesCount;
 
     //Вернули результат - заполненный темплейт
     return this._template;
@@ -53,7 +59,6 @@ class Card {
   _openImagePopup () {
     this._handleCardClick(this._imageUrl, this._cardTitle); //Передаем данные во внешний коллбэк
   }
-
 
   //Объявляем эвент листенеры
   _setEventListeners (template) {
