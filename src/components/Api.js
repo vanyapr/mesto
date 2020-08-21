@@ -6,15 +6,14 @@ class Api {
     this._data = {}
   }
 
-  getData () { //Геттер
+  getData () { //Получение данных
     return fetch(this._baseUrl, {
       method: 'GET',
       headers: this._headers
     }).then(data => data.json());  //Преобразовали полученные данные в json
   }
 
-  saveData (body) { //Сеттер
-    console.log(body);
+  saveData (body) { //Обновление данных
     return fetch(this._baseUrl, {
       method: 'PATCH',
       headers: this._headers,
@@ -22,7 +21,7 @@ class Api {
     }).then(data => data.json())
   }
 
-  addData (body) {
+  addData (body) { //Добавление данных
     console.log(body);
     return fetch(this._baseUrl, {
       method: 'POST',

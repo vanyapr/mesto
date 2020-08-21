@@ -1,9 +1,7 @@
-import {cardLikeCounterSelector} from "../utils/constants";
-
 class Card {
   //Получаем параметры в конструктор объекта
   //Нам понадобятся селекторы элементов темплейта, чтобы привязывать листенеры приватными методами
-  constructor (cardTitle, imageUrl, templateElement, cardSelector, imageSelector, titleSelector, likeButtonSelector, likeActiveClass, deleteButtonSelector, cardLikeCounterSelector, cardLikesCount, handleCardClick) {
+  constructor (cardTitle, imageUrl, templateElement, cardSelector, imageSelector, titleSelector, likeButtonSelector, likeActiveClass, deleteButtonSelector, cardLikeCounterSelector, cardLikesCount, handleCardClick, handleCardDelete) {
     //Присваиваем внутренние переменные, они все будут приватными, потому что мы не используем их снаружи
     //Напишу много переменных чтобы сделать код самодокументируемым
     this._cardTitle = cardTitle;
@@ -18,6 +16,7 @@ class Card {
     this._cardLikeCounterSelector = cardLikeCounterSelector; //Добавил селектор лайка для записи числа лайков в карточку
     this._cardLikesCount = cardLikesCount; //Число лайков в карточку
     this._handleCardClick = handleCardClick; //Функция обратного вызова для обработки клика на карточку
+    this._handleCardDelete = handleCardDelete; //Функция обратного вызова для обработки удаления места
   }
 
   //Получаем темплейт
@@ -52,7 +51,9 @@ class Card {
 
   //Удаление карточки
   _removeCard = event => {
-    event.target.closest(this._cardSelector).remove();
+    this._removeTarget = event.target.closest(this._cardSelector);
+    this._handleCardDelete(this._removeTarget); //Передаем цель ремува в коллбэк
+    //.remove();
   }
 
   //Открытие попапа с картинкой

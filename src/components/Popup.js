@@ -21,12 +21,13 @@ class Popup {
   setEventListeners () {
     //Вешаем слушатель на клик вне попапа
     //Вешаем слушатель на клик по кнопке закрытия
-    this._popup.addEventListener('click', this._handleCloseActions)
+    this._popup.addEventListener('click', this._handleCloseActions);
+    //Вешаем слушатель на кнопку эскейп
+    document.addEventListener('keydown', this._handleEscClose);
   }
 
   open() {
-    //Вешаем слушатель на кнопку эскейп
-    document.addEventListener('keydown', this._handleEscClose);
+    this.setEventListeners();
     //Открываем попап
     this._popup.classList.add('popup_opened');
   }

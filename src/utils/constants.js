@@ -23,6 +23,9 @@ export const addPlacePopupSelector = '.popup-place'; // Всплывающее �
 // Всплывающее окно с изображением
 export const imagePopupSelector = '.image-popup'; //Попап с изображением
 
+//Кнопка подтверждения удаления карточки места
+export const confirmCardDeleteButton = document.querySelector('.form__submit_type_confirm');
+
 //Селекторы и классы карточки места для использования в классе Card
 export const cardSelector = '.place';
 export const cardImageSelector = '.place__image';
@@ -34,7 +37,7 @@ export const cardDeleteButtonSelector = '.place__delete';
 
 //Настройки валидации форм документа
 export const validationSettings = {
-  formSelector: '.form', //Не используется, нужен ли он?
+  //formSelector: '.form', //Не используется, нужен ли он?
   inputSelector: '.form__input',
   submitButtonSelector: '.form__submit',
   inactiveButtonClass: 'form__submit_inactive',

@@ -17,6 +17,7 @@ import {
   placesListContainerSelector,
   addPlacePopupSelector,
   imagePopupSelector,
+  confirmCardDeleteButton,
   cardSelector,
   cardImageSelector,
   cardTitleSelector,
@@ -70,7 +71,6 @@ user.getData()
   }) //Присваиваем данные пользователя
   .catch(error => console.log(error)) //Пока что выведем ошибки в консоль;
 
-
 //Вешаем листенер на кнопку редактирования профиля
 editProfile.addEventListener('click', () => {
   editProfilePopup.open(); //Открыть попап редактирования профиля
@@ -89,12 +89,25 @@ const handleCardClick = (imageUrl, imageText) =>  {
   imagePopup.open(imageUrl, imageText);//Заполняем данные попапа
 };
 
+
+
+//Хэндлеh подтверждения удаления карточки места
+const handleCardDelete = item => {
+  deleteConfirmation.open(); //Открываем попап
+  //Вешаем листенер на нажатие кнопки "ок"
+  confirmCardDeleteButton.addEventListener('click', function () {
+    item.remove();
+    deleteConfirmation.close(); //Закрываем попап
+  });
+}
+
+//Попап подтверждения удаления карточки места
+const deleteConfirmation = new Popup('.popup_type_confirm');
+
 //При загрузке страницы добавляем места внутрь списка мест с использованием темплейта
 //Функция обратного вызова, возвращает DOM элемент рендера карточки места, должна быть ниже коллбэка, чтобы корректно работала карточка места
 const renderer = (item, containerSelector) => {
-  console.log(item);
-  //const likesCount = item.likes.length;
-  const card = new Card(item.name, item.link, placeTemplate, cardSelector, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, cardLikeCounterSelector, item.likes.length , handleCardClick);
+  const card = new Card(item.name, item.link, placeTemplate, cardSelector, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, cardLikeCounterSelector, item.likes.length , handleCardClick, handleCardDelete);
   const renderedCard = card.render(); //Хочу оставить переменную для читаемости кода
   const container = document.querySelector(containerSelector);
   container.append(renderedCard);
@@ -164,6 +177,7 @@ addPlaceButton.addEventListener('click', () => {
 });
 
 //Включаем валидацию для всех форм документа
+//FIXME: Имеет смысл выключить валидацию формы с подтверждением удаления карточки места
 Array.from(document.forms).forEach(form => {
   //Объявляем экземпляр класса
   const validateForm = new FormValidator(validationSettings, form);

@@ -3,6 +3,7 @@
 @import url(__input/_type/form__input_type_error.css);
 @import url(__input-container/form__input-container.css);
 @import url(__submit/form__submit.css);
+@import url(__submit/_type/_confirm/form__submit_type_confirm.css);
 @import url(__submit/_inactive/form__submit_inactive.css);
 @import url(__error/form__error.css);
 @import url(__error/_active/form__error_active.css);
