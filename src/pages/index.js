@@ -35,6 +35,7 @@ import Section from '../components/Section.js'; //Импортируем кла�
 import Popup from '../components/Popup.js'; //Импортируем класс попапа
 import PopupWithImage from '../components/PopupWithImage.js'; //Импортируем класс попапа c изображением
 import PopupWithForm from '../components/PopupWithForm.js'; //Импортируем класс попапа c формами
+// import PopupWithConfirmButton from '../components/PopupWithConfirmButton.js'; //Импортируем класс попапа c кнопкой подтверждения
 import UserInfo from '../components/UserInfo.js'; //Импортируем класс данных пользователя
 import Api from '../components/Api.js'; //Импортируем класс АПИ
 
@@ -146,9 +147,7 @@ const placeFormSubmitHandler = formValues => {
       link: placeImage
     }
     cards.addData(placeData);
-    //const newPlace = new Card(placeName, placeImage, placeTemplate, cardSelector, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, handleCardClick);
     const newPlace = new Card(placeName, placeImage, placeTemplate, cardSelector, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, cardLikeCounterSelector, 0 , handleCardClick, handleCardDelete);
-
     const renderedPlace = newPlace.render(); //Рендерим новую карточку
     placeContainer.addItem(renderedPlace); //Добавляем на страницу
 }
@@ -169,23 +168,37 @@ Array.from(document.forms).forEach(form => {
   validateForm.enableValidation();
 });
 
+//ПОДТВЕРЖДЕНИЕ УДАЛЕНИЯ
+//Попап подтверждения удаления карточки места
+//FIXME: Вынести селектор попапа с кнопкой в переменные
+const deleteConfirmationPopup = new Popup('.popup_type_confirm');
+
+//Коллбэк подтверждения удаления карточки места
+const handleCardDelete = event => {
+  const card = event.target.closest(cardSelector); //Вычисляем карточку, которую надо удалить
+  const confirmPopup = document.querySelector('.popup_type_confirm'); //Нам понадобится селектор попапа
+  deleteConfirmationPopup.open(); //Открываем попап и передать туда карточку места и кнопку подтверждения
+
+  // Объявим листенер: поскольку у нас при открытии попапа вешается листенер на кнопку, нам надо его снимать при закрытии попапа
+  const listener = function (event) {
+    if (event.target.classList.contains('popup') || event.target.classList.contains('popup__close')) {
+      //По клику на кнопку закрытия или по карточке попапа мы также удаляем листенер
+      confirmPopup.removeEventListener('click', listener);
+    } else if (event.target === confirmCardDeleteButton) {
+      card.remove(); //Удалили карточку
+      deleteConfirmationPopup.close(); //Закрыли попап
+      confirmPopup.removeEventListener('click', listener); //Удалили листенер
+    }
+  };
+
+  //При открытии попапа вешаем листенер на нажатие кнопки "ок"
+  confirmPopup.addEventListener('click', listener);
+}
+
+
+
 
 // 1) Получаем айди пользователя
 // 2) Передаем айди пользователя в рендер карточки
 // 3) Передать айди пользователя из карточки
 // 4) Сравнить айди и в случае совпадения добавить кнопку удаления
-
-//Коллбэк подтверждения удаления карточки места
-const handleCardDelete = item => {
-  deleteConfirmation.open(); //Открываем попап
-  confirmCardDeleteButton.disabled = false;
-  //Вешаем листенер на нажатие кнопки "ок"
-  // confirmCardDeleteButton.addEventListener('click', function () {
-  //   item.remove();
-  //   deleteConfirmation.close(); //Закрываем попап
-  //   //Удаляем листенер
-  // });
-}
-
-//Попап подтверждения удаления карточки места
-const deleteConfirmation = new Popup('.popup_type_confirm');
