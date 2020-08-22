@@ -1,11 +1,14 @@
 class Card {
   //Получаем параметры в конструктор объекта
   //Нам понадобятся селекторы элементов темплейта, чтобы привязывать листенеры приватными методами
-  constructor (cardTitle, imageUrl, templateElement, cardSelector, imageSelector, titleSelector, likeButtonSelector, likeActiveClass, deleteButtonSelector, cardLikeCounterSelector, cardLikesCount, handleCardClick, handleCardDelete) {
+  constructor (cardTitle, imageUrl, itemOwnerId, userId, itemId, templateElement, cardSelector, imageSelector, titleSelector, likeButtonSelector, likeActiveClass, deleteButtonSelector, cardLikeCounterSelector, cardLikesCount, handleCardClick, handleCardDelete) {
     //Присваиваем внутренние переменные, они все будут приватными, потому что мы не используем их снаружи
     //Напишу много переменных чтобы сделать код самодокументируемым
     this._cardTitle = cardTitle;
     this._imageUrl = imageUrl;
+    this._itemOwnerId = itemOwnerId;
+    this._userId = userId;
+    this._itemId = itemId;
     this._templateElement = templateElement;
     this._cardSelector = cardSelector;
     this._imageSelector = imageSelector;
@@ -29,10 +32,18 @@ class Card {
   _fillTemplate () {
     //Определили переменные для перезаписи значений
     this._template = this._getTemplate(); //Темплейт
+    this._deleteButton = this._template.querySelector(this._deleteButtonSelector);
+
+    //Провериои
+    if (!(this._userId === this._itemOwnerId)) {
+      console.log('Not match'); //Это не моё изобрадение
+      this._deleteButton.remove();
+    }
+
+
     this._image = this._template.querySelector(this._imageSelector); //Картинка
     this._title = this._template.querySelector(this._titleSelector); //Текст
     this._likes = this._template.querySelector(this._cardLikeCounterSelector); //Лайки на карточке
-    // console.log(this._cardLikesCount);
 
     //Перезаписали значения
     this._image.src = this._imageUrl;
@@ -52,7 +63,7 @@ class Card {
 
   //Удаление карточки
   _removeCard = event => {
-    this._handleCardDelete(event); //Событие удаления в коллбэк
+    this._handleCardDelete(event, this._itemId); //В коллбэк передается идентификатор карточки и событие удаления
   }
 
   //Открытие попапа с картинкой
@@ -67,8 +78,13 @@ class Card {
       this._toggleLikeButton(event);
     });
 
-    //Листенер на удаление карточки
-    template.querySelector(this._deleteButtonSelector).addEventListener('click', this._removeCard);
+    //Находим в темплейте кнопку удаления
+    this._deleteButton = template.querySelector(this._deleteButtonSelector);
+
+    //Ставим листенер на кнопку удаления только если эта кнопку существует
+    if (this._deleteButton) {
+      this._deleteButton.addEventListener('click', this._removeCard);
+    }
 
     //Листенер на открытие окна просмотра изображения
     template.querySelector(this._imageSelector).addEventListener('click', () => {

@@ -14,8 +14,6 @@ class Api {
   }
 
   saveData (body) { //Обновление данных
-    //FIXME
-    //console.log(body);
     return fetch(this._baseUrl, {
       method: 'PATCH',
       headers: this._headers,
@@ -28,6 +26,20 @@ class Api {
       method: 'POST',
       headers: this._headers,
       body: JSON.stringify(body)
+    }).then(data => data.json())
+  }
+
+  deleteData () {
+    return fetch(this._baseUrl, {
+      method: 'DELETE',
+      headers: this._headers
+    }).then(data => data.json())
+  }
+
+  putData () {
+    return fetch(this._baseUrl, {
+      method: 'PUT',
+      headers: this._headers
     }).then(data => data.json())
   }
 }

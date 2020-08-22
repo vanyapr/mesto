@@ -31,17 +31,18 @@ class PopupWithForm extends Popup {
     //Устанавливаем хэндлер сабмита формы
     this._formElement.addEventListener('submit', event => {
       event.preventDefault();
+
       this._submitValues = this._getInputValues(); //Получаем объект со значениями полей
-      this._formSubmitHandler(this._submitValues); //Передаем функции обратного вызова
-      super.close(); //Закрываем форму
+      //Отправляем объект в коллбэк и ожидаем разрешения промиса
+      this._formSubmitHandler(this._submitValues).then(success => this.close()); //Передаем функции обратного вызова
     })
   }
 
   close() {
-    //Очищаем форму при закрытии
-    this._resetInputValues();
-    //И закрываем
     super.close();
+    //И закрываем
+    this._resetInputValues();
+    //Очищаем форму при закрытии
   }
 }
 
