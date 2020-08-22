@@ -16,6 +16,8 @@ class PopupWithForm extends Popup {
       this._inputsValues[item.name] = item.value; //Соберём в него список значений формы, чтобы позже определить, что за форму мы обрабатываем
     });
 
+    console.log('Получаем значения инпутов из формы:');
+    console.log(this._inputsValues);
     return this._inputsValues; //Возвратим объект со значениями формы
   }
 
@@ -25,15 +27,14 @@ class PopupWithForm extends Popup {
     });
   }
 
-  setEventListeners () {
-    super.setEventListeners(); //Вешаем листенеры по умолчанию
+  _setEventListeners () {
+    super._setEventListeners(); //Вешаем листенеры по умолчанию
 
     //Устанавливаем хэндлер сабмита формы
     this._formElement.addEventListener('submit', event => {
       event.preventDefault();
       this._submitValues = this._getInputValues(); //Получаем объект со значениями полей
       this._formSubmitHandler(this._submitValues); //Передаем функции обратного вызова
-      this._resetInputValues(); //Сбрасываем значения полей в форме
       super.close(); //Закрываем форму
     })
   }

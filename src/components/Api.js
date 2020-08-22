@@ -14,6 +14,8 @@ class Api {
   }
 
   saveData (body) { //Обновление данных
+    //FIXME
+    //console.log(body);
     return fetch(this._baseUrl, {
       method: 'PATCH',
       headers: this._headers,

@@ -38,50 +38,75 @@ import PopupWithForm from '../components/PopupWithForm.js'; //Импортиру
 import UserInfo from '../components/UserInfo.js'; //Импортируем класс данных пользователя
 import Api from '../components/Api.js'; //Импортируем класс АПИ
 
-//ОСНОВНОЙ КОД
-//Объект с информацией о пользователе
+//ПРОФИЛЬ ЮЗЕРА
+//Селекторы профиля пользователя
 const userProfile = {
   userNameSelector, //Селектор имени пользователя
   userInformationSelector, //Селектор описания пользователя
   userAvatarSelector //Селектор аватара пользователя
 }
 
-//Объявляем экземпляр передавая настойки объектом
+//Профиль пользователя
 const userInformation = new UserInfo(userProfile);
 
-//Загрузка данных пользователя с сервера
-const user = new Api(
-  {
-    baseUrl: `https://mesto.nomoreparties.co/v1/${cohort}/users/me`,
-    headers: {
-      authorization: token,
-      'Content-Type': 'application/json'
-    }
-  }
-);
+//Подключение профиля пользователя к АПИ
+// const user = new Api(
+//   {
+//     baseUrl: `https://mesto.nomoreparties.co/v1/${cohort}/users/me`,
+//     headers: {
+//       authorization: token,
+//       'Content-Type': 'application/json'
+//     }
+//   }
+// );
 
-//Если айди юзера и айди юзера в карточке совпадают, показываем кно
 //Получаем данные пользователя по апи при загрузке страницы
-user.getData()
-  .then(json => {
-    //FIXME console.log(json)
-    //Распишу переменные чтобы код было проще читать:
-    const userName = json.name;
-    const about = json.about;
-    const avatar = json.avatar
-    userInformation.setUserInfo(userName, about, avatar); //Записали данные в профиль пользователя
-  }) //Присваиваем данные пользователя
-  .catch(error => console.log(error)) //Пока что выведем ошибки в консоль;
+// user.getData()
+//   .then(json => {
+//     //Распишу переменные чтобы код было проще читать:
+//     const userName = json.name;
+//     const about = json.about;
+//     const avatar = json.avatar
+//     userInformation.setUserInfo(userName, about, avatar); //Записываем данные в профиль пользователя
+//   }) //Присваиваем данные пользователя
+//   .catch(error => console.log(error)) //Пока что выведем ошибки в консоль;
 
-//Вешаем листенер на кнопку редактирования профиля
+//Листенер кнопки редактирования профиля
 editProfile.addEventListener('click', () => {
   editProfilePopup.open(); //Открыть попап редактирования профиля
   const userData = userInformation.getUserInfo(); //Получаем объект с данными пользователя
+  console.log("Получены данные при открытии попапа");
+  console.log(userData);
   //Записываем данные в поля формы
   profileName.value = userData.userName;
   profileDescription.value = userData.userInformation;
 });
 
+//Коллбэк сабмита данных в попапе с данными профиля
+const profileFormSubmitHandler = formValues => {
+  console.log("В коллбэк переданы данные из формы");
+  console.log(formValues);
+  //Мы записываем их в профиль пользователя
+  const profileName = formValues.profileName; //Достали имя из объекта
+  const profileDescription = formValues.profileDescription; //Достали описание из объекта
+  const userData = {
+    // name: profileName,
+    // about: profileDescription
+    name: "Ваня",
+    about: "Тестирует"
+  }
+  console.log("Перед отправкой");
+  console.log(userData);
+  // user.saveData(userData);
+  console.log("После отправки");
+  console.log(userData);
+  userInformation.setUserInfo(profileName, profileDescription); //Записали данные в профиль
+}
+
+//Попап редактирования профиля
+const editProfilePopup = new PopupWithForm(profilePopupSelector, profileFormSubmitHandler);
+
+//ПОПАП С КАРТИНКОЙ
 //Попап с картинкой
 const imagePopup = new PopupWithImage(imagePopupSelector);
 
@@ -91,18 +116,7 @@ const handleCardClick = (imageUrl, imageText) =>  {
   imagePopup.open(imageUrl, imageText);//Заполняем данные попапа
 };
 
-//Коллбэк подтверждения удаления карточки места
-const handleCardDelete = item => {
-  deleteConfirmation.open(); //Открываем попап
-  //Вешаем листенер на нажатие кнопки "ок"
-  confirmCardDeleteButton.addEventListener('click', function () {
-    item.remove();
-    deleteConfirmation.close(); //Закрываем попап
-  });
-}
 
-//Попап подтверждения удаления карточки места
-const deleteConfirmation = new Popup('.popup_type_confirm');
 
 //При загрузке страницы добавляем места внутрь списка мест с использованием темплейта
 //Функция обратного вызова, возвращает DOM элемент рендера карточки места, должна быть в коде ниже коллбэка, чтобы корректно работала карточка места
@@ -136,18 +150,7 @@ cards.getData().then(cardsList => {
   placeContainer.renderElements(cardsList);//Рендер всех карточек на странице
 }).catch(error => console.log(error)); //Отловим ошибки рендера в консоли
 
-//Коллбэк сабмита данных в попапе с данными профиля
-const profileFormSubmitHandler = formValues => {
-  //Мы записываем их в профиль пользователя
-  const profileName = formValues.profileName; //Достали имя из объекта
-  const profileDescription = formValues.profileDescription; //Достали описание из объекта
-  const userData = {
-    name: profileName,
-    about: profileDescription
-  }
-  user.saveData(userData);
-  userInformation.setUserInfo(profileName, profileDescription); //Записали данные в профиль
-}
+
 
 //Коллбэк сабмита данных в попапе с данными места
 const placeFormSubmitHandler = formValues => {
@@ -163,8 +166,7 @@ const placeFormSubmitHandler = formValues => {
     placeContainer.addItem(renderedPlace); //Добавляем на страницу
 }
 
-//Попап редактирования профиля
-const editProfilePopup = new PopupWithForm(profilePopupSelector, profileFormSubmitHandler);
+
 
 //Попап добавления нового места
 const newPlacePopup = new PopupWithForm(addPlacePopupSelector, placeFormSubmitHandler);
@@ -187,3 +189,18 @@ Array.from(document.forms).forEach(form => {
 // 2) Передаем айди пользователя в рендер карточки
 // 3) Передать айди пользователя из карточки
 // 4) Сравнить айди и в случае совпадения добавить кнопку удаления
+
+//Коллбэк подтверждения удаления карточки места
+const handleCardDelete = item => {
+  deleteConfirmation.open(); //Открываем попап
+  confirmCardDeleteButton.disabled = false;
+  //Вешаем листенер на нажатие кнопки "ок"
+  // confirmCardDeleteButton.addEventListener('click', function () {
+  //   item.remove();
+  //   deleteConfirmation.close(); //Закрываем попап
+  //   //Удаляем листенер
+  // });
+}
+
+//Попап подтверждения удаления карточки места
+const deleteConfirmation = new Popup('.popup_type_confirm');

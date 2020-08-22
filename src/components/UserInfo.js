@@ -13,6 +13,9 @@ class UserInfo {
     this._userInfo.userName = this._userName.textContent; //Имя пользователя
     this._userInfo.userInformation = this._userInformation.textContent; //Описание пользователя
     this._userInfo.userAvatar = this._userAvatar.src //Аватар
+    //FIXME
+    console.log("Передаем объект методом getUserInfo()");
+    console.log(this._userInfo);
     return this._userInfo; //Вернули объект
   }
 
@@ -26,6 +29,9 @@ class UserInfo {
       this._userAvatar.src = userAvatarUrl;
       this._userAvatar.alt = userName;
     }
+
+    console.log("Записали на страницу");
+    console.log(userName, userInformation, userAvatarUrl)
 
   }
 }

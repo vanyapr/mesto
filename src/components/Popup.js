@@ -18,7 +18,7 @@ class Popup {
     }
   }
 
-  setEventListeners () {
+  _setEventListeners () {
     //Вешаем слушатель на клик вне попапа
     //Вешаем слушатель на клик по кнопке закрытия
     this._popup.addEventListener('click', this._handleCloseActions);
@@ -26,20 +26,20 @@ class Popup {
     document.addEventListener('keydown', this._handleEscClose);
   }
 
-  removeEventListeners () {
+  _removeEventListeners () {
     this._popup.removeEventListener('click', this._handleCloseActions);
     document.removeEventListener('keydown', this._handleEscClose);
   }
 
   open() {
-    this.setEventListeners();
+    this._setEventListeners();
     //Открываем попап
     this._popup.classList.add('popup_opened');
   }
 
   close() {
     //Убираем слушатель с кнопки эскейп
-    this.removeEventListeners();
+    this._removeEventListeners();
     //Закрываем попап
     this._popup.classList.remove('popup_opened');
   }
