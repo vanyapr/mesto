@@ -31,14 +31,14 @@ class Card {
     this._template = this._getTemplate(); //Темплейт
     this._image = this._template.querySelector(this._imageSelector); //Картинка
     this._title = this._template.querySelector(this._titleSelector); //Текст
-    this._likes = this._template.querySelector(this._cardLikeCounterSelector); //Лайки на карточке
+    //this._likes = this._template.querySelector(this._cardLikeCounterSelector); //Лайки на карточке
     // console.log(this._cardLikesCount);
 
     //Перезаписали значения
     this._image.src = this._imageUrl;
     this._image.alt = this._cardTitle;
     this._title.textContent = this._cardTitle;
-    this._likes.textContent = this._cardLikesCount;
+    //this._likes.textContent = this._cardLikesCount;
 
     //Вернули результат - заполненный темплейт
     return this._template;

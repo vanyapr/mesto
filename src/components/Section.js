@@ -15,7 +15,7 @@ class Section {
 
   //Публичный метод рендера одного элемента, принимает дом элемент
   addItem (domElement) {
-    this._container.append(domElement); //Добавляем дом элемент на страницу
+    this._container.prepend(domElement); //Добавляем дом элемент на страницу
   }
 }
 

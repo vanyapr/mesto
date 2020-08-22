@@ -49,34 +49,32 @@ const userProfile = {
 //Профиль пользователя
 const userInformation = new UserInfo(userProfile);
 
-//Подключение профиля пользователя к АПИ
-// const user = new Api(
-//   {
-//     baseUrl: `https://mesto.nomoreparties.co/v1/${cohort}/users/me`,
-//     headers: {
-//       authorization: token,
-//       'Content-Type': 'application/json'
-//     }
-//   }
-// );
+// Подключение профиля пользователя к АПИ
+const user = new Api(
+  {
+    baseUrl: `https://mesto.nomoreparties.co/v1/${cohort}/users/me`,
+    headers: {
+      authorization: token,
+      'Content-Type': 'application/json'
+    }
+  }
+);
 
-//Получаем данные пользователя по апи при загрузке страницы
-// user.getData()
-//   .then(json => {
-//     //Распишу переменные чтобы код было проще читать:
-//     const userName = json.name;
-//     const about = json.about;
-//     const avatar = json.avatar
-//     userInformation.setUserInfo(userName, about, avatar); //Записываем данные в профиль пользователя
-//   }) //Присваиваем данные пользователя
-//   .catch(error => console.log(error)) //Пока что выведем ошибки в консоль;
+// Получаем данные пользователя по апи при загрузке страницы
+user.getData()
+  .then(json => {
+    //Распишу переменные чтобы код было проще читать:
+    const userName = json.name;
+    const about = json.about;
+    const avatar = json.avatar
+    userInformation.setUserInfo(userName, about, avatar); //Записываем данные в профиль пользователя
+  }) //Присваиваем данные пользователя
+  .catch(error => console.log(error)) //Пока что выведем ошибки в консоль;
 
 //Листенер кнопки редактирования профиля
 editProfile.addEventListener('click', () => {
   editProfilePopup.open(); //Открыть попап редактирования профиля
   const userData = userInformation.getUserInfo(); //Получаем объект с данными пользователя
-  console.log("Получены данные при открытии попапа");
-  console.log(userData);
   //Записываем данные в поля формы
   profileName.value = userData.userName;
   profileDescription.value = userData.userInformation;
@@ -84,22 +82,14 @@ editProfile.addEventListener('click', () => {
 
 //Коллбэк сабмита данных в попапе с данными профиля
 const profileFormSubmitHandler = formValues => {
-  console.log("В коллбэк переданы данные из формы");
-  console.log(formValues);
   //Мы записываем их в профиль пользователя
   const profileName = formValues.profileName; //Достали имя из объекта
   const profileDescription = formValues.profileDescription; //Достали описание из объекта
   const userData = {
-    // name: profileName,
-    // about: profileDescription
-    name: "Ваня",
-    about: "Тестирует"
+    name: profileName,
+    about: profileDescription
   }
-  console.log("Перед отправкой");
-  console.log(userData);
-  // user.saveData(userData);
-  console.log("После отправки");
-  console.log(userData);
+  user.saveData(userData);
   userInformation.setUserInfo(profileName, profileDescription); //Записали данные в профиль
 }
 
@@ -112,11 +102,8 @@ const imagePopup = new PopupWithImage(imagePopupSelector);
 
 //Коллбэк открытия попапа кликом на изображение в карточке
 const handleCardClick = (imageUrl, imageText) =>  {
-  imagePopup.setEventListeners(); //Инициализируем эвент листенеры
   imagePopup.open(imageUrl, imageText);//Заполняем данные попапа
 };
-
-
 
 //При загрузке страницы добавляем места внутрь списка мест с использованием темплейта
 //Функция обратного вызова, возвращает DOM элемент рендера карточки места, должна быть в коде ниже коллбэка, чтобы корректно работала карточка места
@@ -150,8 +137,6 @@ cards.getData().then(cardsList => {
   placeContainer.renderElements(cardsList);//Рендер всех карточек на странице
 }).catch(error => console.log(error)); //Отловим ошибки рендера в консоли
 
-
-
 //Коллбэк сабмита данных в попапе с данными места
 const placeFormSubmitHandler = formValues => {
     const placeName = formValues.placeName;
@@ -161,12 +146,12 @@ const placeFormSubmitHandler = formValues => {
       link: placeImage
     }
     cards.addData(placeData);
-    const newPlace = new Card(placeName, placeImage, placeTemplate, cardSelector, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, handleCardClick);
+    //const newPlace = new Card(placeName, placeImage, placeTemplate, cardSelector, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, handleCardClick);
+    const newPlace = new Card(placeName, placeImage, placeTemplate, cardSelector, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, cardLikeCounterSelector, 0 , handleCardClick, handleCardDelete);
+
     const renderedPlace = newPlace.render(); //Рендерим новую карточку
     placeContainer.addItem(renderedPlace); //Добавляем на страницу
 }
-
-
 
 //Попап добавления нового места
 const newPlacePopup = new PopupWithForm(addPlacePopupSelector, placeFormSubmitHandler);

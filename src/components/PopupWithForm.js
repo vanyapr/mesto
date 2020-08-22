@@ -16,8 +16,6 @@ class PopupWithForm extends Popup {
       this._inputsValues[item.name] = item.value; //Соберём в него список значений формы, чтобы позже определить, что за форму мы обрабатываем
     });
 
-    console.log('Получаем значения инпутов из формы:');
-    console.log(this._inputsValues);
     return this._inputsValues; //Возвратим объект со значениями формы
   }
 
