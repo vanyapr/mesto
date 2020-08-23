@@ -24,6 +24,7 @@ export const addPlacePopupSelector = '.popup-place'; // Всплывающее �
 export const imagePopupSelector = '.image-popup'; //Попап с изображением
 
 //Кнопка подтверждения удаления карточки места
+export const deleteConfirmationPopupSelector = '.popup_type_confirm';
 export const confirmCardDeleteButton = document.querySelector('.form__submit_type_confirm');
 
 //Селектор инпута со ссылкой на аватар пользователя

@@ -17,6 +17,7 @@ import {
   placesListContainerSelector,
   addPlacePopupSelector,
   imagePopupSelector,
+  deleteConfirmationPopupSelector,
   confirmCardDeleteButton,
   userAvatarPopupSelector,
   userAvatar,
@@ -176,18 +177,18 @@ Array.from(document.forms).forEach(form => {
 
 //ПОДТВЕРЖДЕНИЕ УДАЛЕНИЯ
 //Попап подтверждения удаления карточки места
-//FIXME: Вынести селектор попапа с кнопкой в переменные
-const deleteConfirmationPopup = new Popup('.popup_type_confirm');
+const deleteConfirmationPopup = new Popup(deleteConfirmationPopupSelector);
 
 //Коллбэк подтверждения удаления карточки места
 const handleCardDelete = (event, cardId) => {
   const card = event.target.closest(cardSelector); //Вычисляем карточку, которую надо удалить
-  const confirmPopup = document.querySelector('.popup_type_confirm'); //Нам понадобится селектор попапа
+  const confirmPopup = document.querySelector(deleteConfirmationPopupSelector); //Нам понадобится селектор попапа
   deleteConfirmationPopup.open(); //Открываем попап и передать туда карточку места и кнопку подтверждения
 
   // Объявим листенер прямо здесь, потому что нам нужна переменная карточки переданная в листенер:
   // поскольку у нас при открытии попапа вешается листенер на кнопку, нам надо его снимать при закрытии попапа,
-  // иначе карточки будут удаляться по несколько штук в макете при открытии попапа удаления по очереди на карточках
+  // иначе карточки будут удаляться по несколько штук в макете при открытии и закрытии попапа
+  // по очереди на разных карточках без нажатия на кнопку удаления
   const deleteCardListener = function (event) {
     if (event.target.classList.contains('popup') || event.target.classList.contains('popup__close')) {
       //По клику на кнопку закрытия или по карточке попапа мы также удаляем листенер

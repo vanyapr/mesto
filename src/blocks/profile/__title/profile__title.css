@@ -12,7 +12,19 @@
   white-space: nowrap;
   overflow: hidden;
   /* Защита от переполнения*/
-  max-width: calc(100vw - 120px - 150px - 50px * 2 - 24px - 30px * 2);
+  max-width: calc(882px - 120px - 150px - 50px * 2 - 24px - 30px * 2);
+}
+
+@media screen and (max-width: 925px) {
+  .profile__title {
+    max-width: calc(100vw - 120px - 150px - 50px * 2 - 24px - 30px * 2);
+  }
+}
+
+@media screen and (max-width: 780px) {
+  .profile__title {
+   /*// max-width: calc(100vw - 120px - 150px - 50px * 2 - 30px * 2);*/
+  }
 }
 
 @media screen and (max-width: 725px) {

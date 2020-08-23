@@ -16,11 +16,18 @@
   overflow: hidden;
 }
 
-@media screen and (max-width: 725px){
+@media screen and (max-width: 800px){
+  .profile__description {
+    max-width: calc(100vw - 120px - 150px - 17px - 24px - 30px * 2);
+  }
+}
+
+@media screen and (max-width: 760px){
   .profile__description {
     max-width: calc(100vw - 120px - 17px - 24px - 30px * 2);
   }
 }
+
 @media screen and (max-width: 516px){
   .profile__description {
     max-width: calc(100vw - 17px - 24px - 30px * 2);
