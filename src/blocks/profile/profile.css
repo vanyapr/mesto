@@ -15,7 +15,7 @@
   grid-column-gap: 30px;
 }
 
-@media screen and (max-width: 725px){
+@media screen and (max-width: 760px){
   .profile {
     grid-template-columns: 120px  auto;
     grid-row-gap: 36px;
