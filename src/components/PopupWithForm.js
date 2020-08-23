@@ -31,10 +31,28 @@ class PopupWithForm extends Popup {
     //Устанавливаем хэндлер сабмита формы
     this._formElement.addEventListener('submit', event => {
       event.preventDefault();
+      this._submitButton = this._formElement.querySelector('.form__submit');
+      this._submitButtonInitialText = this._submitButton.textContent;
 
-      this._submitValues = this._getInputValues(); //Получаем объект со значениями полей
       //Отправляем объект в коллбэк и ожидаем разрешения промиса
-      this._formSubmitHandler(this._submitValues).then(success => this.close()); //Передаем функции обратного вызова
+      const promis = new Promise(resolve => {
+        this._submitButton.textContent = 'Сохранение...';
+        this._submitValues = this._getInputValues(); //Получаем объект со значениями полей
+        resolve(this._submitValues);
+      }).then(formData => {
+        return this._formSubmitHandler(formData)
+      }).then(success => {
+        this.close();
+      }).finally(data => {
+        this._submitButton.textContent =  this._submitButtonInitialText;
+      });
+
+      // 0) Создаем промис, в нём
+      // 1) Меняем текст кнопки сабмита
+      // 2) В промисе вызваем функцию-хендлер
+      // 3) Меняем текст кнопки сабмита назад
+      // 4) Закрываем форму
+     // this._formSubmitHandler(this._submitValues); //Передаем функции обратного вызова
     })
   }
 
