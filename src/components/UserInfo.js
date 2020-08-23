@@ -24,6 +24,7 @@ class UserInfo {
     //Меняем аватар пользователя только если он был получен в аргументах метода
     if (userAvatarUrl) {
       this._userAvatar.src = userAvatarUrl;
+      this._userAvatar.srcset = userAvatarUrl;
       this._userAvatar.alt = userName;
     }
   }

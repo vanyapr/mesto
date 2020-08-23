@@ -37,7 +37,6 @@ class Card {
 
     //Проверили
     if (!(this._userId === this._itemOwnerId)) {
-      console.log('Not match'); //Это не моё изобрадение
       this._deleteButton.remove();
     }
 

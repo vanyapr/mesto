@@ -9,8 +9,8 @@ export const userAvatarSelector = '.profile__avatar'; // Селектор ава
 
 // Форма редактирования профиля пользователя
 export const profilePopupSelector = '.popup-profile'; // Всплывающее окно редактирования профиля юзера
-export const profileName = formProfile.profileName; // Имя в форме
-export const profileDescription = formProfile.profileDescription; // Род деятельности в форме
+export const profileName = document.forms.formProfile.profileName; // Имя в форме
+export const profileDescription = document.forms.formProfile.profileDescription; // Род деятельности в форме
 
 // Добавление нового места
 export const addPlaceButton = document.querySelector('.profile__add-button'); // Кнопка добавления нового места
@@ -25,6 +25,11 @@ export const imagePopupSelector = '.image-popup'; //Попап с изображ
 
 //Кнопка подтверждения удаления карточки места
 export const confirmCardDeleteButton = document.querySelector('.form__submit_type_confirm');
+
+//Селектор инпута со ссылкой на аватар пользователя
+export const userAvatarPopupSelector = '.popup-avatar';
+export const userAvatar = document.querySelector('.profile__avatar'); //Считаю, что правильно отлавливать именно контейнер
+export const userAvatarInput = document.forms.formAvatar.avatar;
 
 //Селекторы и классы карточки места для использования в классе Card
 export const cardSelector = '.place';

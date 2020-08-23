@@ -18,6 +18,9 @@ import {
   addPlacePopupSelector,
   imagePopupSelector,
   confirmCardDeleteButton,
+  userAvatarPopupSelector,
+  userAvatar,
+  userAvatarInput,
   cardSelector,
   cardImageSelector,
   cardTitleSelector,
@@ -111,7 +114,6 @@ const handleCardClick = (imageUrl, imageText) =>  {
 //РЕНДЕР КАРТОЧЕК
 //Рендерер, возвращает DOM элемент рендера карточки места, должна быть в коде ниже коллбэка, чтобы корректно работала карточка места
 const renderer = (item, containerSelector) => {
-  console.log(item);
   const card = new Card(item.name, item.link, item.owner._id,  userId, item._id, item.likes, placeTemplate, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, cardLikeCounterSelector, item.likes.length , handleCardClick, handleCardDelete, handleLikeButtonPress);
   const renderedCard = card.render(); //Хочу оставить переменную для читаемости кода
   const container = document.querySelector(containerSelector);
@@ -202,8 +204,6 @@ const handleCardDelete = (event, cardId) => {
       });
       //Сделали запрос на удаление
       cardToDelete.deleteData().then(res => {
-          //FIXME
-          //console.log(res);
           deleteConfirmationPopup.close(); //Закрыли попап
           confirmPopup.removeEventListener('click', deleteCardListener); //Удалили листенер
       }).catch(error => console.log(error));
@@ -216,9 +216,6 @@ const handleCardDelete = (event, cardId) => {
 
 //ЛАЙК КАРТОЧКИ
 const handleLikeButtonPress = (event, itemId) => {
-  console.log(event.target);
-  console.log(itemId);
-
   //Объявим новый запрос к апи в коллбэке
   const like = new Api({
     baseUrl: `https://mesto.nomoreparties.co/v1/${cohort}/cards/likes/${itemId}`,
@@ -239,3 +236,29 @@ const handleLikeButtonPress = (event, itemId) => {
     return like.putData(); //Тоже возвратим промис
   }
 }
+
+//ИЗМЕНЕНИЕ АВАТАРА
+//Подключение а к АПИ
+const avatar = new Api({
+  baseUrl: `https://mesto.nomoreparties.co/v1/${cohort}/users/me/avatar`,
+  headers: {
+    authorization: token,
+    'Content-Type': 'application/json'
+  }
+});
+
+//Хэндлер сабмита формы смены аватара
+const avatarPopupSubmitHandler = newAvatar => {
+  userAvatar.src = newAvatar.avatar; //Записать аватар
+  return avatar.saveData(newAvatar); //Вернуть промис c объектом аватара
+}
+
+//Объявляем попап
+const avatarPopup = new PopupWithForm(userAvatarPopupSelector, avatarPopupSubmitHandler);
+
+//Вешаем листенер на клик по аватару
+userAvatar.addEventListener('click', event => {
+  userAvatarInput.value = userAvatar.src;
+  avatarPopup.open();
+});
+
