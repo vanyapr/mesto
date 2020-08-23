@@ -1,7 +1,7 @@
 class Card {
   //Получаем параметры в конструктор объекта
   //Нам понадобятся селекторы элементов темплейта, чтобы привязывать листенеры приватными методами
-  constructor (cardTitle, imageUrl, itemOwnerId, userId, itemId, templateElement, cardSelector, imageSelector, titleSelector, likeButtonSelector, likeActiveClass, deleteButtonSelector, cardLikeCounterSelector, cardLikesCount, handleCardClick, handleCardDelete) {
+  constructor (cardTitle, imageUrl, itemOwnerId, userId, itemId, itemLikes, templateElement, imageSelector, titleSelector, likeButtonSelector, likeActiveClass, deleteButtonSelector, cardLikeCounterSelector, cardLikesCount, handleCardClick, handleCardDelete, handleLikeButtonPress) {
     //Присваиваем внутренние переменные, они все будут приватными, потому что мы не используем их снаружи
     //Напишу много переменных чтобы сделать код самодокументируемым
     this._cardTitle = cardTitle;
@@ -9,8 +9,8 @@ class Card {
     this._itemOwnerId = itemOwnerId;
     this._userId = userId;
     this._itemId = itemId;
+    this._itemLikes = itemLikes; //Массив со списком лайкнувших карточку
     this._templateElement = templateElement;
-    this._cardSelector = cardSelector;
     this._imageSelector = imageSelector;
     this._titleSelector = titleSelector;
     this._likeButtonSelector = likeButtonSelector;
@@ -20,6 +20,7 @@ class Card {
     this._cardLikesCount = cardLikesCount; //Число лайков в карточку
     this._handleCardClick = handleCardClick; //Функция обратного вызова для обработки клика на карточку
     this._handleCardDelete = handleCardDelete; //Функция обратного вызова для обработки удаления места
+    this._handleLikeButtonPress = handleLikeButtonPress; //Функция обратного вызова для обработки лайка
   }
 
   //Получаем темплейт
@@ -34,16 +35,16 @@ class Card {
     this._template = this._getTemplate(); //Темплейт
     this._deleteButton = this._template.querySelector(this._deleteButtonSelector);
 
-    //Провериои
+    //Проверили
     if (!(this._userId === this._itemOwnerId)) {
       console.log('Not match'); //Это не моё изобрадение
       this._deleteButton.remove();
     }
 
-
     this._image = this._template.querySelector(this._imageSelector); //Картинка
     this._title = this._template.querySelector(this._titleSelector); //Текст
     this._likes = this._template.querySelector(this._cardLikeCounterSelector); //Лайки на карточке
+    this._likeButton = this._template.querySelector(this._likeButtonSelector); //Кнопка лайка
 
     //Перезаписали значения
     this._image.src = this._imageUrl;
@@ -51,14 +52,26 @@ class Card {
     this._title.textContent = this._cardTitle;
     this._likes.textContent = this._cardLikesCount;
 
+    //Проверяем, есть ли на карточке наши лайки, и добавляем активное состояние карточкам с нашими лайками
+    if (this._checkLikes()) {
+      this._likeButton.classList.add(this._likeActiveClass);
+    }
+
     //Вернули результат - заполненный темплейт
     return this._template;
   }
 
   //Установка лайка
   _toggleLikeButton (event) {
-    //По клику на кнопку устанавливаем ей соответствующий класс
-    event.target.classList.toggle(this._likeActiveClass);
+    this._handleLikeButtonPress(event, this._itemId)
+      .then(json => this._likes.textContent = json.likes.length);// Увеличить/уменьшить число лайков
+  }
+
+  _checkLikes () {
+    // Проверяем, содержит ли массив лайков этой карточки совпадение с айди Владельца
+    return this._itemLikes.some(item => {
+      return item._id === this._userId; //Если в массиве есть мой айди, возвращаем true
+    })
   }
 
   //Удаление карточки

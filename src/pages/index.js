@@ -111,7 +111,8 @@ const handleCardClick = (imageUrl, imageText) =>  {
 //РЕНДЕР КАРТОЧЕК
 //Рендерер, возвращает DOM элемент рендера карточки места, должна быть в коде ниже коллбэка, чтобы корректно работала карточка места
 const renderer = (item, containerSelector) => {
-  const card = new Card(item.name, item.link, item.owner._id, userId, item._id, placeTemplate, cardSelector, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, cardLikeCounterSelector, item.likes.length , handleCardClick, handleCardDelete);
+  console.log(item);
+  const card = new Card(item.name, item.link, item.owner._id,  userId, item._id, item.likes, placeTemplate, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, cardLikeCounterSelector, item.likes.length , handleCardClick, handleCardDelete, handleLikeButtonPress);
   const renderedCard = card.render(); //Хочу оставить переменную для читаемости кода
   const container = document.querySelector(containerSelector);
   container.append(renderedCard);
@@ -149,7 +150,7 @@ const placeFormSubmitHandler = formValues => {
       link: placeImage
     }
     return cards.addData(placeData).then(data => {
-      const newPlace = new Card(placeName, placeImage, userId, userId, data._id, placeTemplate, cardSelector, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, cardLikeCounterSelector, 0 , handleCardClick, handleCardDelete);
+      const newPlace = new Card(placeName, placeImage, userId, userId, data._id, [], placeTemplate, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, cardLikeCounterSelector, 0 , handleCardClick, handleCardDelete, handleLikeButtonPress);
       const renderedPlace = newPlace.render(); //Рендерим новую карточку
       placeContainer.addItem(renderedPlace); //Добавляем на страницу
     }).catch(error => console.log(error));
@@ -184,7 +185,7 @@ const handleCardDelete = (event, cardId) => {
 
   // Объявим листенер прямо здесь, потому что нам нужна переменная карточки переданная в листенер:
   // поскольку у нас при открытии попапа вешается листенер на кнопку, нам надо его снимать при закрытии попапа,
-  // иначе карточки будут удаляться по несколько штук в макете
+  // иначе карточки будут удаляться по несколько штук в макете при открытии попапа удаления по очереди на карточках
   const deleteCardListener = function (event) {
     if (event.target.classList.contains('popup') || event.target.classList.contains('popup__close')) {
       //По клику на кнопку закрытия или по карточке попапа мы также удаляем листенер
@@ -211,4 +212,30 @@ const handleCardDelete = (event, cardId) => {
 
   //При открытии попапа вешаем листенер на нажатие кнопки "ок"
   confirmPopup.addEventListener('click', deleteCardListener);
+}
+
+//ЛАЙК КАРТОЧКИ
+const handleLikeButtonPress = (event, itemId) => {
+  console.log(event.target);
+  console.log(itemId);
+
+  //Объявим новый запрос к апи в коллбэке
+  const like = new Api({
+    baseUrl: `https://mesto.nomoreparties.co/v1/${cohort}/cards/likes/${itemId}`,
+    headers: {
+      authorization: token,
+      'Content-Type': 'application/json'
+    }
+  });
+
+  // Проверить, стоит ли лайк
+  if (event.target.classList.contains(cardLikeActiveClass)) {
+    // Если лайк стоит, снять его
+    event.target.classList.remove(cardLikeActiveClass);
+    return like.deleteData(); //Возвратим промис
+  } else {
+    // Если лайка нет, поставить его
+    event.target.classList.add(cardLikeActiveClass);
+    return like.putData(); //Тоже возвратим промис
+  }
 }
