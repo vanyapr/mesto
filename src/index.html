@@ -22,7 +22,9 @@
 
   <!-- Профиль пользователя -->
   <section class="profile">
-    <img src="./images/profile__avatar.jpg" srcset="./images/profile__avatar@2x.jpg 2x" alt="Жак-Ив Кусто" class="profile__avatar">
+    <div class="profile__avatar-container">
+      <img src="./images/profile__avatar.jpg" srcset="./images/profile__avatar@2x.jpg 2x" alt="Жак-Ив Кусто" class="profile__avatar">
+    </div>
 
     <div class="profile__info">
       <h1 class="profile__title">Жак-Ив Кусто</h1>
@@ -127,8 +129,23 @@
 </div>
 <!-- Окно с подтверждением удаления карточки места -->
 
-<!-- Темплейты -->
+<!-- Всплывающая форма редактирования аватара-->
+<div class="popup popup-avatar">
+  <div class="popup__container">
+    <button class="popup__close">Закрыть форму</button>
+    <form class="form" name="formAvatar" novalidate>
+      <h2 class="form__title">Обновить аватар</h2>
+      <div class="form__input-container">
+        <input type="url" name="userAvatar" class="form__input form__input_value_avatar" id="user-avatar"  value="" placeholder="Ссылка на аватар" aria-label="Ссылка на аватар" required>
+        <span class="form__error" id="user-avatar-error"></span>
+      </div>
+      <button type="submit" class="form__submit">Сохранить</button>
+    </form>
+  </div>
+</div>
+<!-- // Всплывающая форма редактирования аватара -->
 
+<!-- Темплейты -->
 <!-- Одно место  -->
 <template id="place-template">
   <li class="place">
