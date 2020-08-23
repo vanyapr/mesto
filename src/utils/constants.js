@@ -43,7 +43,6 @@ export const cardDeleteButtonSelector = '.place__delete';
 
 //Настройки валидации форм документа
 export const validationSettings = {
-  //formSelector: '.form', //Не используется, нужен ли он?
   inputSelector: '.form__input',
   submitButtonSelector: '.form__submit',
   inactiveButtonClass: 'form__submit_inactive',

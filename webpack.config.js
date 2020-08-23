@@ -4,9 +4,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin'); //Плагин 
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin'); //Плагин для генерации фавиконов
 
 module.exports = {
-  mode: 'development', //Добавить для генерации SOURCEMAPS для JS, иначе  mode: 'production'
+  mode: 'development', //Добавить для генерации SOURCEMAPS для JS, иначе  mode: 'production' / 'development'
   entry: { main: './src/pages/index.js' }, //Исходный файл
-  devtool: 'inline-source-map', //Sourcemaps for development
+  // devtool: 'inline-source-map', //Sourcemaps for development
   //devtool: 'eval',
   output: {
     path: path.resolve(__dirname, 'dist'), //Директория назначения
