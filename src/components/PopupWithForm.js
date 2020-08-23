@@ -32,35 +32,26 @@ class PopupWithForm extends Popup {
     this._formElement.addEventListener('submit', event => {
       event.preventDefault();
       this._submitButton = this._formElement.querySelector('.form__submit');
-      this._submitButtonInitialText = this._submitButton.textContent;
+      this._submitButtonInitialText = this._submitButton.textContent; //Сохранили текст кнопки в переменную
 
       //Отправляем объект в коллбэк и ожидаем разрешения промиса
-      const promis = new Promise(resolve => {
-        this._submitButton.textContent = 'Сохранение...';
+      new Promise(resolve => {
+        this._submitButton.textContent = 'Сохранение...'; //Поменяли текст кнопки
         this._submitValues = this._getInputValues(); //Получаем объект со значениями полей
         resolve(this._submitValues);
       }).then(formData => {
-        return this._formSubmitHandler(formData)
+        return this._formSubmitHandler(formData); //Отправили данные формы в коллбэк
       }).then(success => {
         this.close();
       }).finally(data => {
-        this._submitButton.textContent =  this._submitButtonInitialText;
+        this._submitButton.textContent =  this._submitButtonInitialText; //Вернули кнопке нормальный текст после закрытия
       });
-
-      // 0) Создаем промис, в нём
-      // 1) Меняем текст кнопки сабмита
-      // 2) В промисе вызваем функцию-хендлер
-      // 3) Меняем текст кнопки сабмита назад
-      // 4) Закрываем форму
-     // this._formSubmitHandler(this._submitValues); //Передаем функции обратного вызова
     })
   }
 
   close() {
-    super.close();
-    //И закрываем
-    this._resetInputValues();
-    //Очищаем форму при закрытии
+    super.close();//Закрываем попап
+    this._resetInputValues(); //Очищаем форму при закрытии
   }
 }
 

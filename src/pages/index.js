@@ -67,12 +67,12 @@ const user = new Api(
 
 // Получаем данные пользователя по апи при загрузке страницы
 user.getData()
-  .then(json => {
+  .then(userData => {
     //Распишу переменные чтобы код было проще читать:
-    const userName = json.name;
-    const about = json.about;
-    const avatar = json.avatar;
-    userId = json._id;
+    const userName = userData.name;
+    const about = userData.about;
+    const avatar = userData.avatar;
+    userId = userData._id;
     userInformation.setUserInfo(userName, about, avatar); //Записываем данные в профиль пользователя
   }) //Присваиваем данные пользователя
   .catch(error => console.log(error)) //Пока что выведем ошибки в консоль;
