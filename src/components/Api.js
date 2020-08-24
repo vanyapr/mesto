@@ -1,12 +1,15 @@
+//import {cohort, token} from "../utils/constants";
+
 class Api {
-  //Конструктор принимает объект с настройками апи
-  constructor({baseUrl, headers}) {
-    this._baseUrl = baseUrl; //Урл адрес апи
-    this._headers = headers; //Заголовки для передачи
+  //Конструктор принимает токен
+  constructor(token, cohort) {
+    this._token = token; //Токен
+    this._cohort = cohort; //Когорта
   }
 
   //Почему бы не вынести обработчик ответа сервера в приватный метод апи?
   _processResponse (serverResponse) {
+    console.log(serverResponse);
     if (serverResponse.ok) {
       return serverResponse.json(); //Если сервер ответил без ошибок, вернули данные в JSON
     }
@@ -14,40 +17,86 @@ class Api {
     return Promise.reject(`Ошибка: ${serverResponse.status}`); //Иначе вернули ошибку, которая попадёт в catch
   }
 
-  getData () { //Получение данных
-    return fetch(this._baseUrl, {
+  getUserInfo () {
+    return fetch(`https://mesto.nomoreparties.co/v1/${this._cohort}/users/me`, {
       method: 'GET',
-      headers: this._headers
+      headers: {
+        authorization: this._token,
+        'Content-Type': 'application/json'
+      }
     }).then(this._processResponse);
   }
 
-  saveData (body) { //Обновление данных
-    return fetch(this._baseUrl, {
-      method: 'PATCH',
-      headers: this._headers,
-      body: JSON.stringify(body)
+  saveUserInfo (userObject) {
+    return fetch(`https://mesto.nomoreparties.co/v1/${this._cohort}/users/me`, {
+          method: 'PATCH',
+          headers: {
+            authorization: this._token,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(userObject)
+        }).then(this._processResponse);
+  }
+
+  getCardsList () {
+    return fetch(`https://mesto.nomoreparties.co/v1/${this._cohort}/cards`, {
+      method: 'GET',
+      headers: {
+        authorization: this._token,
+        'Content-Type': 'application/json'
+      }
     }).then(this._processResponse);
   }
 
-  addData (body) { //Добавление данных
-    return fetch(this._baseUrl, {
+  addCard (cardObject) {
+    return fetch(`https://mesto.nomoreparties.co/v1/${this._cohort}/cards`, {
       method: 'POST',
-      headers: this._headers,
-      body: JSON.stringify(body)
+      headers: {
+        authorization: this._token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(cardObject)
     }).then(this._processResponse);
   }
 
-  deleteData () {
-    return fetch(this._baseUrl, {
+  deleteCard (cardId) {
+    return fetch(`https://mesto.nomoreparties.co/v1/${this._cohort}/cards/${cardId}`, {
       method: 'DELETE',
-      headers: this._headers
+      headers: {
+        authorization: this._token,
+        'Content-Type': 'application/json'
+      }
     }).then(this._processResponse);
   }
 
-  putData () {
-    return fetch(this._baseUrl, {
+  addLikeToCard (cardId) {
+    return fetch(`https://mesto.nomoreparties.co/v1/${this._cohort}/cards/${cardId}`, {
       method: 'PUT',
-      headers: this._headers
+      headers: {
+        authorization: this._token,
+        'Content-Type': 'application/json'
+      }
+    }).then(this._processResponse);
+  }
+
+  removeLikeFromCard (cardId) {
+    return fetch(`https://mesto.nomoreparties.co/v1/${this._cohort}/cards/${cardId}`, {
+      method: 'DELETE',
+      headers: {
+        authorization: this._token,
+        'Content-Type': 'application/json'
+      }
+    }).then(this._processResponse);
+  }
+
+  changeAvatar (avatarData) {
+    return fetch(`https://mesto.nomoreparties.co/v1/${this._cohort}/users/me/avatar`, {
+      method: 'PATCH',
+      headers: {
+        authorization: this._token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(avatarData)
     }).then(this._processResponse);
   }
 }

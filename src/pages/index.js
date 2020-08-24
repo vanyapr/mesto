@@ -42,6 +42,9 @@ import PopupWithForm from '../components/PopupWithForm.js'; //Импортиру
 import UserInfo from '../components/UserInfo.js'; //Импортируем класс данных пользователя
 import Api from '../components/Api.js'; //Импортируем класс АПИ
 
+//Объявили АПИ
+const api = new Api(token, cohort);
+
 //ПРОФИЛЬ ЮЗЕРА
 //Селекторы профиля пользователя
 const userProfile = {
@@ -50,31 +53,18 @@ const userProfile = {
   userAvatarSelector //Селектор аватара пользователя
 }
 
-let userId = ''; //Переменная для хранения идентификатора юзера
 
 //Профиль пользователя
 const userInformation = new UserInfo(userProfile);
 
-// Подключение профиля пользователя к АПИ
-const user = new Api(
-  {
-    baseUrl: `https://mesto.nomoreparties.co/v1/${cohort}/users/me`,
-    headers: {
-      authorization: token,
-      'Content-Type': 'application/json'
-    }
-  }
-);
+let userId = ''; //Переменная для хранения идентификатора юзера
 
 // Получаем данные пользователя по апи при загрузке страницы
-user.getData()
+api.getUserInfo()
   .then(userData => {
-    //Распишу переменные чтобы код было проще читать:
-    const userName = userData.name;
-    const about = userData.about;
-    const avatar = userData.avatar;
+    const {name, about , avatar} = userData;
     userId = userData._id;
-    userInformation.setUserInfo(userName, about, avatar); //Записываем данные в профиль пользователя
+    userInformation.setUserInfo(name, about, avatar); //Записываем данные в профиль пользователя
   }) //Присваиваем данные пользователя
   .catch(error => console.log(error)) //Пока что выведем ошибки в консоль;
 
@@ -89,13 +79,14 @@ editProfile.addEventListener('click', () => {
 
 //Коллбэк сабмита данных в попапе с данными профиля
 const profileFormSubmitHandler = formValues => {
-  //Собираем объект для передачи в экземпляр юзера
   const name = formValues.profileName; //Достали имя из объекта
   const about = formValues.profileDescription; //Достали описание из объекта
-  const userData = {name, about}
+
+  //Собираем объект для сохранения
+  const userData = {name, about};
 
   //Чтобы корректно срабатывала цепочка событий, мы используем промис
-  return user.saveData(userData).then(responce => {
+  return api.saveUserInfo(userData).then(responce => {
     userInformation.setUserInfo(responce.name, responce.about); //Записали данные в профиль
   }).catch(error => console.log(error));
 }
@@ -127,32 +118,20 @@ const placeContainer = new Section(
   placesListContainerSelector //Селектор списка мест (контейнера)
 );
 
-//Загрузка карточек с сервера
-const cards = new Api(
-  {
-    baseUrl: `https://mesto.nomoreparties.co/v1/${cohort}/cards`,
-    headers: {
-      authorization: token,
-      'Content-Type': 'application/json'
-    }
-  }
-);
-
 //Получаем данные карточек
-cards.getData().then(cardsList => {
+api.getCardsList().then(cardsList => {
   //После чего каждую карточку отрендерим на странице
   placeContainer.renderElements(cardsList);//Рендер всех карточек на странице
 }).catch(error => console.log(error)); //Отловим ошибки рендера в консоли
 
 //Коллбэк сабмита данных в попапе с данными места
 const placeFormSubmitHandler = formValues => {
-    const placeName = formValues.placeName;
-    const placeImage = formValues.placeImage;
-    const placeData = {
+    const {placeName, placeImage} = formValues;
+    const cardObject = {
       name: placeName,
       link: placeImage
-    }
-    return cards.addData(placeData).then(data => {
+    };
+    return api.addCard(cardObject).then(data => {
       const newPlace = new Card(placeName, placeImage, userId, userId, data._id, [], placeTemplate, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, cardLikeCounterSelector, 0 , handleCardClick, handleCardDelete, handleLikeButtonPress);
       const renderedPlace = newPlace.render(); //Рендерим новую карточку
       placeContainer.addItem(renderedPlace); //Добавляем на страницу
@@ -165,14 +144,6 @@ const newPlacePopup = new PopupWithForm(addPlacePopupSelector, placeFormSubmitHa
 //Вешаем листенер на кнопку добавления нового места
 addPlaceButton.addEventListener('click', () => {
   newPlacePopup.open(); //Открываем форму добавления места
-});
-
-//Включаем валидацию для всех форм документа
-Array.from(document.forms).forEach(form => {
-  //Объявляем экземпляр класса
-  const validateForm = new FormValidator(validationSettings, form);
-  //Для каждой формы активируем валидацию
-  validateForm.enableValidation();
 });
 
 //ПОДТВЕРЖДЕНИЕ УДАЛЕНИЯ
@@ -195,16 +166,9 @@ const handleCardDelete = (event, cardId) => {
       confirmPopup.removeEventListener('click', deleteCardListener);
     } else if (event.target === confirmCardDeleteButton) {
       card.remove(); //Удалили карточку
-      //Подключили апи
-      const cardToDelete = new Api({
-        baseUrl: `https://mesto.nomoreparties.co/v1/${cohort}/cards/${cardId}`,
-        headers: {
-          authorization: token,
-          'Content-Type': 'application/json'
-        }
-      });
+      //FIXME: Передавать сюда айди карточки для удаления
       //Сделали запрос на удаление
-      cardToDelete.deleteData().then(res => {
+      api.deleteCard(cardId).then(res => {
           deleteConfirmationPopup.close(); //Закрыли попап
           confirmPopup.removeEventListener('click', deleteCardListener); //Удалили листенер
       }).catch(error => console.log(error));
@@ -217,44 +181,27 @@ const handleCardDelete = (event, cardId) => {
 
 //ЛАЙК КАРТОЧКИ
 const handleLikeButtonPress = (event, itemId) => {
-  //Объявим новый запрос к апи в коллбэке
-  const like = new Api({
-    baseUrl: `https://mesto.nomoreparties.co/v1/${cohort}/cards/likes/${itemId}`,
-    headers: {
-      authorization: token,
-      'Content-Type': 'application/json'
-    }
-  });
-
   // Проверить, стоит ли лайк
   if (event.target.classList.contains(cardLikeActiveClass)) {
     // Если лайк стоит, снять его
     event.target.classList.remove(cardLikeActiveClass);
-    return like.deleteData(); //Возвратим промис
+    return api.addLikeToCard(itemId); //Возвратим промис
   } else {
     // Если лайка нет, поставить его
     event.target.classList.add(cardLikeActiveClass);
-    return like.putData(); //Тоже возвратим промис
+    return api.removeLikeFromCard(itemId); //Тоже возвратим промис
   }
 }
 
 //ИЗМЕНЕНИЕ АВАТАРА
-//Подключение а к АПИ
-const avatar = new Api({
-  baseUrl: `https://mesto.nomoreparties.co/v1/${cohort}/users/me/avatar`,
-  headers: {
-    authorization: token,
-    'Content-Type': 'application/json'
-  }
-});
-
 //Хэндлер сабмита формы смены аватара
 const avatarPopupSubmitHandler = newAvatar => {
-  userAvatar.src = newAvatar.avatar; //Записать аватар
-  return avatar.saveData(newAvatar); //Вернуть промис c объектом аватара
+  return api.changeAvatar(newAvatar).then(newAvatar => {
+    userAvatar.src = newAvatar.avatar; //Записать аватар
+  }); //Вернуть промис c объектом аватара
 }
 
-//Объявляем попап
+//Объявляем попап смены аватара
 const avatarPopup = new PopupWithForm(userAvatarPopupSelector, avatarPopupSubmitHandler);
 
 //Вешаем листенер на клик по аватару
@@ -263,3 +210,11 @@ userAvatar.addEventListener('click', event => {
   avatarPopup.open();
 });
 
+//ВАЛИДАЦИЯ ФОРМ
+//Включаем валидацию для всех форм документа
+Array.from(document.forms).forEach(form => {
+  //Объявляем экземпляр класса
+  const validateForm = new FormValidator(validationSettings, form);
+  //Для каждой формы активируем валидацию
+  validateForm.enableValidation();
+});
