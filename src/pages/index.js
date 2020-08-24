@@ -101,7 +101,7 @@ const handleCardImageClick = (imageUrl, imageText) =>  {
 //РЕНДЕР КАРТОЧЕК
 //Рендерер, возвращает DOM элемент рендера карточки места, должна быть в коде ниже коллбэка, чтобы корректно работала карточка места
 const renderer = (cardObject, containerSelector) => {
-  const card = new Card(cardObject, userId, placeTemplate, handleCardImageClick, handleCardDelete, handleLikeButtonPress);
+  const card = new Card(cardObject, userId, placeTemplate, handleCardImageClick, cardDeleteHandler, handleLikeButtonPress);
   const renderedCard = card.render(); //Хочу оставить переменную для читаемости кода
   const container = document.querySelector(containerSelector);
   container.append(renderedCard);
@@ -127,7 +127,7 @@ const placeFormSubmitHandler = formValues => {
       link: placeImage,
     };
     return api.addCard(cardObject).then(cardObject => {
-      const newPlace = new Card(cardObject, userId, placeTemplate, handleCardImageClick, handleCardDelete, handleLikeButtonPress);
+      const newPlace = new Card(cardObject, userId, placeTemplate, handleCardImageClick, cardDeleteHandler, handleLikeButtonPress);
       const renderedPlace = newPlace.render(); //Рендерим новую карточку
       placeContainer.addItem(renderedPlace); //Добавляем на страницу
     }).catch(error => console.log(error));
@@ -141,20 +141,30 @@ addPlaceButton.addEventListener('click', () => {
   newPlacePopup.open(); //Открываем форму добавления места
 });
 
+
 //ПОДТВЕРЖДЕНИЕ УДАЛЕНИЯ
-const cardDeleteHandler = () => {
-  // 1) Нажатие на кнопку удаления карточки
-  // 2) Вызываем коллбэк удаления карточки и передаем в него айди карточки и эвент таргет
-  // 3) Открытие попапа с подтверждением удаления
-  // 4) Передаем при открытии попапа айди карточки в функцию открытия попапа
-  // 5) Вешаем промис с ожиданием сабмита формы
-  // 6) При успешном сабмите формы - удаляем карточку
-  // 7) При закрытии попапа реджектим промис
-  //При сабмите формы мы подтверждаем удаление карточки
+//Коллбэк нажатия на кнопку удаления карточки
+const cardDeleteHandler = (event, itemId) => {
+  // Нажатие на кнопку удаления карточки
+  // Вызываем коллбэк удаления карточки и передаем в него айди карточки саму карточку
+  const card = event.target.closest(cardSelector);
+  // Открытие попапа с подтверждением удаления
+  // Передаем при открытии попапа айди карточки в функцию открытия попапа +
+  deleteConfirmationPopup.open(itemId, card);
 }
 
+//Коллбэк нажатия кнопки в попапе подтверждения удаления
+const cardDeleteConfirm = (cardId, card) => {
+  return api.deleteCard(cardId).then(responce => {
+    card.remove();
+    return responce;
+  }).catch(error => console.log(error));
+}
+
+
 //Попап подтверждения удаления карточки места
-const deleteConfirmationPopup = new PopupWithForm(deleteConfirmationPopupSelector, cardDeleteHandler);
+const deleteConfirmationPopup = new PopupWithForm(deleteConfirmationPopupSelector, cardDeleteConfirm);
+
 
 //Коллбэк подтверждения удаления карточки места
 const handleCardDelete = (event, cardId) => {

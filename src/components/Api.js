@@ -9,7 +9,8 @@ class Api {
 
   //Почему бы не вынести обработчик ответа сервера в приватный метод апи?
   _processResponse (serverResponse) {
-    console.log(serverResponse);
+    // console.log(serverResponse); Для нужд дебагинга
+
     if (serverResponse.ok) {
       return serverResponse.json(); //Если сервер ответил без ошибок, вернули данные в JSON
     }

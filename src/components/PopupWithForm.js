@@ -40,14 +40,29 @@ class PopupWithForm extends Popup {
         this._submitValues = this._getInputValues(); //Получаем объект со значениями полей
         resolve(this._submitValues);
       }).then(formData => {
-        console.log(formData);
-        return this._formSubmitHandler(formData); //Отправили данные формы в коллбэк
+        //Если при открытии были получены данные карточки, мы вызываем хэндлер с другими параметрами
+        if (this._cardId && this._cardToDelete) {
+          return this._formSubmitHandler(this._cardId, this._cardToDelete);
+        } else {
+          return this._formSubmitHandler(formData); //Отправили данные формы в коллбэк
+        }
       }).then(success => {
         this.close();
+        return success;
       }).finally(data => {
         this._submitButton.textContent =  this._submitButtonInitialText; //Вернули кнопке нормальный текст после закрытия
       });
     })
+  }
+
+  open (cardId, card) {
+    super.open();
+
+    //Если при открытии формы мы получили параметры, присваиваем их в приватные переменные
+    if (cardId && card) {
+      this._cardId = cardId;
+      this._cardToDelete = card;
+    }
   }
 
   close() {
