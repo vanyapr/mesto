@@ -34,12 +34,7 @@ export const userAvatarInput = document.forms.formAvatar.avatar;
 
 //Селекторы и классы карточки места для использования в классе Card
 export const cardSelector = '.place';
-//export const cardImageSelector = '.place__image';
-//export const cardTitleSelector = '.place__title';
-//export const cardLikeButtonSelector = '.place__like';
 export const cardLikeActiveClass = 'place__like_status_active';
-//export const cardLikeCounterSelector = '.place__likes-count';
-//export const cardDeleteButtonSelector = '.place__delete';
 
 //Настройки валидации форм документа
 export const validationSettings = {

@@ -1,5 +1,3 @@
-//import {cohort, token} from "../utils/constants";
-
 class Api {
   //Конструктор принимает токен
   constructor(token, cohort) {

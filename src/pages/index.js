@@ -149,51 +149,21 @@ const cardDeleteHandler = (event, itemId) => {
   // Вызываем коллбэк удаления карточки и передаем в него айди карточки саму карточку
   const card = event.target.closest(cardSelector);
   // Открытие попапа с подтверждением удаления
-  // Передаем при открытии попапа айди карточки в функцию открытия попапа +
+  // Передаем в открывающийся попап айди и саму карточку
   deleteConfirmationPopup.open(itemId, card);
 }
 
 //Коллбэк нажатия кнопки в попапе подтверждения удаления
 const cardDeleteConfirm = (cardId, card) => {
-  return api.deleteCard(cardId).then(responce => {
+  return api.deleteCard(cardId).then(response => {
     card.remove();
-    return responce;
+    return response;
   }).catch(error => console.log(error));
 }
-
 
 //Попап подтверждения удаления карточки места
 const deleteConfirmationPopup = new PopupWithForm(deleteConfirmationPopupSelector, cardDeleteConfirm);
 
-
-//Коллбэк подтверждения удаления карточки места
-const handleCardDelete = (event, cardId) => {
-  const card = event.target.closest(cardSelector); //Вычисляем карточку, которую надо удалить
-  const confirmPopup = document.querySelector(deleteConfirmationPopupSelector); //Нам понадобится селектор попапа
-  deleteConfirmationPopup.open(); //Открываем попап и передать туда карточку места и кнопку подтверждения
-
-  // Объявим листенер прямо здесь, потому что нам нужна переменная карточки переданная в листенер:
-  // поскольку у нас при открытии попапа вешается листенер на кнопку, нам надо его снимать при закрытии попапа,
-  // иначе карточки будут удаляться по несколько штук в макете при открытии и закрытии попапа
-  // по очереди на разных карточках без нажатия на кнопку удаления
-  const deleteCardListener = function (event) {
-    if (event.target.classList.contains('popup') || event.target.classList.contains('popup__close')) {
-      //По клику на кнопку закрытия или по карточке попапа мы также удаляем листенер
-      confirmPopup.removeEventListener('click', deleteCardListener);
-    } else if (event.target === confirmCardDeleteButton) {
-      card.remove(); //Удалили карточку
-      //FIXME: Передавать сюда айди карточки для удаления
-      //Сделали запрос на удаление
-      api.deleteCard(cardId).then(res => {
-          deleteConfirmationPopup.close(); //Закрыли попап
-          confirmPopup.removeEventListener('click', deleteCardListener); //Удалили листенер
-      }).catch(error => console.log(error));
-    }
-  };
-
-  //При открытии попапа вешаем листенер на нажатие кнопки "ок"
-  confirmPopup.addEventListener('click', deleteCardListener);
-}
 
 //ЛАЙК КАРТОЧКИ
 const handleLikeButtonPress = (event, itemId) => {
