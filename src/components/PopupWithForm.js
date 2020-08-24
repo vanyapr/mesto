@@ -40,6 +40,7 @@ class PopupWithForm extends Popup {
         this._submitValues = this._getInputValues(); //Получаем объект со значениями полей
         resolve(this._submitValues);
       }).then(formData => {
+        console.log(formData);
         return this._formSubmitHandler(formData); //Отправили данные формы в коллбэк
       }).then(success => {
         this.close();

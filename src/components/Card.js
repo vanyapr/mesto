@@ -1,23 +1,13 @@
 class Card {
-  //Получаем параметры в конструктор объекта
-  //Нам понадобятся селекторы элементов темплейта, чтобы привязывать листенеры приватными методами
-  constructor (cardTitle, imageUrl, itemOwnerId, userId, itemId, itemLikes, templateElement, imageSelector, titleSelector, likeButtonSelector, likeActiveClass, deleteButtonSelector, cardLikeCounterSelector, cardLikesCount, handleCardClick, handleCardDelete, handleLikeButtonPress) {
-    //Присваиваем внутренние переменные, они все будут приватными, потому что мы не используем их снаружи
-    //Напишу много переменных чтобы сделать код самодокументируемым
-    this._cardTitle = cardTitle;
-    this._imageUrl = imageUrl;
-    this._itemOwnerId = itemOwnerId;
+  constructor (cardObject, userId, templateElement, handleCardClick, handleCardDelete, handleLikeButtonPress) {
+    this._cardTitle = cardObject.name;
+    this._imageUrl = cardObject.link;
+    this._itemOwnerId = cardObject.owner._id;
+    this._itemId = cardObject._id;
+    this._itemLikes = cardObject.likes; //Массив со списком лайкнувших карточку
+    this._cardLikesCount = this._itemLikes.length; //Число лайков в карточку
     this._userId = userId;
-    this._itemId = itemId;
-    this._itemLikes = itemLikes; //Массив со списком лайкнувших карточку
     this._templateElement = templateElement;
-    this._imageSelector = imageSelector;
-    this._titleSelector = titleSelector;
-    this._likeButtonSelector = likeButtonSelector;
-    this._deleteButtonSelector = deleteButtonSelector;
-    this._likeActiveClass = likeActiveClass;
-    this._cardLikeCounterSelector = cardLikeCounterSelector; //Добавил селектор лайка для записи числа лайков в карточку
-    this._cardLikesCount = cardLikesCount; //Число лайков в карточку
     this._handleCardClick = handleCardClick; //Функция обратного вызова для обработки клика на карточку
     this._handleCardDelete = handleCardDelete; //Функция обратного вызова для обработки удаления места
     this._handleLikeButtonPress = handleLikeButtonPress; //Функция обратного вызова для обработки лайка
@@ -33,17 +23,17 @@ class Card {
   _fillTemplate () {
     //Определили переменные для перезаписи значений
     this._template = this._getTemplate(); //Темплейт
-    this._deleteButton = this._template.querySelector(this._deleteButtonSelector);
+    this._deleteButton = this._template.querySelector('.place__delete');//Кнопка удаления
 
     //Проверили
     if (!(this._userId === this._itemOwnerId)) {
       this._deleteButton.remove();
     }
 
-    this._image = this._template.querySelector(this._imageSelector); //Картинка
-    this._title = this._template.querySelector(this._titleSelector); //Текст
-    this._likes = this._template.querySelector(this._cardLikeCounterSelector); //Лайки на карточке
-    this._likeButton = this._template.querySelector(this._likeButtonSelector); //Кнопка лайка
+    this._image = this._template.querySelector('.place__image'); //Картинка
+    this._title = this._template.querySelector('.place__title'); //Текст
+    this._likes = this._template.querySelector('.place__likes-count'); //Лайки на карточке
+    this._likeButton = this._template.querySelector('.place__like'); //Кнопка лайка
 
     //Перезаписали значения
     this._image.src = this._imageUrl;
@@ -53,7 +43,7 @@ class Card {
 
     //Проверяем, есть ли на карточке наши лайки, и добавляем активное состояние карточкам с нашими лайками
     if (this._checkLikes()) {
-      this._likeButton.classList.add(this._likeActiveClass);
+      this._likeButton.classList.add('place__like_status_active');
     }
 
     //Вернули результат - заполненный темплейт
@@ -86,12 +76,12 @@ class Card {
   //Объявляем эвент листенеры
   _setEventListeners (template) {
     //Листенер на лайк карточки
-    template.querySelector(this._likeButtonSelector).addEventListener('click', (event) => {
+    template.querySelector('.place__like').addEventListener('click', (event) => {
       this._toggleLikeButton(event);
     });
 
     //Находим в темплейте кнопку удаления
-    this._deleteButton = template.querySelector(this._deleteButtonSelector);
+    this._deleteButton = template.querySelector('.place__delete');
 
     //Ставим листенер на кнопку удаления только если эта кнопку существует
     if (this._deleteButton) {
@@ -99,7 +89,7 @@ class Card {
     }
 
     //Листенер на открытие окна просмотра изображения
-    template.querySelector(this._imageSelector).addEventListener('click', () => {
+    template.querySelector('.place__image').addEventListener('click', () => {
       this._openImagePopup ();
     });
   }

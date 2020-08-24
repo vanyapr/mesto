@@ -23,12 +23,7 @@ import {
   userAvatar,
   userAvatarInput,
   cardSelector,
-  cardImageSelector,
-  cardTitleSelector,
-  cardLikeButtonSelector,
   cardLikeActiveClass,
-  cardLikeCounterSelector,
-  cardDeleteButtonSelector,
   validationSettings
 } from '../utils/constants.js';
 
@@ -98,15 +93,15 @@ const editProfilePopup = new PopupWithForm(profilePopupSelector, profileFormSubm
 const imagePopup = new PopupWithImage(imagePopupSelector);
 
 //Коллбэк открытия попапа кликом на изображение в карточке
-const handleCardClick = (imageUrl, imageText) =>  {
+const handleCardImageClick = (imageUrl, imageText) =>  {
   imagePopup.open(imageUrl, imageText);//Заполняем данные попапа
 };
 
 
 //РЕНДЕР КАРТОЧЕК
 //Рендерер, возвращает DOM элемент рендера карточки места, должна быть в коде ниже коллбэка, чтобы корректно работала карточка места
-const renderer = (item, containerSelector) => {
-  const card = new Card(item.name, item.link, item.owner._id,  userId, item._id, item.likes, placeTemplate, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, cardLikeCounterSelector, item.likes.length , handleCardClick, handleCardDelete, handleLikeButtonPress);
+const renderer = (cardObject, containerSelector) => {
+  const card = new Card(cardObject, userId, placeTemplate, handleCardImageClick, handleCardDelete, handleLikeButtonPress);
   const renderedCard = card.render(); //Хочу оставить переменную для читаемости кода
   const container = document.querySelector(containerSelector);
   container.append(renderedCard);
@@ -129,10 +124,10 @@ const placeFormSubmitHandler = formValues => {
     const {placeName, placeImage} = formValues;
     const cardObject = {
       name: placeName,
-      link: placeImage
+      link: placeImage,
     };
-    return api.addCard(cardObject).then(data => {
-      const newPlace = new Card(placeName, placeImage, userId, userId, data._id, [], placeTemplate, cardImageSelector, cardTitleSelector, cardLikeButtonSelector, cardLikeActiveClass, cardDeleteButtonSelector, cardLikeCounterSelector, 0 , handleCardClick, handleCardDelete, handleLikeButtonPress);
+    return api.addCard(cardObject).then(cardObject => {
+      const newPlace = new Card(cardObject, userId, placeTemplate, handleCardImageClick, handleCardDelete, handleLikeButtonPress);
       const renderedPlace = newPlace.render(); //Рендерим новую карточку
       placeContainer.addItem(renderedPlace); //Добавляем на страницу
     }).catch(error => console.log(error));
@@ -147,8 +142,19 @@ addPlaceButton.addEventListener('click', () => {
 });
 
 //ПОДТВЕРЖДЕНИЕ УДАЛЕНИЯ
+const cardDeleteHandler = () => {
+  // 1) Нажатие на кнопку удаления карточки
+  // 2) Вызываем коллбэк удаления карточки и передаем в него айди карточки и эвент таргет
+  // 3) Открытие попапа с подтверждением удаления
+  // 4) Передаем при открытии попапа айди карточки в функцию открытия попапа
+  // 5) Вешаем промис с ожиданием сабмита формы
+  // 6) При успешном сабмите формы - удаляем карточку
+  // 7) При закрытии попапа реджектим промис
+  //При сабмите формы мы подтверждаем удаление карточки
+}
+
 //Попап подтверждения удаления карточки места
-const deleteConfirmationPopup = new Popup(deleteConfirmationPopupSelector);
+const deleteConfirmationPopup = new PopupWithForm(deleteConfirmationPopupSelector, cardDeleteHandler);
 
 //Коллбэк подтверждения удаления карточки места
 const handleCardDelete = (event, cardId) => {
@@ -185,11 +191,11 @@ const handleLikeButtonPress = (event, itemId) => {
   if (event.target.classList.contains(cardLikeActiveClass)) {
     // Если лайк стоит, снять его
     event.target.classList.remove(cardLikeActiveClass);
-    return api.addLikeToCard(itemId); //Возвратим промис
+    return api.removeLikeFromCard(itemId); //Возвратим промис
   } else {
     // Если лайка нет, поставить его
     event.target.classList.add(cardLikeActiveClass);
-    return api.removeLikeFromCard(itemId); //Тоже возвратим промис
+    return api.addLikeToCard(itemId); //Тоже возвратим промис
   }
 }
 
@@ -210,11 +216,15 @@ userAvatar.addEventListener('click', event => {
   avatarPopup.open();
 });
 
-//ВАЛИДАЦИЯ ФОРМ
-//Включаем валидацию для всех форм документа
-Array.from(document.forms).forEach(form => {
-  //Объявляем экземпляр класса
-  const validateForm = new FormValidator(validationSettings, form);
-  //Для каждой формы активируем валидацию
-  validateForm.enableValidation();
-});
+//ВАЛИДАЦИЯ ФОРМ - теперь включается для каждой формы отдельно
+//Валидация формы смены аватара
+const formAvatarValidation = new FormValidator(validationSettings, document.forms.formAvatar);
+formAvatarValidation.enableValidation();
+
+//Валидация формы добавления места
+const formPlaceValidation = new FormValidator(validationSettings, document.forms.formPlace);
+formPlaceValidation.enableValidation();
+
+//Валидация формы редактирования профиля
+const formProfileValidation = new FormValidator(validationSettings, document.forms.formProfile);
+formProfileValidation.enableValidation();

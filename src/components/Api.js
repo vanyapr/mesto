@@ -70,7 +70,7 @@ class Api {
   }
 
   addLikeToCard (cardId) {
-    return fetch(`https://mesto.nomoreparties.co/v1/${this._cohort}/cards/${cardId}`, {
+    return fetch(`https://mesto.nomoreparties.co/v1/${this._cohort}/cards/likes/${cardId}`, {
       method: 'PUT',
       headers: {
         authorization: this._token,
@@ -80,7 +80,7 @@ class Api {
   }
 
   removeLikeFromCard (cardId) {
-    return fetch(`https://mesto.nomoreparties.co/v1/${this._cohort}/cards/${cardId}`, {
+    return fetch(`https://mesto.nomoreparties.co/v1/${this._cohort}/cards/likes/${cardId}`, {
       method: 'DELETE',
       headers: {
         authorization: this._token,
