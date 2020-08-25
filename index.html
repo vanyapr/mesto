@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Место - Яндекс.Практикум</title>
+  <meta name="description" content="Проект 4: Место - именно так называется четвертая проектная работа в рамках Яндекс-Практикума">
+<link rel="shortcut icon" href="/assets/favicon.ico"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png"><link rel="manifest" href="/assets/manifest.json"><meta name="mobile-web-app-capable" content="yes"><meta name="theme-color" content="#333"><meta name="application-name" content="Mesto"><link rel="apple-touch-icon" sizes="57x57" href="/assets/apple-touch-icon-57x57.png"><link rel="apple-touch-icon" sizes="60x60" href="/assets/apple-touch-icon-60x60.png"><link rel="apple-touch-icon" sizes="72x72" href="/assets/apple-touch-icon-72x72.png"><link rel="apple-touch-icon" sizes="76x76" href="/assets/apple-touch-icon-76x76.png"><link rel="apple-touch-icon" sizes="114x114" href="/assets/apple-touch-icon-114x114.png"><link rel="apple-touch-icon" sizes="120x120" href="/assets/apple-touch-icon-120x120.png"><link rel="apple-touch-icon" sizes="144x144" href="/assets/apple-touch-icon-144x144.png"><link rel="apple-touch-icon" sizes="152x152" href="/assets/apple-touch-icon-152x152.png"><link rel="apple-touch-icon" sizes="167x167" href="/assets/apple-touch-icon-167x167.png"><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon-180x180.png"><link rel="apple-touch-icon" sizes="1024x1024" href="/assets/apple-touch-icon-1024x1024.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Mesto"><link rel="apple-touch-startup-image" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/assets/apple-touch-startup-image-640x1136.png"><link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/assets/apple-touch-startup-image-750x1334.png"><link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/assets/apple-touch-startup-image-828x1792.png"><link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/assets/apple-touch-startup-image-1125x2436.png"><link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/assets/apple-touch-startup-image-1242x2208.png"><link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/assets/apple-touch-startup-image-1242x2688.png"><link rel="apple-touch-startup-image" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/assets/apple-touch-startup-image-1536x2048.png"><link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/assets/apple-touch-startup-image-1668x2224.png"><link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/assets/apple-touch-startup-image-1668x2388.png"><link rel="apple-touch-startup-image" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/assets/apple-touch-startup-image-2048x2732.png"><link rel="apple-touch-startup-image" media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/assets/apple-touch-startup-image-1620x2160.png"><link rel="apple-touch-startup-image" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="/assets/apple-touch-startup-image-1136x640.png"><link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="/assets/apple-touch-startup-image-1334x750.png"><link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="/assets/apple-touch-startup-image-1792x828.png"><link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="/assets/apple-touch-startup-image-2436x1125.png"><link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="/assets/apple-touch-startup-image-2208x1242.png"><link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="/assets/apple-touch-startup-image-2688x1242.png"><link rel="apple-touch-startup-image" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="/assets/apple-touch-startup-image-2048x1536.png"><link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="/assets/apple-touch-startup-image-2224x1668.png"><link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="/assets/apple-touch-startup-image-2388x1668.png"><link rel="apple-touch-startup-image" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="/assets/apple-touch-startup-image-2732x2048.png"><link rel="apple-touch-startup-image" media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="/assets/apple-touch-startup-image-2160x1620.png"><meta name="msapplication-TileColor" content="#333"><meta name="msapplication-TileImage" content="/assets/mstile-144x144.png"><meta name="msapplication-config" content="/assets/browserconfig.xml"><link href="main.css" rel="stylesheet"></head>
+<body class="root">
+
+<!-- Шапка -->
+<header class="header">
+  <a href=".." title="Место" class="logo">
+    <img src="1039f6e341d5cb88d71fb9607eea1b8f.svg" alt="Место" class="logo__image">
+  </a>
+</header>
+<!--// Шапка -->
+
+<!-- Контент -->
+<main class="main">
+
+  <!-- Профиль пользователя -->
+  <section class="profile">
+    <div class="profile__avatar-container">
+      <img src="96ef1c45dd4c4687cb7462a0bfcae14d.jpg" alt="Жак-Ив Кусто" class="profile__avatar">
+    </div>
+
+    <div class="profile__info">
+      <h1 class="profile__title">Жак-Ив Кусто</h1>
+      <p class="profile__description">Исследователь океана</p>
+      <button class="profile__edit-button" title="Редактировать профиль">
+        <!-- Редактировать профиль-->
+      </button>
+    </div>
+
+    <button class="profile__add-button" title="Добавить место">
+      <!-- Добавить место-->
+    </button>
+  </section>
+  <!-- Профиль пользователя -->
+
+  <!-- Список мест  -->
+  <section class="places" aria-label="Места">
+
+    <!--  Контейнер для рендера списка мест  -->
+    <ul class="places__list">
+
+    </ul>
+    <!-- // Контейнер для рендера списка мест   -->
+
+  </section>
+  <!-- Список мест  -->
+
+</main>
+<!--// Контент -->
+
+<!-- Подвал -->
+<footer class="footer">
+  <p class="footer__copyright">
+    &copy; 2020 Mesto Russia
+  </p>
+</footer>
+<!--// Подвал -->
+
+
+<!-- Всплывающая форма редактирования профиля-->
+<div class="popup popup-profile">
+  <div class="popup__container">
+    <button class="popup__close">Закрыть форму</button>
+    <form class="form" name="formProfile" novalidate>
+      <h2 class="form__title">Редактировать профиль</h2>
+      <div class="form__input-container">
+        <input type="text" name="profileName" class="form__input form__input_value_name" id="profile-name" minlength="2" maxlength="40" value="Жак ив кусто" aria-label="Имя" required>
+        <span class="form__error" id="profile-name-error"></span>
+      </div>
+      <div class="form__input-container">
+        <input type="text" name="profileDescription" class="form__input form__input_value_description" id="profile-description" minlength="2" maxlength="40" value="Исследователь" aria-label="Род деятельности" required>
+        <span class="form__error" id="profile-description-error"></span>
+      </div>
+      <button type="submit" class="form__submit">Сохранить</button>
+    </form>
+  </div>
+</div>
+<!-- // Всплывающая форма редактирования профиля -->
+
+<!-- Всплывающая форма добавления места-->
+<div class="popup popup-place">
+  <div class="popup__container">
+    <button class="popup__close">Закрыть форму</button>
+    <form class="form" name="formPlace" novalidate>
+      <h2 class="form__title">Новое место</h2>
+      <div class="form__input-container">
+        <input type="text" name="placeName" class="form__input form__input_value_place-name" id="place-name" minlength="1" maxlength="30" value="" placeholder="Название" aria-label="Название места" required>
+        <span class="form__error" id="place-name-error"></span>
+      </div>
+      <div class="form__input-container">
+        <input type="url" name="placeImage" class="form__input form__input_value_image" id="place-image"  value="" placeholder="Ссылка на картинку" aria-label="Ссылка на картинку" required>
+        <span class="form__error" id="place-image-error"></span>
+      </div>
+      <button type="submit" class="form__submit">Создать</button>
+    </form>
+  </div>
+</div>
+<!-- // Всплывающая форма добавления места -->
+
+<!-- Окно просмотра изображения -->
+<div class="popup image-popup popup_type_image">
+  <figure class="popup__image-container">
+    <button class="popup__close">Закрыть форму</button>
+    <img src="https://kudamoscow.ru/image/1450/1150/uploads/d057298d72b221594f4181ecb649c1c1.jpg" alt="Альтернативный текст" class="popup__image">
+    <figcaption class="popup__image-description">
+      Описание картинки
+    </figcaption>
+  </figure>
+</div>
+<!-- // Окно просмотра изображения -->
+
+<!-- Окно с подтверждением удаления карточки места -->
+<div class="popup popup-confirm popup_type_confirm">
+  <div class="popup__container">
+    <form class="form" name="formConfirmDeletion" novalidate>
+      <button class="popup__close">Закрыть форму</button>
+
+      <h2 class="form__title">Вы уверены?</h2>
+      <button type="submit" class="form__submit form__submit_type_confirm">Да</button>
+    </form>
+  </div>
+</div>
+<!-- Окно с подтверждением удаления карточки места -->
+
+<!-- Всплывающая форма редактирования аватара-->
+<div class="popup popup-avatar">
+  <div class="popup__container">
+    <button class="popup__close">Закрыть форму</button>
+    <form class="form" name="formAvatar" novalidate>
+      <h2 class="form__title">Обновить аватар</h2>
+      <div class="form__input-container">
+        <input type="url" name="avatar" class="form__input form__input_value_avatar" id="user-avatar"  value="" placeholder="Ссылка на аватар" aria-label="Ссылка на аватар" required>
+        <span class="form__error" id="user-avatar-error"></span>
+      </div>
+      <button type="submit" class="form__submit">Сохранить</button>
+    </form>
+  </div>
+</div>
+<!-- // Всплывающая форма редактирования аватара -->
+
+<!-- Темплейты -->
+<!-- Одно место  -->
+<template id="place-template">
+  <li class="place">
+    <img src="529b8bc2f719b0bed126ac4c7c34881a.jpg" alt="Карачаевск" class="place__image">
+    <h2 class="place__title">Название места</h2>
+
+    <div class="place__like-container">
+      <button class="place__like" title="Добавить место в избранное"></button>
+      <p class="place__likes-count" title="Лайков - 1">1</p>
+    </div>
+
+    <button class="place__delete" title="Удалить место"></button>
+  </li>
+</template>
+<!--// Одно место  -->
+
+<!-- Javascripts -->
+<script src="main.js"></script></body>
+</html>
